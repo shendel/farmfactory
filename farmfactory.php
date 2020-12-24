@@ -17,6 +17,5 @@ define( 'DEFINANCE_VER', '1.0.1' );
 /**
  * Plugin Init
  */
-require __DIR__ . '/App/autoload.php';
 
 
