@@ -6,7 +6,7 @@ Author:  Denis Kaiser
 Requires PHP: 7.1
 Text Domain: farm
 Domain Path: /lang
-Version: 1.0.11
+Version: 1.0.112
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
@@ -21,7 +21,7 @@ define( 'DEFINANCE_VER', '1.0.1' );
 /**
  * Never worry about cache again!
  */
-function my_load_scripts($hook) {
+function farm_load_scripts($hook) {
  
     // create my own version codes
     $my_js_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'src/build/app.js' ));
