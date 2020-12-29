@@ -1,5 +1,5 @@
 <?php
-namespace DEFINANCE;
+namespace farmfactory;
 
 defined( 'ABSPATH' ) || exit;
 

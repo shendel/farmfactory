@@ -1,6 +1,6 @@
 <?php
 
-namespace DEFINANCE;
+namespace farmfactory;
 defined( 'ABSPATH' ) || exit;
 
 
@@ -37,7 +37,7 @@ class View {
 
 	public function display( $template , $arr =[] ) {
         extract($arr);
-        include DEFINANCE_TEMPLATE_DIR. $template;
+        include farmfactory_TEMPLATE_DIR. $template;
 	}
 
 

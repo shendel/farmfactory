@@ -1,7 +1,7 @@
 <?php
-namespace DEFINANCE\Controllers;
+namespace FARMFACTORY\Controllers;
 
-use DEFINANCE\Controller;
+use FARMFACTORY\Controller;
 
 
 class HomePageController extends Controller {
@@ -19,7 +19,7 @@ class HomePageController extends Controller {
 	public function template($template) {
         if ( is_front_page() || is_home() ) {
 
-            return DEFINANCE_TEMPLATE_DIR  .'/home.php';
+            return FARMFACTORY_TEMPLATE_DIR  .'/home.php';
         }
 
         return $template;

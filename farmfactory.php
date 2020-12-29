@@ -10,10 +10,10 @@ Version: 1.0.112
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
-define( 'DEFINANCE_TEMPLATE_DIR', __DIR__ . '/templates' );
-define( 'DEFINANCE_BASE_DIR', __DIR__ );
-define( 'DEFINANCE_BASE_FILE', __FILE__ );
-define( 'DEFINANCE_VER', '1.0.1' );
+define( 'farmfactory_TEMPLATE_DIR', __DIR__ . '/templates' );
+define( 'farmfactory_BASE_DIR', __DIR__ );
+define( 'farmfactory_BASE_FILE', __FILE__ );
+define( 'farmfactory_VER', '1.0.1' );
 /**
  * Plugin Init
  */

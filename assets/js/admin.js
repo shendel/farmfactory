@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
   /**
    * Select/Upload icon
    */
-  $('body').on('click', '.definance-input-icon', function(e){
+  $('body').on('click', '.farmfactory-input-icon', function(e){
     e.preventDefault();
 
     var button = $(this),
@@ -19,11 +19,11 @@ jQuery(document).ready(function ($) {
           multiple: false
         }).on('select', function() {
           var attachment = custom_uploader.state().get('selection').first().toJSON();
-          $('.js-definance-load-icon').val( attachment.url );
+          $('.js-farmfactory-load-icon').val( attachment.url );
         })
         .open();
   });
-  $('body').on('click', '.definance-input-icon2', function(e){
+  $('body').on('click', '.farmfactory-input-icon2', function(e){
     e.preventDefault();
 
     var button = $(this),
@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
           multiple: false
         }).on('select', function() {
           var attachment = custom_uploader.state().get('selection').first().toJSON();
-          $('.js-definance-load-icon2').val( attachment.url );
+          $('.js-farmfactory-load-icon2').val( attachment.url );
         })
         .open();
   });

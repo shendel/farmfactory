@@ -1,14 +1,14 @@
 <?php
 
 
-namespace DEFINANCE\Controllers;
+namespace FARMFACTORY\Controllers;
 
 
 class AutoUpdateController {
 
-	const INFO_URL = 'https://definance.wpmix.net/info.json';
-	const PLUGIN_SLUG = 'definance';
-	const TRANSIENT_SLUG = 'definance_upgrade_plugin';
+	const INFO_URL = 'https://farm.wpmix.net/info.json';
+	const PLUGIN_SLUG = 'farm';
+	const TRANSIENT_SLUG = 'FARMFACTORY_upgrade_plugin';
 
 	public function __construct() {
 		add_action('plugins_api', function($res, $action, $args) {
@@ -133,7 +133,7 @@ class AutoUpdateController {
 			$remote = json_decode( $remote['body'] );
 
 			// your installed plugin version should be on the line below! You can obtain it dynamically of course
-			if ( $remote && version_compare( DEFINANCE_VER, $remote->version, '<' ) && version_compare( $remote->requires, get_bloginfo('version'), '<' ) ) {
+			if ( $remote && version_compare( FARMFACTORY_VER, $remote->version, '<' ) && version_compare( $remote->requires, get_bloginfo('version'), '<' ) ) {
 				$res                               = new \stdClass();
 				$res->slug                         = self::PLUGIN_SLUG;
 				$res->plugin                       = self::PLUGIN_SLUG . '/' . self::PLUGIN_SLUG . '.php';
