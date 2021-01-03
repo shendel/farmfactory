@@ -17,37 +17,37 @@ const html = `
     <div class="headline">
       <div>
         <div class="title">Total LPs Staked</div>
-        <div class="value" id="farmingTotalSupply"></div>
+        <div class="value" id="${constants.ids.farmingPage.totalSupply}"></div>
       </div>
       <div>
         <div class="title">Daily Pool Rewards</div>
-        <div class="value" id="farmingRate"></div>
+        <div class="value" id="${constants.ids.farmingPage.rate}"></div>
       </div>
     </div>
     <div class="widget row">
       <div class="farmingCard">
-        <div class="amount" id="earnedTokens">&mdash;</div>
+        <div class="amount" id="${constants.ids.farmingPage.earnedTokens}">&mdash;</div>
         <div class="title">Earned</div>
         <div class="buttonContainer">
-          <button class="button blue" id="harvestButton">Harvest</button>
+          <button class="button blue" id="${constants.ids.farmingPage.harvestButton}">Harvest</button>
         </div>
       </div>
       <div class="farmingCard">
-        <div class="amount" id="farmingBalance">&mdash;</div>
+        <div class="amount" id="${constants.ids.farmingPage.balance}">&mdash;</div>
         <div class="title">LPs Token Staked</div>
-        <div class="buttonContainer" id="lpsButtons"></div>
+        <div class="buttonContainer" id="${constants.ids.farmingPage.lpsButtons}"></div>
       </div>
     </div>
   </div>
 `
 
 const approveButtonHtml = `
-  <button class="button yellow" id="approveButton">Approve LPS</button>
+  <button class="button yellow" id="${constants.ids.farmingPage.approveButton}">Approve LPS</button>
 `
 
 const depositAndWithdrawButtonsHtml = `
-  <button class="button yellow" id="depositButton">Deposit</button><br />
-  <button class="button gray" id="withdrawButton">Withdraw</button>
+  <button class="button yellow" id="${constants.ids.farmingPage.depositButton}">Deposit</button><br />
+  <button class="button gray" id="${constants.ids.farmingPage.withdrawButton}">Withdraw</button>
 `
 
 const getData = async () => {
@@ -74,11 +74,11 @@ const getData = async () => {
       contracts.staking.methods.allowance(account, window.farmAddress).call(),
     ])
 
-    document.getElementById('farmingTotalSupply').innerText = String(farmingTotalSupply / 1e18)
-    document.getElementById('farmingRate').innerText = farmingRate
+    document.getElementById(constants.ids.farmingPage.totalSupply).innerText = String(farmingTotalSupply / 1e18)
+    document.getElementById(constants.ids.farmingPage.rate).innerText = farmingRate
 
-    document.getElementById('earnedTokens').innerText = String(earnedTokens / 1e18)
-    document.getElementById('farmingBalance').innerText = String(farmingBalance / 1e18)
+    document.getElementById(constants.ids.farmingPage.earnedTokens).innerText = String(earnedTokens / 1e18)
+    document.getElementById(constants.ids.farmingPage.balance).innerText = String(farmingBalance / 1e18)
 
     injectLpsButton(Number(allowance) > 0)
   }
@@ -109,7 +109,7 @@ const harvest = async () => {
 
   try {
     isLoading = true
-    document.getElementById('harvestButton').innerHTML = loader;
+    document.getElementById(constants.ids.farmingPage.harvestButton).innerHTML = loader;
 
     const res = await contracts.farm.methods.getReward().send({ from: account })
 
@@ -125,7 +125,7 @@ const harvest = async () => {
   }
   finally {
     isLoading = false
-    document.getElementById('harvestButton').innerHTML = 'Harvest';
+    document.getElementById(constants.ids.farmingPage.harvestButton).innerHTML = 'Harvest';
   }
 }
 
@@ -150,7 +150,7 @@ const approve = async () => {
 
   try {
     isLoading = true
-    document.getElementById('harvestButton').innerHTML = loader;
+    document.getElementById(constants.ids.farmingPage.approveButton).innerHTML = loader;
 
     // TODO values? - added on 12/27/20 by pavelivanov
     const spender = window.farmAddress
@@ -170,28 +170,28 @@ const approve = async () => {
   }
   finally {
     isLoading = false
-    document.getElementById('harvestButton').innerHTML = 'Approve';
+    document.getElementById(constants.ids.farmingPage.approveButton).innerHTML = 'Approve';
   }
 }
 
 const injectLpsButton = (isApproved) => {
-  const node = document.getElementById('lpsButtons')
+  const node = document.getElementById(constants.ids.farmingPage.lpsButtons)
 
   if (isApproved) {
     node.innerHTML = depositAndWithdrawButtonsHtml
 
-    document.getElementById('depositButton').addEventListener('click', () => {
+    document.getElementById(constants.ids.farmingPage.depositButton).addEventListener('click', () => {
       depositModal.open()
     })
 
-    document.getElementById('withdrawButton').addEventListener('click', () => {
+    document.getElementById(constants.ids.farmingPage.withdrawButton).addEventListener('click', () => {
       withdrawModal.open()
     })
   }
   else {
     node.innerHTML = approveButtonHtml
 
-    document.getElementById('approveButton').addEventListener('click', () => {
+    document.getElementById(constants.ids.farmingPage.approveButton).addEventListener('click', () => {
       approve()
     })
   }
@@ -200,7 +200,7 @@ const injectLpsButton = (isApproved) => {
 const injectHtml = () => {
   document.getElementById(constants.ids.farmingRoot).innerHTML = html
 
-  document.getElementById('harvestButton').addEventListener('click', () => {
+  document.getElementById(constants.ids.farmingPage.harvestButton).addEventListener('click', () => {
     harvest()
   })
 
@@ -211,12 +211,6 @@ const injectHtml = () => {
   events.subscribe('withdraw success', () => {
     getData()
   })
-
-  // events.subscribe('state change', (state) => {
-  //   if (isApproved !== state.isApproved) {
-  //     injectLpsButton()
-  //   }
-  // })
 }
 
 

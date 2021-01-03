@@ -11,7 +11,7 @@ const loader = '<div class="loader"><div></div><div></div><div></div></div>'
 const html = `
   <div class="overlay">
     <div class="modal depositModal">
-      <button class="closeButton" id="modalCloseButton">
+      <button class="closeButton" id="${constants.ids.withdrawModal.closeButton}">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32">
           <path stroke="currentColor" stroke-width="2" d="M9 9l7 6.99L23 9l-6.99 7L23 23l-7-6.99L9 23l6.99-7L9 9z" opacity=".9"/>
         </svg>
@@ -20,15 +20,15 @@ const html = `
         <div class="title">Withdraw ROOBEE-ETH LPs Tokens</div>
         <div class="row center">
           <div class="balanceTitle">Available to Withdraw:</div>
-          <div class="balanceValue" id="availableToWithdraw">
+          <div class="balanceValue" id="${constants.ids.withdrawModal.availableToWithdraw}">
             ${loader}
           </div>
         </div>
-        <input id="depositAmount" type="number" />
+        <input id="${constants.ids.withdrawModal.withdrawAmount}" type="number" />
       </div>
       <div class="footer">
-        <button class="button yellow" id="modalWithdrawButton">Withdraw</button>
-        <button class="button gray" id="modalCancelButton">Cancel</button>
+        <button class="button yellow" id="${constants.ids.withdrawModal.withdrawButton}">Withdraw</button>
+        <button class="button gray" id="${constants.ids.withdrawModal.cancelButton}">Cancel</button>
       </div>
     </div>
   </div>
@@ -46,13 +46,13 @@ const withdraw = async () => {
     return
   }
 
-  const input = document.getElementById('depositAmount') as HTMLInputElement
+  const input = document.getElementById(constants.ids.withdrawModal.withdrawAmount) as HTMLInputElement
   const amount = Number(input.value)
 
   if (amount > 0) {
     try {
       isLoading = true
-      document.getElementById('modalWithdrawButton').innerHTML = loader
+      document.getElementById(constants.ids.withdrawModal.withdrawButton).innerHTML = loader
 
       const value = web3.utils.toWei(String(amount))
       const res = await contracts.farm.methods.withdraw(value).send({ from: account })
@@ -76,7 +76,7 @@ const withdraw = async () => {
     }
     finally {
       isLoading = false
-      document.getElementById('modalWithdrawButton').innerHTML = 'Withdraw'
+      document.getElementById(constants.ids.withdrawModal.withdrawButton).innerHTML = 'Withdraw'
     }
   }
 }
@@ -88,17 +88,17 @@ const open = async () => {
 
   const balance = await contracts.farm.methods.balanceOf(account).call()
 
-  document.getElementById('availableToWithdraw').innerText = String(Number(balance) / 1e18)
+  document.getElementById(constants.ids.withdrawModal.availableToWithdraw).innerText = String(Number(balance) / 1e18)
 
-  document.getElementById('modalWithdrawButton').addEventListener('click', () => {
+  document.getElementById(constants.ids.withdrawModal.withdrawButton).addEventListener('click', () => {
     withdraw()
   })
 
-  document.getElementById('modalCancelButton').addEventListener('click', () => {
+  document.getElementById(constants.ids.withdrawModal.cancelButton).addEventListener('click', () => {
     close()
   })
 
-  document.getElementById('modalCloseButton').addEventListener('click', () => {
+  document.getElementById(constants.ids.withdrawModal.closeButton).addEventListener('click', () => {
     close()
   })
 }

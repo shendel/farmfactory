@@ -11,7 +11,7 @@ const loader = '<div class="loader"><div></div><div></div><div></div></div>'
 const html = `
   <div class="overlay">
     <div class="modal depositModal">
-      <button class="closeButton" id="modalCloseButton">
+      <button class="closeButton" id="${constants.ids.depositModal.closeButton}">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32">
           <path stroke="currentColor" stroke-width="2" d="M9 9l7 6.99L23 9l-6.99 7L23 23l-7-6.99L9 23l6.99-7L9 9z" opacity=".9"/>
         </svg>
@@ -20,15 +20,15 @@ const html = `
         <div class="title">Deposit ROOBEE-ETH LPs Tokens</div>
         <div class="row center">
           <div class="balanceTitle">Available to Deposit:</div>
-          <div class="balanceValue" id="availableToDeposit">
+          <div class="balanceValue" id="${constants.ids.depositModal.availableToDeposit}">
             ${loader}
           </div>
         </div>
-        <input id="depositAmount" type="number" />
+        <input id="${constants.ids.depositModal.depositAmount}" type="number" />
       </div>
       <div class="footer">
-        <button class="button yellow" id="modalDepositButton">Deposit</button>
-        <button class="button gray" id="modalCancelButton">Cancel</button>
+        <button class="button yellow" id="${constants.ids.depositModal.depositButton}">Deposit</button>
+        <button class="button gray" id="${constants.ids.depositModal.cancelButton}">Cancel</button>
       </div>
     </div>
   </div>
@@ -46,13 +46,13 @@ const deposit = async () => {
     return
   }
 
-  const input = document.getElementById('depositAmount') as HTMLInputElement
+  const input = document.getElementById(constants.ids.depositModal.depositAmount) as HTMLInputElement
   const amount = Number(input.value)
 
   if (amount > 0) {
     try {
       isLoading = true
-      document.getElementById('modalDepositButton').innerHTML = loader
+      document.getElementById(constants.ids.depositModal.depositButton).innerHTML = loader
 
       const value = web3.utils.toWei(String(amount))
       const res = await contracts.farm.methods.stake(value).send({ from: account })
@@ -76,7 +76,7 @@ const deposit = async () => {
     }
     finally {
       isLoading = false
-      document.getElementById('modalDepositButton').innerHTML = 'Deposit'
+      document.getElementById(constants.ids.depositModal.depositButton).innerHTML = 'Deposit'
     }
   }
 }
@@ -88,17 +88,17 @@ const open = async () => {
 
   const balance = await contracts.staking.methods.balanceOf(account).call()
 
-  document.getElementById('availableToDeposit').innerText = String(Number(balance) / 1e18)
+  document.getElementById(constants.ids.depositModal.availableToDeposit).innerText = String(Number(balance) / 1e18)
 
-  document.getElementById('modalDepositButton').addEventListener('click', () => {
+  document.getElementById(constants.ids.depositModal.depositButton).addEventListener('click', () => {
     deposit()
   })
 
-  document.getElementById('modalCancelButton').addEventListener('click', () => {
+  document.getElementById(constants.ids.depositModal.cancelButton).addEventListener('click', () => {
     close()
   })
 
-  document.getElementById('modalCloseButton').addEventListener('click', () => {
+  document.getElementById(constants.ids.depositModal.closeButton).addEventListener('click', () => {
     close()
   })
 }

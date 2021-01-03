@@ -11,15 +11,15 @@ const html = `
     <div class="widget row">
       <div class="balanceCard">
         <div class="title">Your balance</div>
-        <div class="value" id="balance">&mdash;</div>
+        <div class="value" id="${constants.ids.mainPage.balance}">&mdash;</div>
         <div class="total">
           <div class="title">Reward Per Token</div>
-          <div class="value" id="rewardPerToken">&mdash;</div>
+          <div class="value" id="${constants.ids.mainPage.rewardPerToken}">&mdash;</div>
         </div>
       </div>
       <div class="balanceCard rewardsTimeLeft">
         <div class="title">Rewards end in</div>
-        <div class="value" id="rewardsTimeLeft">--:--:--:--</div>
+        <div class="value" id="${constants.ids.mainPage.rewardsTimeLeft}">--:--:--:--</div>
       </div>
     </div>
   </div>
@@ -50,8 +50,8 @@ const getData = async () => {
     farmingFinishDate,
   })
 
-  document.getElementById('balance').innerText = web3.utils.fromWei(balance)
-  document.getElementById('rewardPerToken').innerText = rewardPerToken
+  document.getElementById(constants.ids.mainPage.balance).innerText = web3.utils.fromWei(balance)
+  document.getElementById(constants.ids.mainPage.rewardPerToken).innerText = rewardPerToken
 
   const finishDate = Number(farmingFinishDate.toString())
 
@@ -78,11 +78,11 @@ const getData = async () => {
       const seconds = delta % 60
       const timeLeft = `${days < 10 ? `0${days}` : days}:${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
 
-      document.getElementById('rewardsTimeLeft').innerText = timeLeft
+      document.getElementById(constants.ids.mainPage.rewardsTimeLeft).innerText = timeLeft
     }, 1000)
   }
   else {
-    document.getElementById('rewardsTimeLeft').innerText = '00:00:00:00'
+    document.getElementById(constants.ids.mainPage.rewardsTimeLeft).innerText = '00:00:00:00'
   }
 }
 
