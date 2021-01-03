@@ -2,6 +2,7 @@ import mainPage from './mainPage'
 import farmingPage from './farmingPage'
 import wrongNetworkModal from './wrongNetworkModal'
 import connectModal from './connectModal'
+import infoModal from './infoModal'
 import { initData } from './common'
 import { setState, getState } from './state'
 import constants from './constants'
@@ -75,13 +76,11 @@ const attemptToConnect = async () => {
   debug('initialConnect')
 
   if (!window.ethereum) {
-    alert('Please install MetaMask')
+    infoModal.open('Please install MetaMask')
     return
   }
 
   debug('MetaMask is installed')
-
-  await window.ethereum.enable()
 
   window.ethereum.on('networkChanged', () => {
     initApp()
@@ -101,18 +100,13 @@ const loadScript = (src) => new Promise((resolve, reject) => {
 })
 
 const init = async () => {
-  if (!window.Web3) {
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.1/web3.min.js')
-  }
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.1/web3.min.js')
 
   appendStyles()
-
-  // add root node to append modals later
   appendModalsHtml()
 
   let pageContext
 
-  // attempt to add one of widgets (it depends on which page is opened now)
   if (document.getElementById(constants.ids.mainRoot)) {
     pageContext = mainPage
     pageContext.injectHtml()
@@ -125,7 +119,7 @@ const init = async () => {
     setState({ pageContext })
   }
   else {
-    alert('Template variables not found! Please use {farmfactory-main-root} or {farmfactory-farming-root}.')
+    infoModal.open('Template variables not found! Please use {farmfactory-main-root} or {farmfactory-farming-root}.')
   }
 
   await attemptToConnect()

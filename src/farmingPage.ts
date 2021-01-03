@@ -1,8 +1,9 @@
-import { getState } from './state'
 import events from './events'
+import { getState } from './state'
 import withdrawModal from './withdrawModal'
 import depositModal from './depositModal'
 import infoModal from './infoModal'
+import constants from './constants'
 
 
 let isLoading = false
@@ -197,7 +198,7 @@ const injectLpsButton = (isApproved) => {
 }
 
 const injectHtml = () => {
-  document.getElementById('ffFarmingHtml').innerHTML = html
+  document.getElementById(constants.ids.farmingRoot).innerHTML = html
 
   document.getElementById('harvestButton').addEventListener('click', () => {
     harvest()

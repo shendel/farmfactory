@@ -1,6 +1,5 @@
 import { createContracts } from './contracts'
-import { setState, getState } from './state'
-import events from './events'
+import { setState } from './state'
 
 
 export const initData = async ({ accounts }) => {

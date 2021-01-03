@@ -1,4 +1,5 @@
 import { getState } from './state'
+import constants from './constants'
 
 
 let rewardsTimeLeftInterval
@@ -86,7 +87,7 @@ const getData = async () => {
 }
 
 const injectHtml = async () => {
-  const ffMainHtmlNode = document.getElementById('ffMainHtml')
+  const ffMainHtmlNode = document.getElementById(constants.ids.mainRoot)
 
   ffMainHtmlNode.innerHTML = html
 }

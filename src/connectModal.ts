@@ -1,9 +1,14 @@
 import { initData } from './common'
 import { getState } from './state'
 import constants from './constants'
+import infoModal from './infoModal'
 
+
+let isLoading = false
 
 const debug = (str, ...args) => console.log(`connectModal: ${str}`, ...args)
+
+const loader = '<div class="loader"><div></div><div></div><div></div></div>'
 
 const html = `
   <div class="overlay">
@@ -27,14 +32,32 @@ const html = `
 const connectMetamask = async () => {
   debug('connectMetamask')
 
-  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+  if (isLoading) {
+    return
+  }
 
-  close()
-  localStorage.setItem('ff-account-unlocked', 'true')
+  try {
+    isLoading = true
+    document.getElementById('modalConnectButton').innerHTML = loader
 
-  await initData({ accounts })
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 
-  getState().pageContext.getData()
+    localStorage.setItem('ff-account-unlocked', 'true')
+
+    await window.ethereum.enable()
+    await initData({ accounts })
+
+    getState().pageContext.getData()
+
+    close()
+  }
+  catch (err) {
+    isLoading = false
+    document.getElementById('modalConnectButton').innerHTML = 'Connect'
+
+    console.error(err)
+    infoModal.open(err.message)
+  }
 }
 
 const open = () => {
