@@ -26,12 +26,17 @@ require __DIR__ . '/App/autoload.php';
 function farm_load_scripts($hook) {
 
     // create my own version codes
-    $my_js_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'src/build/app.js' ));
-    wp_enqueue_script( 'custom_js', plugins_url( 'lib/index.js', __FILE__ ), array(), $my_js_ver );
-
+    $my_js_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'lib/index.js' ));
+    $my_css_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'style.css' ));
+   
+	wp_enqueue_script( 'custom_js', plugins_url( 'lib/index.js', __FILE__ ), array(), $my_js_ver );
+	
+	wp_register_style( 'my_css',    plugins_url( 'style.css',    __FILE__ ), false,   $my_css_ver );
+	wp_enqueue_style ( 'my_css' );
 }
 add_action('wp_enqueue_scripts', 'farm_load_scripts');
 
+	
 
 //добавляем шорткоды
 add_shortcode( 'farmfactory', 'farmfactory_main_shortcode' );
