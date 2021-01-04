@@ -10,7 +10,6 @@ const html = (message) => `
         </svg>
       </button>
       <div class="inner">
-        <div class="title">Error</div>
         <div>${message}</div>
       </div>
       <div class="footer">

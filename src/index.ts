@@ -35,7 +35,7 @@ const appendModalsHtml = () => {
 }
 
 const initApp = async () => {
-  const isMainnet = Number(window.ethereum.networkVersion) === 42 // 42 - Kovan, 1 - Mainnet
+  const isMainnet = Number(window.ethereum.networkVersion) === window.networkId // 42 - Kovan, 1 - Mainnet
 
   if (!isMainnet) {
     wrongNetworkModal.open()
