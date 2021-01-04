@@ -34,9 +34,9 @@ class View {
 		return $content;
 	}
 
-	public function display( $template , $arr =[] ) {
+	public function display( String $template , $arr =[] )  {
         extract($arr);
-        include farmfactory_TEMPLATE_DIR. $template;
+        include FARMFACTORY_TEMPLATE_DIR. $template;
 	}
 
 

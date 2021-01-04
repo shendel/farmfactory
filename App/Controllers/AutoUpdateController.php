@@ -7,7 +7,7 @@ namespace FARMFACTORY\Controllers;
 class AutoUpdateController {
 
 	const INFO_URL = 'https://farm.wpmix.net/info.json';
-	const PLUGIN_SLUG = 'farm';
+	const PLUGIN_SLUG = 'farmfactory';
 	const TRANSIENT_SLUG = 'FARMFACTORY_upgrade_plugin';
 
 	public function __construct() {
