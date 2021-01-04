@@ -1,5 +1,6 @@
 import { getState } from './state'
 import constants from './constants'
+import events from './events'
 
 
 let rewardsTimeLeftInterval
@@ -44,12 +45,6 @@ const getData = async () => {
     contracts.farm.methods.periodFinish().call(),
   ])
 
-  console.log('DATA', {
-    balance,
-    rewardPerToken,
-    farmingFinishDate,
-  })
-
   document.getElementById(constants.ids.mainPage.balance).innerText = web3.utils.fromWei(balance)
   document.getElementById(constants.ids.mainPage.rewardPerToken).innerText = rewardPerToken
 
@@ -86,10 +81,12 @@ const getData = async () => {
   }
 }
 
-const injectHtml = async () => {
+const injectHtml = () => {
   const ffMainHtmlNode = document.getElementById(constants.ids.mainRoot)
 
   ffMainHtmlNode.innerHTML = html
+
+  events.subscribe('update page data', getData)
 }
 
 

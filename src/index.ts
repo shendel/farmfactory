@@ -4,24 +4,15 @@ import wrongNetworkModal from './wrongNetworkModal'
 import connectModal from './connectModal'
 import infoModal from './infoModal'
 import { initData } from './common'
-import { setState, getState } from './state'
 import constants from './constants'
-import styles from './styles'
+import events from './events'
+import { setState, getState } from './state'
+import type { State } from './state'
 
 
 const accountUnlockedStorageKey = 'ff-account-unlocked'
 
 const debug = (str, ...args) => console.log(`index: ${str}`, ...args)
-
-const appendStyles = () => {
-  const head = document.head || document.getElementsByTagName('head')[0]
-  const style = document.createElement('style')
-
-  style.type = 'text/css'
-  style.appendChild(document.createTextNode(styles))
-
-  head.appendChild(style)
-}
 
 const appendModalsHtml = () => {
   const modalsNode = document.createElement('div')
@@ -35,7 +26,9 @@ const appendModalsHtml = () => {
 }
 
 const initApp = async () => {
-  const isMainnet = Number(window.ethereum.networkVersion) === window.networkId // 42 - Kovan, 1 - Mainnet
+  const { opts } = getState()
+
+  const isMainnet = Number(window.ethereum.networkVersion) === opts.networkId // 42 - Kovan, 1 - Mainnet
 
   if (!isMainnet) {
     wrongNetworkModal.open()
@@ -53,7 +46,7 @@ const initApp = async () => {
       if (accounts[0]) {
         await initData({ accounts })
 
-        getState().pageContext.getData()
+        events.dispatch('update page data')
       }
       else {
         debug('Account not found')
@@ -99,27 +92,34 @@ const loadScript = (src) => new Promise((resolve, reject) => {
   document.head.appendChild(script)
 })
 
-const init = async () => {
+const init = async (opts: State['opts']) => {
+  const { networkId, farmAddress, rewardsAddress, stakingAddress } = opts
+
+  if (!networkId || !farmAddress || !rewardsAddress || !stakingAddress) {
+    infoModal.open('Check farmFactory.init(options). Required options: networkId, farmAddress, rewardsAddress, stakingAddress.')
+    return
+  }
+
+  setState({ opts })
+
   await loadScript('https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.1/web3.min.js')
 
-  appendStyles()
   appendModalsHtml()
 
-  let pageContext
+  const mainRoot = document.getElementById(constants.ids.mainRoot)
+  const farmingRoot = document.getElementById(constants.ids.farmingRoot)
 
-  if (document.getElementById(constants.ids.mainRoot)) {
-    pageContext = mainPage
-    pageContext.injectHtml()
-    setState({ pageContext })
-  } else
-
-  if (document.getElementById(constants.ids.farmingRoot)) {
-    pageContext = farmingPage
-    pageContext.injectHtml()
-    setState({ pageContext })
-  }
-  else {
+  if (!mainRoot && !farmingRoot) {
     infoModal.open('Template variables not found! Please use {farmfactory-main-root} or {farmfactory-farming-root}.')
+    return
+  }
+
+  if (mainRoot) {
+    mainPage.injectHtml()
+  }
+
+  if (farmingRoot) {
+    farmingPage.injectHtml()
   }
 
   await attemptToConnect()

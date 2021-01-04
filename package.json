@@ -25,8 +25,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "dev": "rollup -cw",
-    "build": "rimraf ./dist && rimraf ./lib && rollup -c",
-    "prepublish": "npm run build"
+    "build": "rimraf ./dist && rimraf ./lib && rollup -c"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",

@@ -53,7 +53,7 @@ const depositAndWithdrawButtonsHtml = `
 const getData = async () => {
   debug('getData')
 
-  const { contracts, account } = getState()
+  const { opts, contracts, account } = getState()
 
   if (!contracts) {
     return
@@ -71,7 +71,7 @@ const getData = async () => {
       contracts.farm.methods.balanceOf(account).call(),
       contracts.farm.methods.rewardRate().call(),
       contracts.farm.methods.totalSupply().call(),
-      contracts.staking.methods.allowance(account, window.farmAddress).call(),
+      contracts.staking.methods.allowance(account, opts.farmAddress).call(),
     ])
 
     document.getElementById(constants.ids.farmingPage.totalSupply).innerText = String(farmingTotalSupply / 1e18)
@@ -132,7 +132,7 @@ const harvest = async () => {
 const approve = async () => {
   debug('init approve')
 
-  const { contracts, account } = getState()
+  const { opts, contracts, account } = getState()
 
   if (isLoading) {
     return
@@ -152,8 +152,7 @@ const approve = async () => {
     isLoading = true
     document.getElementById(constants.ids.farmingPage.approveButton).innerHTML = loader;
 
-    // TODO values? - added on 12/27/20 by pavelivanov
-    const spender = window.farmAddress
+    const spender = opts.farmAddress
     const value = 0xfffffffffffff
 
     const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
@@ -211,6 +210,8 @@ const injectHtml = () => {
   events.subscribe('withdraw success', () => {
     getData()
   })
+
+  events.subscribe('update page data', getData)
 }
 
 

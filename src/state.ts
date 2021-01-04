@@ -1,7 +1,13 @@
 import events from './events'
 
 
-type State = {
+export type State = {
+  opts: {
+    networkId: number
+    farmAddress: string
+    rewardsAddress: string
+    stakingAddress: string
+  }
   web3: any
   account: any
   contracts: any

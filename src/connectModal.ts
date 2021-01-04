@@ -1,7 +1,7 @@
 import { initData } from './common'
-import { getState } from './state'
 import constants from './constants'
 import infoModal from './infoModal'
+import events from './events'
 
 
 let isLoading = false
@@ -47,7 +47,7 @@ const connectMetamask = async () => {
     await window.ethereum.enable()
     await initData({ accounts })
 
-    getState().pageContext.getData()
+    events.dispatch('update page data')
 
     close()
   }
