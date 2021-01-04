@@ -1,7 +1,7 @@
 <div class="wrap">
     <div class="welcome-panel">
         <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
-        How to use? Just enter [farmfactory] shortcode in your page or post and fill this form: <Br>
+        First of all please <a href="update-core.php?force-check=1">check for updates</a>. How to use? Just enter [farmfactory] shortcode in your page or post and fill this form: <Br>
         <br><br>
         <h2><?php esc_html_e('Staking settings', 'farmfactory'); ?></h2>
         <div class="welcome-panel-column-container farmfactory-panel-tab panel-tab-active" id="farmfactory-tab-1">
