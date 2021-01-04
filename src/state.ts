@@ -15,6 +15,7 @@ export type State = {
 }
 
 let state: State = {
+  opts: null,
   web3: null,
   account: null,
   contracts: null,
