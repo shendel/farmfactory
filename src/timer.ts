@@ -6,7 +6,7 @@ import events from './events'
 let interval
 
 const init = async () => {
-  const { contracts } = getState()
+  const { opts, contracts } = getState()
 
   const root = document.getElementById(constants.ids.timerRoot)
 
@@ -40,7 +40,7 @@ const init = async () => {
     }, 1000)
   }
   else {
-    root.innerText = '00:00:00:00'
+    root.innerText = opts.timesUpMessage || 'Time is up, contact administrator for details'
   }
 }
 

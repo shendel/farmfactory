@@ -10,6 +10,7 @@ export type State = {
     harvestButtonTitle?: string
     depositButtonTitle?: string
     withdrawButtonTitle?: string
+    timesUpMessage?: string
   }
   web3: any
   account: any
