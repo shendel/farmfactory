@@ -1,5 +1,6 @@
 export default {
   ids: {
+    timerRoot: 'farmfactory-timer-root',
     mainRoot: 'farmfactory-main-root',
     farmingRoot: 'farmfactory-farming-root',
     modalsRoot: 'farmfactory-modals-root',
@@ -13,6 +14,7 @@ export default {
       totalSupply: 'farmfactory-farming-page-farmingTotalSupply',
       rate: 'farmfactory-farming-page-rate',
       earnedTokens: 'farmfactory-farming-page-earned-tokens',
+      balanceTitle: 'farmfactory-farming-page-balance-title',
       balance: 'farmfactory-farming-page-balance',
       harvestButton: 'farmfactory-farming-page-harvest-button',
       lpsButtons: 'farmfactory-farming-page-lps-buttons',
@@ -34,6 +36,7 @@ export default {
     },
     depositModal: {
       closeButton: 'farmfactory-deposit-modal-close-button',
+      title: 'farmfactory-deposit-modal-title',
       depositButton: 'farmfactory-deposit-modal-deposit-button',
       cancelButton: 'farmfactory-deposit-modal-cancel-button',
       availableToDeposit: 'farmfactory-deposit-modal-available-to-deposit',
@@ -41,6 +44,7 @@ export default {
     },
     withdrawModal: {
       closeButton: 'farmfactory-withdraw-modal-close-button',
+      title: 'farmfactory-withdraw-modal-title',
       withdrawButton: 'farmfactory-withdraw-modal-withdraw-button',
       cancelButton: 'farmfactory-withdraw-modal-cancel-button',
       availableToWithdraw: 'farmfactory-withdraw-modal-available-to-withdraw',

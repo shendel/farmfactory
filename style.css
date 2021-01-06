@@ -1,33 +1,34 @@
-.row {
+.farmfactory-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.row.center {
+.farmfactory-row.center {
   justify-content: center;
 }
 
-.widget {
+.farmfactory-widget {
+  display: flex;
   align-items: stretch;
   justify-content: center;
 }
 
-.widget * {
+.farmfactory-widget * {
   box-sizing: border-box;
 }
 
-.widget .button {
+.farmfactory-widget .farmfactory-button {
   margin-left: 20px;
 }
 
-.widget .button:first-child {
+.farmfactory-widget .farmfactory-button:first-child {
   margin-left: 0;
 }
 
 /* Headline */
 
-.headline {
+.farmfactory-headline {
   margin-bottom: 32px;
   display: flex;
   justify-content: center;
@@ -35,11 +36,11 @@
   text-align: center;
 }
 
-.headline > div {
+.farmfactory-headline > div {
   margin: 0 40px;
 }
 
-.headline .title {
+.farmfactory-headline .farmfactory-title {
   font-size: 16px;
   line-height: 150%;
   color: #000;
@@ -48,7 +49,7 @@
   font-weight: 400;
 }
 
-.headline .value {
+.farmfactory-headline .farmfactory-value {
   font-size: 18px;
   line-height: 155%;
   font-weight: 600;
@@ -57,9 +58,9 @@
 
 /* Balance */
 
-.balanceCard {
+.farmfactory-balanceCard {
   padding: 30px;
-  border: 2px solid #a8f0f6;
+  border: 2px solid #000;
   border-radius: 10px;
   margin-right: 40px;
   background: #fff;
@@ -67,7 +68,7 @@
   min-height: 185px;
 }
 
-.balanceCard > .title {
+.farmfactory-balanceCard > .farmfactory-title {
   font-size: 18px;
   color: #5c5c5c;
   line-height: 160%;
@@ -75,7 +76,7 @@
   text-align: center;
 }
 
-.balanceCard > .value {
+.farmfactory-balanceCard > .farmfactory-value {
   font-weight: 800;
   font-size: 28px;
   line-height: 160%;
@@ -83,25 +84,25 @@
   text-align: center;
 }
 
-.rewardsTimeLeft > .value {
+.farmfactory-rewardsTimeLeft > .farmfactory-value {
   font-size: 40px;
 }
 
-.total {
-  border-top: 2px solid #a8f0f6;
+.farmfactory-total {
+  border-top: 2px solid #000;
   display: flex;
   padding: 10px 20px 10px 20px;
   justify-content: space-between;
   margin: 18px -30px -30px -30px;
 }
 
-.total > .title {
+.farmfactory-total > .farmfactory-title {
   font-size: 14px;
   color: #5c5c5c;
   margin-right: 10px;
 }
 
-.total > .value {
+.farmfactory-total > .farmfactory-value {
   font-weight: 700;
   font-size: 14px;
   color: #000;
@@ -109,9 +110,9 @@
 
 /* Farming */
 
-.farmingCard {
+.farmfactory-farmingCard {
   padding: 30px;
-  border: 2px solid #a8f0f6;
+  border: 2px solid #000;
   border-radius: 10px;
   margin-right: 40px;
   background: #fff;
@@ -119,7 +120,7 @@
   min-height: 185px;
 }
 
-.farmingCard .amount {
+.farmfactory-farmingCard .farmfactory-amount {
   margin-bottom: 20px;
   font-weight: 800;
   font-size: 28px;
@@ -128,7 +129,7 @@
   text-align: center;
 }
 
-.farmingCard .title {
+.farmfactory-farmingCard .farmfactory-title {
   font-size: 18px;
   color: #5c5c5c;
   line-height: 160%;
@@ -136,14 +137,14 @@
   text-align: center;
 }
 
-.farmingCard .buttonContainer {
+.farmfactory-farmingCard .farmfactory-buttonContainer {
   display: flex;
   justify-content: center;
 }
 
 /* Button */
 
-.button {
+.farmfactory-button {
   cursor: pointer;
   outline: none;
   border: none;
@@ -156,30 +157,38 @@
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-  transition: .2s;
+  transition: 0.2s;
 }
 
-.button.blue {
+.farmfactory-button.blue {
   box-shadow: 2px 2px 5px rgba(80,224,237,.5), inset -1px -1px 2px #08ccde;
   background: #50e0ed;
   color: #fff;
 }
 
-.button.yellow {
+.farmfactory-button.yellow {
   box-shadow: 2px 2px 5px rgba(255,245,0,.45), inset -1px -1px 2px rgba(230,220,0,.6);
   background: #fff500;
   color: #000;
 }
 
-.button.gray {
+.farmfactory-button.gray {
   box-shadow: 2px 2px 5px rgba(0,0,0,.05), inset -1px -1px 2px rgba(0,0,0,.1);
   background: #f7f7f7;
   color: #000;
 }
 
-/* Connect Modal */
+.farmfactory-button.disabled {
+  box-shadow: none !important;
+  background-color: #ddd !important;
+  color: #666 !important;
+  cursor: default !important;
+}
 
-.overlay {
+
+/* Modal */
+
+.farmfactory-overlay {
   background: rgba(0,0,0, 0.6);
   position: fixed;
   right: 0;
@@ -191,7 +200,7 @@
   z-index: 2;
 }
 
-.modal {
+.farmfactory-modal {
   padding: 50px 40px 40px;
   min-width: 360px;
   display: inline-block;
@@ -204,7 +213,7 @@
   background: #fff;
 }
 
-.modal .closeButton {
+.farmfactory-modal .farmfactory-closeButton {
   cursor: pointer;
   vertical-align: top;
   overflow: hidden;
@@ -219,12 +228,12 @@
   height: 24px;
 }
 
-.modal .closeButton svg {
+.farmfactory-modal .farmfactory-closeButton svg {
   width: 100%;
   height: 100%;
 }
 
-.modal .title {
+.farmfactory-modal .farmfactory-title {
   text-align: center;
   font-size: 18px;
   line-height: 155%;
@@ -232,15 +241,15 @@
   color: #000;
 }
 
-.modal .inner {
+.farmfactory-modal .farmfactory-inner {
   text-align: center;
 }
 
-.modal .inner .svgLogo {
+.farmfactory-modal .farmfactory-inner .farmfactory-svgLogo {
   width: 240px;
 }
 
-.modal input {
+.farmfactory-modal input {
   height: 36px;
   padding: 0 16px;
   font-size: 14px;
@@ -251,26 +260,24 @@
   border-radius: 4px;
 }
 
-.modal .footer {
+.farmfactory-modal .farmfactory-footer {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 40px;
 }
 
-.modal .footer .button {
+.farmfactory-modal .farmfactory-footer .farmfactory-button {
   margin: 0 30px;
 }
 
-/* Deposit Modal */
-
-.depositModal .balanceTitle {
+.farmfactory-modal .farmfactory-balanceTitle {
   font-size: 14px;
   line-height: 155%;
   color: #858585;
 }
 
-.depositModal .balanceValue {
+.farmfactory-modal .farmfactory-balanceValue {
   margin-left: 10px;
   font-size: 14px;
   line-height: 155%;
@@ -278,43 +285,45 @@
   color: #000;
 }
 
-.depositModal input {
+.farmfactory-modal input {
   margin-top: 32px;
 }
 
+
+
 /* Loader */
 
-.loader {
+.farmfactory-loader {
   height: 16px;
   display: flex;
   align-items: stretch;
 }
 
-.loader div {
+.farmfactory-loader div {
   width: 4px;
   height: 100%;
   margin-left: 4px;
   background: #000;
-  animation: loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  animation: farmfactory-loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
 }
 
-.loader div:first-child {
+.farmfactory-loader div:first-child {
   margin-left: 0;
 }
 
-.loader div:nth-child(1) {
+.farmfactory-loader div:nth-child(1) {
   animation-delay: -0.24s;
 }
 
-.loader div:nth-child(2) {
+.farmfactory-loader div:nth-child(2) {
   animation-delay: -0.12s;
 }
 
-.loader div:nth-child(3) {
+.farmfactory-loader div:nth-child(3) {
   animation-delay: 0s;
 }
 
-@keyframes loader {
+@keyframes farmfactory-loader {
   0% {
     margin-top: -6px;
     height: 28px;

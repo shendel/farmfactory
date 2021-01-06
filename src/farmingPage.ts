@@ -10,50 +10,69 @@ let isLoading = false
 
 const debug = (str, ...args) => console.log(`farmingPage: ${str}`, ...args)
 
-const loader = '<div class="loader"><div></div><div></div><div></div></div>'
+const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div></div>'
+
+// const html = `
+//   <div>
+//     <div class="farmfactory-headline">
+//       <div>
+//         <div class="farmfactory-title">Total LPs Staked</div>
+//         <div class="farmfactory-value" id="${constants.ids.farmingPage.totalSupply}"></div>
+//       </div>
+//       <div>
+//         <div class="farmfactory-title">Daily Pool Rewards</div>
+//         <div class="farmfactory-value" id="${constants.ids.farmingPage.rate}"></div>
+//       </div>
+//     </div>
+//     <div class="farmfactory-widget">
+//       <div class="farmfactory-farmingCard">
+//         <div class="farmfactory-amount" id="${constants.ids.farmingPage.earnedTokens}">&mdash;</div>
+//         <div class="farmfactory-title">Earned</div>
+//         <div class="farmfactory-buttonContainer">
+//           <button class="farmfactory-button blue disabled" id="${constants.ids.farmingPage.harvestButton}">Harvest</button>
+//         </div>
+//       </div>
+//       <div class="farmfactory-farmingCard">
+//         <div class="farmfactory-amount" id="${constants.ids.farmingPage.balance}">&mdash;</div>
+//         <div class="farmfactory-title">LPs Token Staked</div>
+//         <div class="farmfactory-buttonContainer" id="${constants.ids.farmingPage.lpsButtons}"></div>
+//       </div>
+//     </div>
+//   </div>
+// `
 
 const html = `
   <div>
-    <div class="headline">
-      <div>
-        <div class="title">Total LPs Staked</div>
-        <div class="value" id="${constants.ids.farmingPage.totalSupply}"></div>
-      </div>
-      <div>
-        <div class="title">Daily Pool Rewards</div>
-        <div class="value" id="${constants.ids.farmingPage.rate}"></div>
-      </div>
-    </div>
-    <div class="widget row">
-      <div class="farmingCard">
-        <div class="amount" id="${constants.ids.farmingPage.earnedTokens}">&mdash;</div>
-        <div class="title">Earned</div>
-        <div class="buttonContainer">
-          <button class="button blue" id="${constants.ids.farmingPage.harvestButton}">Harvest</button>
+    <div class="farmfactory-widget">
+      <div class="farmfactory-farmingCard">
+        <div class="farmfactory-amount" id="${constants.ids.farmingPage.earnedTokens}">&mdash;</div>
+        <div class="farmfactory-title">Earned</div>
+        <div class="farmfactory-buttonContainer">
+          <button class="farmfactory-button blue disabled" id="${constants.ids.farmingPage.harvestButton}">Harvest</button>
         </div>
       </div>
-      <div class="farmingCard">
-        <div class="amount" id="${constants.ids.farmingPage.balance}">&mdash;</div>
-        <div class="title">LPs Token Staked</div>
-        <div class="buttonContainer" id="${constants.ids.farmingPage.lpsButtons}"></div>
+      <div class="farmfactory-farmingCard">
+        <div class="farmfactory-amount" id="${constants.ids.farmingPage.balance}">&mdash;</div>
+        <div class="farmfactory-title" id="${constants.ids.farmingPage.balanceTitle}">Token Staked</div>
+        <div class="farmfactory-buttonContainer" id="${constants.ids.farmingPage.lpsButtons}"></div>
       </div>
     </div>
   </div>
 `
 
 const approveButtonHtml = `
-  <button class="button yellow" id="${constants.ids.farmingPage.approveButton}">Approve LPS</button>
+  <button class="farmfactory-button yellow" id="${constants.ids.farmingPage.approveButton}">Approve LPS</button>
 `
 
 const depositAndWithdrawButtonsHtml = `
-  <button class="button yellow" id="${constants.ids.farmingPage.depositButton}">Deposit</button><br />
-  <button class="button gray" id="${constants.ids.farmingPage.withdrawButton}">Withdraw</button>
+  <button class="farmfactory-button yellow" id="${constants.ids.farmingPage.depositButton}">Deposit</button><br />
+  <button class="farmfactory-button gray" id="${constants.ids.farmingPage.withdrawButton}">Withdraw</button>
 `
 
 const getData = async () => {
   debug('getData')
 
-  const { opts, contracts, account } = getState()
+  const { opts, contracts, account, stakingTokenName } = getState()
 
   if (!contracts) {
     return
@@ -63,24 +82,39 @@ const getData = async () => {
     const [
       earnedTokens,
       farmingBalance,
-      farmingRate,
-      farmingTotalSupply,
+      // farmingRate,
+      // farmingTotalSupply,
       allowance,
     ] = await Promise.all([
       contracts.farm.methods.earned(account).call(),
       contracts.farm.methods.balanceOf(account).call(),
-      contracts.farm.methods.rewardRate().call(),
-      contracts.farm.methods.totalSupply().call(),
+      // contracts.farm.methods.rewardRate().call(),
+      // contracts.farm.methods.totalSupply().call(),
       contracts.staking.methods.allowance(account, opts.farmAddress).call(),
     ])
 
-    document.getElementById(constants.ids.farmingPage.totalSupply).innerText = String(farmingTotalSupply / 1e18)
-    document.getElementById(constants.ids.farmingPage.rate).innerText = farmingRate
+    injectStakingButtons(Number(allowance) > 0)
+
+    // document.getElementById(constants.ids.farmingPage.totalSupply).innerText = String(farmingTotalSupply / 1e18)
+    // document.getElementById(constants.ids.farmingPage.rate).innerText = farmingRate
 
     document.getElementById(constants.ids.farmingPage.earnedTokens).innerText = String(earnedTokens / 1e18)
+    document.getElementById(constants.ids.farmingPage.balanceTitle).innerText = `${stakingTokenName}s Token Staked`
     document.getElementById(constants.ids.farmingPage.balance).innerText = String(farmingBalance / 1e18)
 
-    injectLpsButton(Number(allowance) > 0)
+    if (earnedTokens > 0) {
+      document.getElementById(constants.ids.farmingPage.harvestButton).classList.remove('disabled')
+    }
+    else {
+      document.getElementById(constants.ids.farmingPage.harvestButton).classList.add('disabled')
+    }
+
+    if (farmingBalance > 0) {
+      document.getElementById(constants.ids.farmingPage.withdrawButton).classList.remove('disabled')
+    }
+    else {
+      document.getElementById(constants.ids.farmingPage.withdrawButton).classList.add('disabled')
+    }
   }
   catch (err) {
     console.error(err)
@@ -153,7 +187,7 @@ const approve = async () => {
     document.getElementById(constants.ids.farmingPage.approveButton).innerHTML = loader;
 
     const spender = opts.farmAddress
-    const value = 0xfffffffffffff
+    const value = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 
     const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
 
@@ -173,18 +207,23 @@ const approve = async () => {
   }
 }
 
-const injectLpsButton = (isApproved) => {
+const injectStakingButtons = (isApproved) => {
   const node = document.getElementById(constants.ids.farmingPage.lpsButtons)
 
   if (isApproved) {
     node.innerHTML = depositAndWithdrawButtonsHtml
 
-    document.getElementById(constants.ids.farmingPage.depositButton).addEventListener('click', () => {
+    const depositButton = document.getElementById(constants.ids.farmingPage.depositButton)
+    const withdrawButton = document.getElementById(constants.ids.farmingPage.withdrawButton)
+
+    depositButton.addEventListener('click', () => {
       depositModal.open()
     })
 
-    document.getElementById(constants.ids.farmingPage.withdrawButton).addEventListener('click', () => {
-      withdrawModal.open()
+    withdrawButton.addEventListener('click', () => {
+      if (!withdrawButton.classList.contains('disabled')) {
+        withdrawModal.open()
+      }
     })
   }
   else {
@@ -199,8 +238,12 @@ const injectLpsButton = (isApproved) => {
 const injectHtml = () => {
   document.getElementById(constants.ids.farmingRoot).innerHTML = html
 
-  document.getElementById(constants.ids.farmingPage.harvestButton).addEventListener('click', () => {
-    harvest()
+  const harvestButton = document.getElementById(constants.ids.farmingPage.harvestButton)
+
+  harvestButton.addEventListener('click', () => {
+    if (!harvestButton.classList.contains('disabled')) {
+      harvest()
+    }
   })
 
   events.subscribe('deposit success', () => {

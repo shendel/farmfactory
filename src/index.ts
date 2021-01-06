@@ -1,4 +1,3 @@
-import mainPage from './mainPage'
 import farmingPage from './farmingPage'
 import wrongNetworkModal from './wrongNetworkModal'
 import connectModal from './connectModal'
@@ -8,6 +7,7 @@ import constants from './constants'
 import events from './events'
 import { setState, getState } from './state'
 import type { State } from './state'
+import timer from './timer'
 
 
 const accountUnlockedStorageKey = 'ff-account-unlocked'
@@ -106,21 +106,31 @@ const init = async (opts: State['opts']) => {
 
   appendModalsHtml()
 
-  const mainRoot = document.getElementById(constants.ids.mainRoot)
+  // const mainRoot = document.getElementById(constants.ids.mainRoot)
+  // const farmingRoot = document.getElementById(constants.ids.farmingRoot)
+  //
+  // if (!mainRoot && !farmingRoot) {
+  //   infoModal.open('Template variables not found! Please use {farmfactory-main-root} or {farmfactory-farming-root}.')
+  //   return
+  // }
+  //
+  // if (mainRoot) {
+  //   mainPage.injectHtml()
+  // }
+  //
+  // if (farmingRoot) {
+  //   farmingPage.injectHtml()
+  // }
+
   const farmingRoot = document.getElementById(constants.ids.farmingRoot)
 
-  if (!mainRoot && !farmingRoot) {
-    infoModal.open('Template variables not found! Please use {farmfactory-main-root} or {farmfactory-farming-root}.')
+  if (!farmingRoot) {
+    infoModal.open('Template variable not found! Please use {farmfactory-farming-root}.')
     return
   }
 
-  if (mainRoot) {
-    mainPage.injectHtml()
-  }
-
-  if (farmingRoot) {
-    farmingPage.injectHtml()
-  }
+  farmingPage.injectHtml()
+  timer.injectHtml()
 
   await attemptToConnect()
 }

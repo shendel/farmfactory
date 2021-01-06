@@ -11,7 +11,8 @@ export type State = {
   web3: any
   account: any
   contracts: any
-  pageContext: any
+  stakingTokenName: string
+  rewardsTokenName: string
 }
 
 let state: State = {
@@ -19,12 +20,13 @@ let state: State = {
   web3: null,
   account: null,
   contracts: null,
-  pageContext: null,
+  stakingTokenName: '',
+  rewardsTokenName: '',
 }
 
 export const getState = () => state
 
-export const setState = (newState) => {
+export const setState = (newState: Partial<State>) => {
   state = {
     ...state,
     ...newState,
