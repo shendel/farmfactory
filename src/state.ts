@@ -7,6 +7,9 @@ export type State = {
     farmAddress: string
     rewardsAddress: string
     stakingAddress: string
+    harvestButtonTitle?: string
+    depositButtonTitle?: string
+    withdrawButtonTitle?: string
   }
   web3: any
   account: any

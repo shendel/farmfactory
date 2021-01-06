@@ -82,27 +82,29 @@ const deposit = async () => {
 }
 
 const open = async () => {
-  const { contracts, account, stakingTokenName } = getState()
+  const { opts, contracts, account, stakingTokenName } = getState()
 
   document.getElementById(constants.ids.modalsRoot).innerHTML = html
 
-  document.getElementById(constants.ids.depositModal.title).innerText = `Deposit ${stakingTokenName}s Tokens`
+  const title = document.getElementById(constants.ids.depositModal.title)
+  const availableToDeposit = document.getElementById(constants.ids.depositModal.availableToDeposit)
+  const depositButton = document.getElementById(constants.ids.depositModal.depositButton)
+  const cancelButton = document.getElementById(constants.ids.depositModal.cancelButton)
+  const closeButton = document.getElementById(constants.ids.depositModal.closeButton)
+
+  title.innerText = `Deposit ${stakingTokenName}s Tokens`
+
+  if (opts.depositButtonTitle) {
+    depositButton.innerText = opts.depositButtonTitle
+  }
 
   const balance = await contracts.staking.methods.balanceOf(account).call()
 
-  document.getElementById(constants.ids.depositModal.availableToDeposit).innerText = String(Number(balance) / 1e18)
+  availableToDeposit.innerText = String(Number(balance) / 1e18)
 
-  document.getElementById(constants.ids.depositModal.depositButton).addEventListener('click', () => {
-    deposit()
-  })
-
-  document.getElementById(constants.ids.depositModal.cancelButton).addEventListener('click', () => {
-    close()
-  })
-
-  document.getElementById(constants.ids.depositModal.closeButton).addEventListener('click', () => {
-    close()
-  })
+  depositButton.addEventListener('click', deposit)
+  cancelButton.addEventListener('click', close)
+  closeButton.addEventListener('click', close)
 }
 
 const close = () => {

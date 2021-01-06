@@ -211,10 +211,20 @@ const injectStakingButtons = (isApproved) => {
   const node = document.getElementById(constants.ids.farmingPage.lpsButtons)
 
   if (isApproved) {
+    const { opts } = getState()
+
     node.innerHTML = depositAndWithdrawButtonsHtml
 
     const depositButton = document.getElementById(constants.ids.farmingPage.depositButton)
     const withdrawButton = document.getElementById(constants.ids.farmingPage.withdrawButton)
+
+    if (opts.depositButtonTitle) {
+      depositButton.innerText = opts.depositButtonTitle
+    }
+
+    if (opts.withdrawButtonTitle) {
+      withdrawButton.innerText = opts.withdrawButtonTitle
+    }
 
     depositButton.addEventListener('click', () => {
       depositModal.open()
@@ -236,9 +246,15 @@ const injectStakingButtons = (isApproved) => {
 }
 
 const injectHtml = () => {
+  const { opts } = getState()
+
   document.getElementById(constants.ids.farmingRoot).innerHTML = html
 
   const harvestButton = document.getElementById(constants.ids.farmingPage.harvestButton)
+
+  if (opts.harvestButtonTitle) {
+    harvestButton.innerText = opts.harvestButtonTitle
+  }
 
   harvestButton.addEventListener('click', () => {
     if (!harvestButton.classList.contains('disabled')) {

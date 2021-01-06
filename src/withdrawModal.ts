@@ -82,27 +82,29 @@ const withdraw = async () => {
 }
 
 const open = async () => {
-  const { contracts, account, stakingTokenName } = getState()
+  const { opts, contracts, account, stakingTokenName } = getState()
 
   document.getElementById(constants.ids.modalsRoot).innerHTML = html
 
-  document.getElementById(constants.ids.withdrawModal.title).innerText = `Withdraw ${stakingTokenName}s Tokens`
+  const title = document.getElementById(constants.ids.withdrawModal.title)
+  const availableToWithdraw = document.getElementById(constants.ids.withdrawModal.availableToWithdraw)
+  const withdrawButton = document.getElementById(constants.ids.withdrawModal.withdrawButton)
+  const cancelButton = document.getElementById(constants.ids.withdrawModal.cancelButton)
+  const closeButton = document.getElementById(constants.ids.withdrawModal.closeButton)
+
+  title.innerText = `Withdraw ${stakingTokenName}s Tokens`
+
+  if (opts.withdrawButtonTitle) {
+    withdrawButton.innerText = opts.withdrawButtonTitle
+  }
 
   const balance = await contracts.farm.methods.balanceOf(account).call()
 
-  document.getElementById(constants.ids.withdrawModal.availableToWithdraw).innerText = String(Number(balance) / 1e18)
+  availableToWithdraw.innerText = String(Number(balance) / 1e18)
 
-  document.getElementById(constants.ids.withdrawModal.withdrawButton).addEventListener('click', () => {
-    withdraw()
-  })
-
-  document.getElementById(constants.ids.withdrawModal.cancelButton).addEventListener('click', () => {
-    close()
-  })
-
-  document.getElementById(constants.ids.withdrawModal.closeButton).addEventListener('click', () => {
-    close()
-  })
+  withdrawButton.addEventListener('click', withdraw)
+  cancelButton.addEventListener('click', close)
+  closeButton.addEventListener('click', close)
 }
 
 const close = () => {
