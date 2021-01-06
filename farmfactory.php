@@ -40,7 +40,6 @@ add_action('wp_enqueue_scripts', 'farm_load_scripts');
 
 //добавляем шорткоды
 add_shortcode( 'farmfactory', 'farmfactory_main_shortcode' );
-
 function farmfactory_main_shortcode( $atts ){
 	 return "<div id=\"farmfactory-main-root\"></div><div id=\"farmfactory-farming-root\"></div>
 
@@ -54,5 +53,7 @@ function farmfactory_main_shortcode( $atts ){
   </script>";
 }
 
-// результат:
-// шоткод [footag foo="bar"] в тексте будет заменен на "foo = bar"
+add_shortcode( 'farmfactoryTimer', 'farmfactory_main_shortcode' );
+function farmfactory_main_shortcode( $atts ){
+	 return "<div id=\"farmfactory-timer-root\"></div>";
+}
