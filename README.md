@@ -3,7 +3,6 @@ https://farm.wpmix.net/
 
 The simplest way to allow your users to deposit ERC20 tokens (from example USDT) using simple "Deposit/Withdraw" interface and earn (farm) rewards. 
 
-![](https://screenshots.wpmix.net/Telegram_Jc3TBvHVeFb1Cj2Zn2ZaB0k7yjMvsIUV.png)
 
 What admin can specify in admin area:
 
