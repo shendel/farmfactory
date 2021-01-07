@@ -34,7 +34,7 @@ const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div
 //       </div>
 //       <div class="farmfactory-farmingCard">
 //         <div class="farmfactory-amount" id="${constants.ids.farmingPage.balance}">&mdash;</div>
-//         <div class="farmfactory-title">LPs Token Staked</div>
+//         <div class="farmfactory-title">LPs Staked</div>
 //         <div class="farmfactory-buttonContainer" id="${constants.ids.farmingPage.lpsButtons}"></div>
 //       </div>
 //     </div>
@@ -80,14 +80,14 @@ const getData = async () => {
 
   try {
     const [
-      earnedTokens,
       farmingBalance,
+      earnedTokens,
       // farmingRate,
       // farmingTotalSupply,
       allowance,
     ] = await Promise.all([
-      contracts.farm.methods.earned(account).call(),
       contracts.farm.methods.balanceOf(account).call(),
+      contracts.farm.methods.earned(account).call(),
       // contracts.farm.methods.rewardRate().call(),
       // contracts.farm.methods.totalSupply().call(),
       contracts.staking.methods.allowance(account, opts.farmAddress).call(),
@@ -95,25 +95,35 @@ const getData = async () => {
 
     injectStakingButtons(Number(allowance) > 0)
 
+    const balanceTitle = document.getElementById(constants.ids.farmingPage.balanceTitle)
+    const balanceNode = document.getElementById(constants.ids.farmingPage.balance)
+    const earnedTokensNode = document.getElementById(constants.ids.farmingPage.earnedTokens)
+    const harvestButton = document.getElementById(constants.ids.farmingPage.harvestButton)
+    const withdrawButton = document.getElementById(constants.ids.farmingPage.withdrawButton)
+
     // document.getElementById(constants.ids.farmingPage.totalSupply).innerText = String(farmingTotalSupply / 1e18)
     // document.getElementById(constants.ids.farmingPage.rate).innerText = farmingRate
 
-    document.getElementById(constants.ids.farmingPage.earnedTokens).innerText = String(earnedTokens / 1e18)
-    document.getElementById(constants.ids.farmingPage.balanceTitle).innerText = `${stakingTokenName}s Token Staked`
-    document.getElementById(constants.ids.farmingPage.balance).innerText = String(farmingBalance / 1e18)
+    balanceTitle.innerText = `${stakingTokenName} Staked`
+    balanceNode.innerText = String(farmingBalance / 1e18)
+    earnedTokensNode.innerText = String(earnedTokens / 1e18)
 
-    if (earnedTokens > 0) {
-      document.getElementById(constants.ids.farmingPage.harvestButton).classList.remove('disabled')
-    }
-    else {
-      document.getElementById(constants.ids.farmingPage.harvestButton).classList.add('disabled')
+    if (harvestButton) {
+      if (earnedTokens > 0) {
+        harvestButton.classList.remove('disabled')
+      }
+      else {
+        harvestButton.classList.add('disabled')
+      }
     }
 
-    if (farmingBalance > 0) {
-      document.getElementById(constants.ids.farmingPage.withdrawButton).classList.remove('disabled')
-    }
-    else {
-      document.getElementById(constants.ids.farmingPage.withdrawButton).classList.add('disabled')
+    if (withdrawButton) {
+      if (farmingBalance > 0) {
+        withdrawButton.classList.remove('disabled')
+      }
+      else {
+        withdrawButton.classList.add('disabled')
+      }
     }
   }
   catch (err) {

@@ -92,7 +92,7 @@ const open = async () => {
   const cancelButton = document.getElementById(constants.ids.withdrawModal.cancelButton)
   const closeButton = document.getElementById(constants.ids.withdrawModal.closeButton)
 
-  title.innerText = `Withdraw ${stakingTokenName}s Tokens`
+  title.innerText = `Withdraw ${stakingTokenName}`
 
   if (opts.withdrawButtonTitle) {
     withdrawButton.innerText = opts.withdrawButtonTitle

@@ -48,6 +48,8 @@ const injectHtml = async () => {
   const root = document.getElementById(constants.ids.timerRoot)
 
   if (root) {
+    root.innerText = '--:--:--:--'
+
     events.subscribe('data initialized', () => {
       init()
     })

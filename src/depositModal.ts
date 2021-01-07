@@ -92,7 +92,7 @@ const open = async () => {
   const cancelButton = document.getElementById(constants.ids.depositModal.cancelButton)
   const closeButton = document.getElementById(constants.ids.depositModal.closeButton)
 
-  title.innerText = `Deposit ${stakingTokenName}s Tokens`
+  title.innerText = `Deposit ${stakingTokenName}`
 
   if (opts.depositButtonTitle) {
     depositButton.innerText = opts.depositButtonTitle
