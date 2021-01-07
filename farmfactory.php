@@ -53,7 +53,7 @@ function farmfactory_main_shortcode( $atts ){
   </script>";
 }
 
-add_shortcode( 'farmfactoryTimer', 'farmfactory_main_shortcode' );
-function farmfactory_main_shortcode( $atts ){
+add_shortcode( 'farmfactoryTimer', 'farmfactory_timer_shortcode' );
+function farmfactory_timer_shortcode( $atts ){
 	 return "<div id=\"farmfactory-timer-root\"></div>";
 }
