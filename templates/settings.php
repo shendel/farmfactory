@@ -100,7 +100,7 @@
 						<?php
 					}
 					?>
-                    <?php esc_html_e('1. https://etherscan.io/address/'.get_option('farmfactory_farmAddress').'#writeContract - Open your farming contract. (in https://kovan.etherscan.io/address/'.esc_attr(get_option('farmfactory_farmAddress')).', 'farmfactory'); ?>#writeContract - in covan testnet)', 'farmfactory'); ?><br>
+                    <?php esc_html_e('1. https://etherscan.io/address/'.get_option('farmfactory_farmAddress').'#writeContract - Open your farming contract. (in https://kovan.etherscan.io/address/'.esc_attr(get_option('farmfactory_farmAddress')).'#writeContract - in covan testnet)', 'farmfactory'); ?><br>
                     <?php esc_html_e('2. Connect to web3', 'farmfactory'); ?><Br>
                     <?php esc_html_e('3. Click "3. notifyRewardAmount"', 'farmfactory'); ?><br>
                     <?php esc_html_e('4. Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract', 'farmfactory'); ?><br>
