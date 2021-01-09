@@ -12,12 +12,6 @@ const debug = (str, ...args) => console.log(`widget: ${str}`, ...args)
 
 const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div></div>'
 
-const promise = () => new Promise<{ status: string }>((resolve) => {
-  setTimeout(() => {
-    resolve({ status: 'OK' })
-  }, 122500)
-})
-
 const html = `
   <div class="farmfactory-root" id="${constants.ids.widget.root}">
     ${depositForm.html}
@@ -170,14 +164,12 @@ const approve = async () => {
 
   try {
     isLoading = true
-    document.getElementById(constants.ids.widget.approveButton).innerHTML = loader;
+    document.getElementById(constants.ids.widget.approveButton).innerHTML = `Approve ${loader}`;
 
     const spender = opts.farmAddress
     const value = '1000000000000000000000000000000000'
 
-    // const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
-
-    const res = await promise()
+    const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
 
     if (res.status) {
       infoModal.open('Transaction confirmed!')
