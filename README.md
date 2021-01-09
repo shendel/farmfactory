@@ -1,6 +1,8 @@
 # farmfactory
-https://farm.wpmix.net/ 
-
+https://farm.wpmix.net/ - demo
+https://www.youtube.com/watch?v=HdM1_XxN3VQ - video instruction
+https://t.me/farmsupportbot - Contact our team using if you have any questions 
+ 
 The simplest way to allow your users to deposit ERC20 tokens (from example USDT) using simple "Deposit/Withdraw" interface and earn (farm) rewards. 
 
 How to create farm contract:
@@ -21,3 +23,8 @@ Advanced usage:
 2. receive unsiwap's LP token, which needs to withdraw pooled assets back to the wallet (this step is autmatically performs on uniswap)
 3. stake this LP token in the staking contract
 4. after expiration holder gets  LP token back  and TOKEN_A as a reward (in proportion of their staking value and staking time).
+
+Contact our team using https://t.me/farmsupportbot if you have any questions
+
+Icons made by <a href="https://www.flaticon.com/authors/flat-icons" title="Flat Icons">Flat Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+
