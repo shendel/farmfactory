@@ -34,53 +34,6 @@ const html = `
   </div>
 `
 
-const withdraw = async () => {
-  const { web3, contracts, account } = getState()
-
-  if (isLoading) {
-    return
-  }
-
-  if (!contracts.farm) {
-    infoModal.open('Farm contract is not connected')
-    return
-  }
-
-  const input = document.getElementById(constants.ids.withdrawModal.withdrawAmount) as HTMLInputElement
-  const amount = Number(input.value)
-
-  if (amount > 0) {
-    try {
-      isLoading = true
-      document.getElementById(constants.ids.withdrawModal.withdrawButton).innerHTML = loader
-
-      const value = web3.utils.toWei(String(amount))
-      const res = await contracts.farm.methods.withdraw(value).send({ from: account })
-
-      if (res.status) {
-        infoModal.open('Transaction confirmed!')
-      }
-
-      close()
-      events.dispatch('withdraw success')
-    }
-    catch (err) {
-      console.error(err)
-
-      if (err.code == 'INVALID_ARGUMENT') {
-        infoModal.open('Placeholder cannot be empty')
-      }
-      else {
-        infoModal.open(err.message)
-      }
-    }
-    finally {
-      isLoading = false
-      document.getElementById(constants.ids.withdrawModal.withdrawButton).innerHTML = 'Withdraw'
-    }
-  }
-}
-
 const open = async () => {
   const { opts, contracts, account, stakingTokenName } = getState()
 

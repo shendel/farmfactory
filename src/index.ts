@@ -1,4 +1,4 @@
-import farmingPage from './farmingPage'
+import widget from './widget'
 import wrongNetworkModal from './wrongNetworkModal'
 import connectModal from './connectModal'
 import infoModal from './infoModal'
@@ -106,30 +106,14 @@ const init = async (opts: State['opts']) => {
 
   appendModalsHtml()
 
-  // const mainRoot = document.getElementById(constants.ids.mainRoot)
-  // const farmingRoot = document.getElementById(constants.ids.farmingRoot)
-  //
-  // if (!mainRoot && !farmingRoot) {
-  //   infoModal.open('Template variables not found! Please use {farmfactory-main-root} or {farmfactory-farming-root}.')
-  //   return
-  // }
-  //
-  // if (mainRoot) {
-  //   mainPage.injectHtml()
-  // }
-  //
-  // if (farmingRoot) {
-  //   farmingPage.injectHtml()
-  // }
+  const widgetRoot = document.getElementById(constants.ids.widgetRoot)
 
-  const farmingRoot = document.getElementById(constants.ids.farmingRoot)
-
-  if (!farmingRoot) {
-    infoModal.open('Template variable not found! Please use {farmfactory-farming-root}.')
+  if (!widgetRoot) {
+    infoModal.open('Template variable not found! Please use {farmfactory-widget-root}.')
     return
   }
 
-  farmingPage.injectHtml()
+  widget.injectHtml()
   timer.injectHtml()
 
   await attemptToConnect()

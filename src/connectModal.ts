@@ -6,8 +6,6 @@ import events from './events'
 
 let isLoading = false
 
-const debug = (str, ...args) => console.log(`connectModal: ${str}`, ...args)
-
 const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div></div>'
 
 const html = `
@@ -30,15 +28,18 @@ const html = `
 `
 
 const connectMetamask = async () => {
-  debug('connectMetamask')
-
   if (isLoading) {
     return
   }
 
+  const cancelButton = document.getElementById(constants.ids.connectModal.cancelButton)
+  const connectButton = document.getElementById(constants.ids.connectModal.connectButton)
+
   try {
     isLoading = true
-    document.getElementById(constants.ids.connectModal.connectButton).innerHTML = loader
+
+    cancelButton.classList.add('disabled')
+    connectButton.innerHTML = `Connect ${loader}`
 
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 
@@ -48,32 +49,30 @@ const connectMetamask = async () => {
     await initData({ accounts })
 
     events.dispatch('update page data')
-
     close()
   }
   catch (err) {
-    isLoading = false
-    document.getElementById(constants.ids.connectModal.connectButton).innerHTML = 'Connect'
-
     console.error(err)
     infoModal.open(err.message)
+  }
+  finally {
+    isLoading = false
+
+    cancelButton.classList.remove('disabled')
+    connectButton.innerHTML = 'Connect'
   }
 }
 
 const open = () => {
   document.getElementById(constants.ids.modalsRoot).innerHTML = html
 
-  document.getElementById(constants.ids.connectModal.connectButton).addEventListener('click', () => {
-    connectMetamask()
-  })
+  const connectButton = document.getElementById(constants.ids.connectModal.connectButton)
+  const cancelButton = document.getElementById(constants.ids.connectModal.cancelButton)
+  const closeButton = document.getElementById(constants.ids.connectModal.closeButton)
 
-  document.getElementById(constants.ids.connectModal.cancelButton).addEventListener('click', () => {
-    close()
-  })
-
-  document.getElementById(constants.ids.connectModal.closeButton).addEventListener('click', () => {
-    close()
-  })
+  connectButton.addEventListener('click', connectMetamask)
+  cancelButton.addEventListener('click', close)
+  closeButton.addEventListener('click', close)
 }
 
 const close = () => {

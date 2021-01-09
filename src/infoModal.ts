@@ -22,13 +22,11 @@ const html = (message) => `
 const open = (message: string) => {
   document.getElementById(constants.ids.infoModalRoot).innerHTML = html(message)
 
-  document.getElementById(constants.ids.infoModal.closeButton).addEventListener('click', () => {
-    close()
-  })
+  const closeButton = document.getElementById(constants.ids.infoModal.closeButton)
+  const cancelButton = document.getElementById(constants.ids.infoModal.cancelButton)
 
-  document.getElementById(constants.ids.infoModal.cancelButton).addEventListener('click', () => {
-    close()
-  })
+  closeButton.addEventListener('click', close)
+  cancelButton.addEventListener('click', close)
 }
 
 const close = () => {

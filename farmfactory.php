@@ -6,7 +6,7 @@ Author: Denis Ivanov
 Requires PHP: 7.1
 Text Domain: farm
 Domain Path: /lang
-Version: 1.0.123
+Version: 1.0.124
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
@@ -41,7 +41,7 @@ add_action('wp_enqueue_scripts', 'farm_load_scripts');
 //добавляем шорткоды
 add_shortcode( 'farmfactory', 'farmfactory_main_shortcode' );
 function farmfactory_main_shortcode( $atts ){
-	 return "<div id=\"farmfactory-main-root\"></div><div id=\"farmfactory-farming-root\"></div>
+	 return "<div id=\"farmfactory-widget-root\"></div>
 
   <script>
     farmFactory.init({

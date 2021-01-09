@@ -1,186 +1,143 @@
-.farmfactory-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.farmfactory-row.center {
-  justify-content: center;
+.farmfactory-root {
+  position: relative;
+  display: inline-block;
+  min-width: 410px;
+  height: 330px;
+  background-color: #F9D154;
+  padding: 48px 54px 48px 48px;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 24px;
 }
 
 .farmfactory-widget {
+  transition: opacity 0.15s ease;
+}
+
+.farmfactory-line {
+  margin-top: 40px;
+}
+
+.farmfactory-line:first-child {
+  margin-top: 0;
+}
+
+.farmfactory-row {
   display: flex;
-  align-items: stretch;
-  justify-content: center;
+  align-items: center;
 }
 
-.farmfactory-widget * {
-  box-sizing: border-box;
+.farmfactory-widget .farmfactory-title {
+  font-size: 24px;
+  color: #796528;
 }
 
-.farmfactory-widget .farmfactory-button {
-  margin-left: 20px;
+.farmfactory-buttons {
+  margin-left: 24px;
 }
 
-.farmfactory-widget .farmfactory-button:first-child {
+.farmfactory-button {
+  height: 24px;
+  padding: 0 12px;
+  margin-left: 8px;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  background-color: #000;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 12px;
+  transition: background-color 0.23s ease;
+}
+
+.farmfactory-button:hover {
+  background-color: #4a3d14;
+}
+
+.farmfactory-button:first-child {
   margin-left: 0;
 }
 
-/* Headline */
-
-.farmfactory-headline {
-  margin-bottom: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.farmfactory-headline > div {
-  margin: 0 40px;
-}
-
-.farmfactory-headline .farmfactory-title {
-  font-size: 16px;
-  line-height: 150%;
-  color: #000;
-  margin-bottom: 10px;
-  padding-bottom: 0;
-  font-weight: 400;
-}
-
-.farmfactory-headline .farmfactory-value {
-  font-size: 18px;
-  line-height: 155%;
-  font-weight: 600;
-  color: #000;
-}
-
-/* Balance */
-
-.farmfactory-balanceCard {
-  padding: 30px;
-  border-radius: 10px;
-  margin-right: 40px;
-  background: #fff;
-  min-width: 320px;
-  min-height: 185px;
-}
-
-.farmfactory-balanceCard > .farmfactory-title {
-  font-size: 18px;
-  color: #5c5c5c;
-  line-height: 160%;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.farmfactory-balanceCard > .farmfactory-value {
-  font-weight: 800;
-  font-size: 28px;
-  line-height: 160%;
-  color: #000;
-  text-align: center;
-}
-
-.farmfactory-rewardsTimeLeft > .farmfactory-value {
-  font-size: 40px;
-}
-
-.farmfactory-total {
-  border-top: 2px solid #000;
-  display: flex;
-  padding: 10px 20px 10px 20px;
-  justify-content: space-between;
-  margin: 18px -30px -30px -30px;
-}
-
-.farmfactory-total > .farmfactory-title {
-  font-size: 14px;
-  color: #5c5c5c;
-  margin-right: 10px;
-}
-
-.farmfactory-total > .farmfactory-value {
-  font-weight: 700;
-  font-size: 14px;
-  color: #000;
-}
-
-/* Farming */
-
-.farmfactory-farmingCard {
-  padding: 30px;
-  border-radius: 10px;
-  margin-right: 40px;
-  background: #fff;
-  min-width: 320px;
-  min-height: 185px;
-}
-
-.farmfactory-farmingCard .farmfactory-amount {
-  margin-bottom: 20px;
-  font-weight: 800;
-  font-size: 28px;
-  line-height: 160%;
-  color: #000;
-  text-align: center;
-}
-
-.farmfactory-farmingCard .farmfactory-title {
-  font-size: 18px;
-  color: #5c5c5c;
-  line-height: 160%;
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.farmfactory-farmingCard .farmfactory-buttonContainer {
-  display: flex;
-  justify-content: center;
-}
-
-/* Button */
-
-.farmfactory-button {
-  cursor: pointer;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  height: 36px;
-  padding: 0 24px;
-  font-weight: 800;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  transition: 0.2s;
-}
-
-.farmfactory-button.blue {
-  box-shadow: 2px 2px 5px rgba(80,224,237,.5), inset -1px -1px 2px #08ccde;
-  background: #50e0ed;
-  color: #fff;
-}
-
-.farmfactory-button.yellow {
-  box-shadow: 2px 2px 5px rgba(255,245,0,.45), inset -1px -1px 2px rgba(230,220,0,.6);
-  background: #fff500;
-  color: #000;
-}
-
-.farmfactory-button.gray {
-  box-shadow: 2px 2px 5px rgba(0,0,0,.05), inset -1px -1px 2px rgba(0,0,0,.1);
-  background: #f7f7f7;
-  color: #000;
-}
-
 .farmfactory-button.disabled {
-  box-shadow: none !important;
-  background-color: #ddd !important;
-  color: #666 !important;
-  cursor: default !important;
+  cursor: not-allowed;
+  background-color: #7a6627 !important;
+  color: #fad154 !important;
+}
+
+.farmfactory-value {
+  margin-top: 12px;
+  font-weight: 700;
+  font-size: 48px;
+  color: #151515;
+}
+
+
+.farmfactory-form .farmfactory-headline {
+  position: absolute;
+  left: 48px;
+  right: 48px;
+  top: -200%;
+  z-index: 10;
+  transition: all 0.5s ease;
+}
+
+.farmfactory-form .farmfactory-title {
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #796528;
+}
+
+.farmfactory-form .farmfactory-title b {
+  margin-top: 8px;
+  font-size: 32px;
+  display: block;
+}
+
+.farmfactory-form .farmfactory-input {
+  width: 100%;
+  height: 56px;
+  background: #fff;
+  border: 0;
+  padding: 0 32px;
+  outline: none;
+  font-size: 24px;
+  font-weight: 700;
+  box-sizing: border-box;
+  border-radius: 28px;
+}
+
+.farmfactory-form .farmfactory-basement {
+  position: absolute;
+  bottom: -200%;
+  right: 48px;
+  z-index: 10;
+  transition: all 0.5s ease;
+}
+
+.farmfactory-form .farmfactory-button {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  border-radius: 20px;
+}
+
+
+.farmfactory-deposit-visible .farmfactory-widget,
+.farmfactory-withdraw-visible .farmfactory-widget {
+  opacity: 0;
+}
+
+.farmfactory-deposit-visible .farmfactory-deposit .farmfactory-headline,
+.farmfactory-withdraw-visible .farmfactory-withdraw .farmfactory-headline {
+  top: 58px;
+}
+
+.farmfactory-deposit-visible .farmfactory-deposit .farmfactory-basement,
+.farmfactory-withdraw-visible .farmfactory-withdraw .farmfactory-basement {
+  bottom: 60px;
 }
 
 
@@ -195,7 +152,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 100;
 }
 
 .farmfactory-modal {
@@ -266,7 +223,10 @@
 }
 
 .farmfactory-modal .farmfactory-footer .farmfactory-button {
+  height: 32px;
+  padding: 0 16px;
   margin: 0 30px;
+  border-radius: 16px;
 }
 
 .farmfactory-modal .farmfactory-balanceTitle {
@@ -288,46 +248,48 @@
 }
 
 
-
 /* Loader */
 
 .farmfactory-loader {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
   height: 16px;
-  display: flex;
-  align-items: stretch;
+  margin-left: 10px;
 }
 
 .farmfactory-loader div {
+  position: absolute;
+  top: 0;
   width: 4px;
   height: 100%;
-  margin-left: 4px;
-  background: #000;
+  background: #fff;
   animation: farmfactory-loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
 }
 
-.farmfactory-loader div:first-child {
-  margin-left: 0;
-}
-
 .farmfactory-loader div:nth-child(1) {
+  left: 0;
   animation-delay: -0.24s;
 }
 
 .farmfactory-loader div:nth-child(2) {
+  left: 8px;
   animation-delay: -0.12s;
 }
 
 .farmfactory-loader div:nth-child(3) {
+  left: 16px;
   animation-delay: 0s;
 }
 
 @keyframes farmfactory-loader {
   0% {
-    margin-top: -6px;
+    top: -6px;
     height: 28px;
   }
   50%, 100% {
-    margin-top: 0;
+    top: 0;
     height: 16px;
   }
 }
