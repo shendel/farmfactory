@@ -93,6 +93,8 @@ const getData = async () => {
       contracts.staking.methods.allowance(account, opts.farmAddress).call(),
     ])
 
+    console.log('allowance:', allowance)
+
     injectStakingButtons(Number(allowance) > 0)
 
     const balanceTitle = document.getElementById(constants.ids.farmingPage.balanceTitle)
@@ -197,7 +199,7 @@ const approve = async () => {
     document.getElementById(constants.ids.farmingPage.approveButton).innerHTML = loader;
 
     const spender = opts.farmAddress
-    const value = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    const value = 1000000000000000000000000000000000
 
     const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
 

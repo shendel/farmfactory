@@ -1,7 +1,8 @@
 import constants from './constants'
+import { getState } from './state'
 
 
-const html = `
+const html = (networkId) => `
   <div class="farmfactory-overlay">
     <div class="farmfactory-modal">
       <button class="farmfactory-closeButton" id="${constants.ids.wrongNetworkModal.closeButton}">
@@ -10,14 +11,16 @@ const html = `
         </svg>
       </button>
       <div class="farmfactory-inner">
-        Wrong network, connect to MAINNET
+        Wrong network, connect to networkId: ${networkId}
       </div>
     </div>
   </div>
 `
 
 const open = () => {
-  document.getElementById(constants.ids.modalsRoot).innerHTML = html
+  const { opts } = getState()
+
+  document.getElementById(constants.ids.modalsRoot).innerHTML = html(opts.networkId)
 
   document.getElementById(constants.ids.wrongNetworkModal.closeButton).addEventListener('click', () => {
     close()
