@@ -10,7 +10,7 @@ const html = `
   <div class="farmfactory-form farmfactory-withdraw">
     <div class="farmfactory-headline">
       <div class="farmfactory-title" id="${constants.ids.withdrawForm.title}"></div>
-      <input class="farmfactory-input" id="${constants.ids.withdrawForm.input}" type="text" value="" />
+      <input class="farmfactory-input" id="${constants.ids.withdrawForm.input}" type="number" value="" />
     </div>
     <div class="farmfactory-basement">
       <button class="farmfactory-button" id="${constants.ids.withdrawForm.cancelButton}">Cancel</button>

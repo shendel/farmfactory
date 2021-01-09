@@ -10,7 +10,7 @@ const html = `
   <div class="farmfactory-form farmfactory-deposit">
     <div class="farmfactory-headline">
       <div class="farmfactory-title" id="${constants.ids.depositForm.title}"></div>
-      <input class="farmfactory-input" id="${constants.ids.depositForm.input}" type="text" value="" />
+      <input class="farmfactory-input" id="${constants.ids.depositForm.input}" type="number" value="" />
     </div>
     <div class="farmfactory-basement">
       <button class="farmfactory-button" id="${constants.ids.depositForm.cancelButton}">Cancel</button>
