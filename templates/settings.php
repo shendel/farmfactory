@@ -105,7 +105,7 @@
                     <?php esc_html_e('3. Click "3. notifyRewardAmount"', 'farmfactory'); ?><br>
                     <?php esc_html_e('4. Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract', 'farmfactory'); ?><br>
                     <?php esc_html_e('5. Don\'t forget to "Add Zeroes" (https://kovan.etherscan.io/address/'.esc_attr(get_option('farmfactory_rewardsAddress')).'#readContract - check "decimals" constant here)', 'farmfactory'); ?><br>
-                    <?php esc_html_e('6. Transfer required amount of tokens to the farm contract  ('.get_option('farmfactory_farmAddress').')', 'farmfactory'); ?>
+                    <?php esc_html_e('6. Transfer required amount of tokens to the farm contract  ('.get_option('farmfactory_farmAddress').')', 'farmfactory'); ?><Br>
                     <?php esc_html_e('7. Click "Write", done!', 'farmfactory'); ?>
                     <br><br>
                     <h2><?php esc_html_e('Reward distributing', 'farmfactory'); ?></h2>
