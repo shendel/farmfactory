@@ -199,7 +199,7 @@ const approve = async () => {
     document.getElementById(constants.ids.farmingPage.approveButton).innerHTML = loader;
 
     const spender = opts.farmAddress
-    const value = 1000000000000000000000000000000000
+    const value = '1000000000000000000000000000000000'
 
     const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
 
