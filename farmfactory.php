@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'FARMFACTORY_TEMPLATE_DIR', __DIR__ . '/templates' );
 define( 'FARMFACTORY_BASE_DIR', __DIR__ );
 define( 'FARMFACTORY_BASE_FILE', __FILE__ );
-define( 'FARMFACTORY_VER ', "1.0.132");
+define( 'FARMFACTORY_VER', "1.0.133");
 /**
  * Plugin Init
  */
