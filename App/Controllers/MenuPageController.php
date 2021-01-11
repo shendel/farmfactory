@@ -42,11 +42,11 @@ class MenuPageController extends Controller
     {
 
         if ( ! empty($_POST['farmfactory_stakingAddress'])) update_option("farmfactory_stakingAddress",$_POST['farmfactory_stakingAddress']);
-		if ( ! empty($_POST['farmfactory_networkId'])) update_option("farmfactory_networkId",$_POST['farmfactory_networkId']);
+		if ( ! empty($_POST['farmfactory_networkName'])) update_option("farmfactory_networkName",$_POST['farmfactory_networkName']);
 		if ( ! empty($_POST['farmfactory_rewardsAddress'])) update_option("farmfactory_rewardsAddress",$_POST['farmfactory_rewardsAddress']);
 		if ( ! empty($_POST['farmfactory_farmAddress'])) update_option("farmfactory_farmAddress",$_POST['farmfactory_farmAddress']);
-		
-		
+
+
 		if (!empty($_POST)) {
             ?>
             <div id="message" class="notice notice-success is-dismissible">
@@ -57,7 +57,7 @@ class MenuPageController extends Controller
             </div>
             <?php
 		}
-        
+
     }
 
 

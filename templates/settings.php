@@ -46,10 +46,10 @@
                             </th>
                             <td>
                                 <div class="farmfactory-form-inline">
-                                    <input value="<?php echo esc_attr(get_option('farmfactory_networkId',42)); ?>"
-                                           name="farmfactory_networkId" type="text" class="large-text js-farmfactory-load-icon ">
+                                    <input value="<?php echo esc_attr(get_option('farmfactory_networkName','kovan')); ?>"
+                                           name="farmfactory_networkName" type="text" class="large-text js-farmfactory-load-icon ">
                                     <br>
-                                    <?php esc_html_e('1 - mainnet or 42 - kovan testnet . We recommend to test on testnet (https://github.com/kovan-testnet/faucet) with testnet tokens (https://github.com/bokkypoobah/WeenusTokenFaucet) before launch', 'farmfactory'); ?>
+                                    <?php esc_html_e('We recommend to test on testnet (https://github.com/kovan-testnet/faucet) with testnet tokens (https://github.com/bokkypoobah/WeenusTokenFaucet) before launch', 'farmfactory'); ?>
                                 </div>
                             </td>
                         </tr>

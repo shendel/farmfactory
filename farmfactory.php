@@ -6,7 +6,7 @@ Author: Denis Ivanov
 Requires PHP: 7.1
 Text Domain: farm
 Domain Path: /lang
-Version: 1.0.134
+Version: 1.0.135
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
@@ -45,7 +45,7 @@ function farmfactory_main_shortcode( $atts ){
 
   <script>
     farmFactory.init({
-      networkId: ".get_option("farmfactory_networkId","42").",
+      networkName: '".get_option("farmfactory_networkName","kovan")."',
       farmAddress: '".get_option("farmfactory_farmAddress","0x38054641b795fb9604961b4c18b871f42bf8afb0")."',
       rewardsAddress: '".get_option("farmfactory_rewardsAddress","0x93d83a81905a1baf4615bcb51db3f2f2bbf6ab9e")."',
       stakingAddress: '".get_option("farmfactory_stakingAddress","0xc3eC8ED5Ce2a19CA40210002116712645dBEceC4")."'

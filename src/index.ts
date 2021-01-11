@@ -88,6 +88,9 @@ const loadScript = (src) => new Promise((resolve, reject) => {
 const init = async (opts: State['opts']) => {
   const { networkName, farmAddress, rewardsAddress, stakingAddress } = opts
 
+  setState({ opts })
+  appendModalsHtml()
+
   if (!networkName || !farmAddress || !rewardsAddress || !stakingAddress) {
     infoModal.open('Check farmFactory.init(options). Required options: networkName, farmAddress, rewardsAddress, stakingAddress.')
     return
@@ -99,9 +102,6 @@ const init = async (opts: State['opts']) => {
     infoModal.open('Template variable not found! Please use {farmfactory-widget-root}.')
     return
   }
-
-  setState({ opts })
-  appendModalsHtml()
 
   widget.injectHtml()
   timer.injectHtml()
