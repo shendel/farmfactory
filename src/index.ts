@@ -93,16 +93,15 @@ const init = async (opts: State['opts']) => {
     return
   }
 
-  setState({ opts })
-
-  appendModalsHtml()
-
   const widgetRoot = document.getElementById(constants.ids.widgetRoot)
 
   if (!widgetRoot) {
     infoModal.open('Template variable not found! Please use {farmfactory-widget-root}.')
     return
   }
+
+  setState({ opts })
+  appendModalsHtml()
 
   widget.injectHtml()
   timer.injectHtml()

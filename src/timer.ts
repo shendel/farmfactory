@@ -23,6 +23,7 @@ const init = async () => {
     }
   }
 
+
   const farmingFinishDate = await contracts.farm.methods.periodFinish().call()
   const finishDate = Number(farmingFinishDate.toString())
 
