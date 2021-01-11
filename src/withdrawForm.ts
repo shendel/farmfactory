@@ -2,19 +2,16 @@ import events from './events'
 import { getState } from './state'
 import infoModal from './infoModal'
 import constants from './constants'
+import loader from './loader'
 
-
-const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div></div>'
 
 const html = `
   <div class="farmfactory-form farmfactory-withdraw">
-    <div class="farmfactory-headline">
-      <div class="farmfactory-title" id="${constants.ids.withdrawForm.title}"></div>
-      <input class="farmfactory-input" id="${constants.ids.withdrawForm.input}" type="number" value="" />
-    </div>
-    <div class="farmfactory-basement">
+    <div class="farmfactory-title" id="${constants.ids.withdrawForm.title}"></div>
+    <input class="farmfactory-input" id="${constants.ids.withdrawForm.input}" type="number" value="" />
+    <div class="farmfactory-row">
       <button class="farmfactory-button" id="${constants.ids.withdrawForm.cancelButton}">Cancel</button>
-      <button class="farmfactory-button" id="${constants.ids.withdrawForm.withdrawButton}">Withdraw</button>
+      <button class="farmfactory-button" id="${constants.ids.withdrawForm.withdrawButton}">Deposit</button>
     </div>
   </div>
 `
@@ -45,7 +42,7 @@ const withdraw = async () => {
       isLoading = true
 
       cancelButton.classList.add('disabled')
-      withdrawButton.innerHTML = `Withdraw ${loader}`
+      withdrawButton.innerHTML = `Withdraw ${loader()}`
 
       const value = web3.utils.toWei(String(amount))
       const res = await contracts.farm.methods.withdraw(value).send({ from: account })
@@ -99,7 +96,7 @@ const show = async () => {
 
   root.classList.add('farmfactory-withdraw-visible')
 
-  title.innerHTML = `Available to withdraw: ${loader}`
+  title.innerHTML = `Available to withdraw: ${loader(true)}`
 
   const balance = await contracts.farm.methods.balanceOf(account).call()
 

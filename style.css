@@ -3,7 +3,6 @@
   display: inline-block;
   min-width: 410px;
   height: 330px;
-  /*background-color: #F9D154;*/
   background-color: #fff;
   padding: 48px 54px 48px 48px;
   font-family: 'Roboto', sans-serif;
@@ -15,7 +14,7 @@
 }
 
 .farmfactory-widget {
-  transition: opacity 0.15s ease;
+  transition: all 0.3s ease;
 }
 
 .farmfactory-line {
@@ -34,15 +33,18 @@
 .farmfactory-widget .farmfactory-title {
   line-height: 100%;
   font-size: 24px;
-  /*color: #796528;*/
   color: #828282;
 }
 
 .farmfactory-buttons {
+  display: flex;
+  align-items: center;
   margin-left: 24px;
 }
 
 .farmfactory-button {
+  display: flex;
+  align-items: center;
   height: 24px;
   padding: 0 12px;
   margin-left: 8px;
@@ -52,7 +54,7 @@
   background: none;
   background-color: #000;
   text-transform: uppercase;
-  line-height: 100%;
+  line-height: 24px;
   font-size: 12px;
   color: #fff;
   border-radius: 12px;
@@ -60,7 +62,6 @@
 }
 
 .farmfactory-button:hover {
-  /*background-color: #4a3d14;*/
   background-color: #515151;
 }
 
@@ -70,8 +71,6 @@
 
 .farmfactory-button.disabled {
   cursor: not-allowed;
-  /*background-color: #7a6627 !important;*/
-  /*color: #fad154 !important;*/
   background-color: #dedede !important;
   color: #666 !important;
 }
@@ -85,20 +84,23 @@
 }
 
 
-.farmfactory-form .farmfactory-headline {
+.farmfactory-form {
   position: absolute;
+  top: 110%;
   left: 48px;
   right: 48px;
-  top: -200%;
   z-index: 10;
-  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  transition: all 0.3s ease;
 }
 
 .farmfactory-form .farmfactory-title {
   margin-bottom: 16px;
   line-height: 100%;
   font-size: 18px;
-  /*color: #796528;*/
   color: #828282;
 }
 
@@ -123,18 +125,15 @@
   border-radius: 28px;
 }
 
-.farmfactory-form .farmfactory-basement {
-  position: absolute;
-  bottom: -200%;
-  right: 48px;
-  z-index: 10;
-  transition: all 0.5s ease;
+.farmfactory-form .farmfactory-row {
+  justify-content: flex-end;
+  margin-top: 32px;
 }
 
 .farmfactory-form .farmfactory-button {
   height: 40px;
   padding: 0 20px;
-  line-height: 100%;
+  line-height: 40px;
   font-size: 14px;
   border-radius: 20px;
 }
@@ -142,17 +141,13 @@
 
 .farmfactory-deposit-visible .farmfactory-widget,
 .farmfactory-withdraw-visible .farmfactory-widget {
+  transform: translate3d(0, -110%, 0);
   opacity: 0;
 }
 
-.farmfactory-deposit-visible .farmfactory-deposit .farmfactory-headline,
-.farmfactory-withdraw-visible .farmfactory-withdraw .farmfactory-headline {
-  top: 58px;
-}
-
-.farmfactory-deposit-visible .farmfactory-deposit .farmfactory-basement,
-.farmfactory-withdraw-visible .farmfactory-withdraw .farmfactory-basement {
-  bottom: 60px;
+.farmfactory-deposit-visible .farmfactory-deposit,
+.farmfactory-withdraw-visible .farmfactory-withdraw {
+  top: 0;
 }
 
 
@@ -268,7 +263,7 @@
 .farmfactory-loader {
   position: relative;
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
   width: 20px;
   height: 16px;
   margin-left: 10px;
@@ -281,6 +276,10 @@
   height: 100%;
   background: #fff;
   animation: farmfactory-loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.farmfactory-loader.black div {
+  background: #000;
 }
 
 .farmfactory-loader div:nth-child(1) {

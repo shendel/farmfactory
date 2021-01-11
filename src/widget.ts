@@ -4,13 +4,12 @@ import infoModal from './infoModal'
 import constants from './constants'
 import depositForm from './depositForm'
 import withdrawForm from './withdrawForm'
+import loader from './loader'
 
 
 let isLoading = false
 
 const debug = (str, ...args) => console.log(`widget: ${str}`, ...args)
-
-const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div></div>'
 
 const html = `
   <div class="farmfactory-root" id="${constants.ids.widget.root}">
@@ -121,9 +120,11 @@ const harvest = async () => {
     return
   }
 
+  const harvestButton = document.getElementById(constants.ids.widget.harvestButton)
+
   try {
     isLoading = true
-    document.getElementById(constants.ids.widget.harvestButton).innerHTML = loader;
+    harvestButton.innerHTML = `Harvest ${loader()}`;
 
     const res = await contracts.farm.methods.getReward().send({ from: account })
 
@@ -139,14 +140,14 @@ const harvest = async () => {
   }
   finally {
     isLoading = false
-    document.getElementById(constants.ids.widget.harvestButton).innerHTML = 'Harvest';
+    harvestButton.innerHTML = 'Harvest';
   }
 }
 
 const approve = async () => {
   debug('init approve')
 
-  const { opts, contracts, account } = getState()
+  const { opts, web3, contracts, account } = getState()
 
   if (isLoading) {
     return
@@ -164,10 +165,10 @@ const approve = async () => {
 
   try {
     isLoading = true
-    document.getElementById(constants.ids.widget.approveButton).innerHTML = `Approve ${loader}`;
+    document.getElementById(constants.ids.widget.approveButton).innerHTML = `Approve ${loader()}`;
 
     const spender = opts.farmAddress
-    const value = '1000000000000000000000000000000000'
+    const value = web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
 
     const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
 

@@ -2,17 +2,14 @@ import events from './events'
 import { getState } from './state'
 import infoModal from './infoModal'
 import constants from './constants'
+import loader from './loader'
 
-
-const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div></div>'
 
 const html = `
   <div class="farmfactory-form farmfactory-deposit">
-    <div class="farmfactory-headline">
-      <div class="farmfactory-title" id="${constants.ids.depositForm.title}"></div>
-      <input class="farmfactory-input" id="${constants.ids.depositForm.input}" type="number" value="" />
-    </div>
-    <div class="farmfactory-basement">
+    <div class="farmfactory-title" id="${constants.ids.depositForm.title}"></div>
+    <input class="farmfactory-input" id="${constants.ids.depositForm.input}" type="number" value="" />
+    <div class="farmfactory-row">
       <button class="farmfactory-button" id="${constants.ids.depositForm.cancelButton}">Cancel</button>
       <button class="farmfactory-button" id="${constants.ids.depositForm.depositButton}">Deposit</button>
     </div>
@@ -45,7 +42,7 @@ const deposit = async () => {
       isLoading = true
 
       cancelButton.classList.add('disabled')
-      depositButton.innerHTML = `Deposit ${loader}`
+      depositButton.innerHTML = `Deposit ${loader()}`
 
       const value = web3.utils.toWei(String(amount))
       const res = await contracts.farm.methods.stake(value).send({ from: account })
@@ -99,11 +96,11 @@ const show = async () => {
 
   root.classList.add('farmfactory-deposit-visible')
 
-  title.innerHTML = `Available to deposit: ${loader}`
+  title.innerHTML = `Available to deposit: ${loader(true)}`
 
   const balance = await contracts.farm.methods.balanceOf(account).call()
 
-  title.innerHTML = `Available to deposit: <b>${String(Number(balance) / 1e18)}</b>`
+  // title.innerHTML = `Available to deposit: <b>${String(Number(balance) / 1e18)}</b>`
 }
 
 const hide = () => {

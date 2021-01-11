@@ -2,11 +2,10 @@ import { initData } from './common'
 import constants from './constants'
 import infoModal from './infoModal'
 import events from './events'
+import loader from './loader'
 
 
 let isLoading = false
-
-const loader = '<div class="farmfactory-loader"><div></div><div></div><div></div></div>'
 
 const html = `
   <div class="farmfactory-overlay">
@@ -39,7 +38,7 @@ const connectMetamask = async () => {
     isLoading = true
 
     cancelButton.classList.add('disabled')
-    connectButton.innerHTML = `Connect ${loader}`
+    connectButton.innerHTML = `Connect ${loader()}`
 
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 
