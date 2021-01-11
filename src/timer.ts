@@ -1,14 +1,27 @@
 import constants from './constants'
+import { createContract } from './contracts'
 import { getState } from './state'
-import events from './events'
 
 
 let interval
 
 const init = async () => {
-  const { opts, contracts } = getState()
+  let { opts, contracts } = getState()
 
   const root = document.getElementById(constants.ids.timerRoot)
+
+  if (!root) {
+    return
+  }
+
+  if (!contracts) {
+    const web3 = new Web3(constants.infuraNetworks[opts.networkName])
+    const farm = await createContract('farm', web3)
+
+    contracts = {
+      farm,
+    }
+  }
 
   const farmingFinishDate = await contracts.farm.methods.periodFinish().call()
   const finishDate = Number(farmingFinishDate.toString())
@@ -44,19 +57,16 @@ const init = async () => {
   }
 }
 
-const injectHtml = async () => {
+const injectHtml = () => {
   const root = document.getElementById(constants.ids.timerRoot)
 
   if (root) {
     root.innerText = '--:--:--:--'
-
-    events.subscribe('data initialized', () => {
-      init()
-    })
   }
 }
 
 
 export default {
   injectHtml,
+  init,
 }

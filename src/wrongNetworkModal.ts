@@ -2,7 +2,7 @@ import constants from './constants'
 import { getState } from './state'
 
 
-const html = (networkId) => `
+const html = (networkName) => `
   <div class="farmfactory-overlay">
     <div class="farmfactory-modal">
       <button class="farmfactory-closeButton" id="${constants.ids.wrongNetworkModal.closeButton}">
@@ -11,7 +11,7 @@ const html = (networkId) => `
         </svg>
       </button>
       <div class="farmfactory-inner">
-        Wrong network, connect to networkId: ${networkId}
+        Please open your metamask and change network to <b>${networkName}</b>.
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@ const html = (networkId) => `
 const open = () => {
   const { opts } = getState()
 
-  document.getElementById(constants.ids.modalsRoot).innerHTML = html(opts.networkId)
+  document.getElementById(constants.ids.modalsRoot).innerHTML = html(opts.networkName.toUpperCase)
 
   document.getElementById(constants.ids.wrongNetworkModal.closeButton).addEventListener('click', () => {
     close()

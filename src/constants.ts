@@ -1,4 +1,8 @@
 export default {
+  infuraNetworks: {
+    mainnet: 'https://mainnet.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+    kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+  },
   ids: {
     timerRoot: 'farmfactory-timer-root',
     widgetRoot: 'farmfactory-widget-root',

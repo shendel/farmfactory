@@ -2,17 +2,14 @@ import widget from './widget'
 import wrongNetworkModal from './wrongNetworkModal'
 import connectModal from './connectModal'
 import infoModal from './infoModal'
-import { initData } from './common'
+import setupWeb3 from './setupWeb3'
 import constants from './constants'
-import events from './events'
 import { setState, getState } from './state'
 import type { State } from './state'
 import timer from './timer'
 
 
 const accountUnlockedStorageKey = 'ff-account-unlocked'
-
-const debug = (str, ...args) => console.log(`index: ${str}`, ...args)
 
 const appendModalsHtml = () => {
   const modalsNode = document.createElement('div')
@@ -25,12 +22,21 @@ const appendModalsHtml = () => {
   document.body.appendChild(infoModalNode)
 }
 
-const initApp = async () => {
+const connectWeb3 = async () => {
+  await setupWeb3()
+  timer.init()
+}
+
+const initMetamask = async () => {
   const { opts } = getState()
 
-  const isMainnet = Number(window.ethereum.networkVersion) === opts.networkId // 42 - Kovan, 1 - Mainnet
+  const activeNetwork = ({
+    1: 'mainnet',
+    3: 'ropsten',
+    42: 'kovan',
+  })[window.ethereum.networkVersion]
 
-  if (!isMainnet) {
+  if (opts.networkName.toLowerCase() !== activeNetwork.toLowerCase()) {
     wrongNetworkModal.open()
     return
   }
@@ -38,19 +44,14 @@ const initApp = async () => {
   const isAccountUnlocked = localStorage.getItem(accountUnlockedStorageKey) === 'true'
 
   if (isAccountUnlocked) {
-    debug('Account is unlocked')
-
     try {
       const accounts = await window.ethereum.request({ method: 'eth_accounts' })
 
-      if (accounts[0]) {
-        await initData({ accounts })
-
-        events.dispatch('update page data')
+      if (!accounts[0]) {
+        infoModal.open('Please create at least 1 account in MetaMask and reload the page')
       }
       else {
-        debug('Account not found')
-        connectModal.open()
+        setState({ account: accounts[0] })
       }
     }
     catch (err) {
@@ -60,26 +61,18 @@ const initApp = async () => {
     }
   }
   else {
-    debug('Account is locked')
     connectModal.open()
   }
 }
 
-const attemptToConnect = async () => {
-  debug('initialConnect')
-
+const connectMetamask = async () => {
   if (!window.ethereum) {
-    infoModal.open('Please install MetaMask')
+    widget.showError('Please install MetaMask')
     return
   }
 
-  debug('MetaMask is installed')
-
-  window.ethereum.on('networkChanged', () => {
-    initApp()
-  })
-
-  initApp()
+  await initMetamask()
+  window.ethereum.on('networkChanged', initMetamask)
 }
 
 const loadScript = (src) => new Promise((resolve, reject) => {
@@ -93,16 +86,14 @@ const loadScript = (src) => new Promise((resolve, reject) => {
 })
 
 const init = async (opts: State['opts']) => {
-  const { networkId, farmAddress, rewardsAddress, stakingAddress } = opts
+  const { networkName, farmAddress, rewardsAddress, stakingAddress } = opts
 
-  if (!networkId || !farmAddress || !rewardsAddress || !stakingAddress) {
-    infoModal.open('Check farmFactory.init(options). Required options: networkId, farmAddress, rewardsAddress, stakingAddress.')
+  if (!networkName || !farmAddress || !rewardsAddress || !stakingAddress) {
+    infoModal.open('Check farmFactory.init(options). Required options: networkName, farmAddress, rewardsAddress, stakingAddress.')
     return
   }
 
   setState({ opts })
-
-  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.1/web3.min.js')
 
   appendModalsHtml()
 
@@ -116,7 +107,9 @@ const init = async (opts: State['opts']) => {
   widget.injectHtml()
   timer.injectHtml()
 
-  await attemptToConnect()
+  await connectMetamask()
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.1/web3.min.js')
+  await connectWeb3()
 }
 
 const farmFactory = {

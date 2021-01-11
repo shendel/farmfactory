@@ -45,6 +45,15 @@ const depositAndWithdrawButtonsHtml = `
   <button class="farmfactory-button" id="${constants.ids.widget.withdrawButton}">Withdraw</button>
 `
 
+const errorHtml = (error) => `
+  <div class="farmfactory-root" id="${constants.ids.widget.root}">
+    <div class="farmfactory-widget-error">
+      <span>${error}</span>
+    </div>
+  </div>
+`
+
+
 const getData = async () => {
   debug('getData')
 
@@ -263,13 +272,18 @@ const injectHtml = () => {
   withdrawForm.addListeners()
   initHarvest()
 
+  events.subscribe('setup web3', getData)
   events.subscribe('deposit success', getData)
   events.subscribe('withdraw success', getData)
-  events.subscribe('update page data', getData)
+}
+
+const showError = (error) => {
+  document.getElementById(constants.ids.widgetRoot).innerHTML = errorHtml(error)
 }
 
 
 export default {
   injectHtml,
+  showError,
   getData,
 }

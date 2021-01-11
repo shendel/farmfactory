@@ -1,7 +1,7 @@
-import { initData } from './common'
+import { setState } from './state'
 import constants from './constants'
+import setupWeb3 from './setupWeb3'
 import infoModal from './infoModal'
-import events from './events'
 import loader from './loader'
 
 
@@ -42,12 +42,13 @@ const connectMetamask = async () => {
 
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
 
+    setState({ account: accounts[0] })
+
     localStorage.setItem('ff-account-unlocked', 'true')
 
     await window.ethereum.enable()
-    await initData({ accounts })
+    await setupWeb3()
 
-    events.dispatch('update page data')
     close()
   }
   catch (err) {

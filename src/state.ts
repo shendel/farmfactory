@@ -3,7 +3,7 @@ import events from './events'
 
 export type State = {
   opts: {
-    networkId: number
+    networkName: 'mainnet' | 'kovan' | 'ropsten'
     farmAddress: string
     rewardsAddress: string
     stakingAddress: string
