@@ -37,8 +37,6 @@ function farm_load_scripts($hook) {
 add_action('wp_enqueue_scripts', 'farm_load_scripts');
 
 
-
-//добавляем шорткоды
 add_shortcode( 'farmfactory', 'farmfactory_main_shortcode' );
 function farmfactory_main_shortcode( $atts ){
 	 return "<div id=\"farmfactory-widget-root\"></div>
