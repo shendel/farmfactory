@@ -23,7 +23,6 @@ const init = async () => {
     }
   }
 
-
   const farmingFinishDate = await contracts.farm.methods.periodFinish().call()
   const finishDate = Number(farmingFinishDate.toString())
 
@@ -54,7 +53,7 @@ const init = async () => {
     }, 1000)
   }
   else {
-    root.innerText = opts.timesUpMessage || 'Time is up, contact administrator for details'
+    root.innerText = opts.timesUpMessage || 'Farming not started yet'
   }
 }
 

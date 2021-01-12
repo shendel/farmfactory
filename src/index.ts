@@ -67,7 +67,13 @@ const initMetamask = async () => {
 
 const connectMetamask = async () => {
   if (!window.ethereum) {
-    widget.showError('Please install MetaMask')
+    widget.showError(`
+      <div class="install-metamask">
+        <img src="https://swaponline.github.io/images/metamask_45038d.svg" /><br />
+        Please install MetaMask
+      </div>
+    `)
+
     return
   }
 

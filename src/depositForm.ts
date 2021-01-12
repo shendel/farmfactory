@@ -3,6 +3,7 @@ import { getState } from './state'
 import infoModal from './infoModal'
 import constants from './constants'
 import loader from './loader'
+import toFixed from './toFixed'
 
 
 const html = `
@@ -89,18 +90,18 @@ const addListeners = () => {
 }
 
 const show = async () => {
-  const { contracts, account } = getState()
+  const { contracts, account, stakingTokenName } = getState()
 
   const root = document.getElementById(constants.ids.widget.root)
   const title = document.getElementById(constants.ids.depositForm.title)
 
   root.classList.add('farmfactory-deposit-visible')
 
-  title.innerHTML = `Available to deposit: ${loader(true)}`
+  title.innerHTML = `Balance: ${loader(true)}`
 
-  const balance = await contracts.farm.methods.balanceOf(account).call()
+  const balance = await contracts.staking.methods.balanceOf(account).call()
 
-  // title.innerHTML = `Available to deposit: <b>${String(Number(balance) / 1e18)}</b>`
+  title.innerHTML = `Balance: <b>${toFixed(Number(balance) / 1e18)} ${stakingTokenName}</b>`
 }
 
 const hide = () => {

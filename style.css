@@ -1,15 +1,39 @@
+.install-metamask {
+  text-align: center;
+}
+
+.install-metamask img {
+  width: 90px;
+  margin-bottom: 20px;
+}
+
 .farmfactory-root {
   position: relative;
   display: inline-block;
-  min-width: 410px;
   background-color: #fff;
-  padding: 48px 54px 48px 48px;
   font-family: 'Roboto', sans-serif;
   text-align: left;
   overflow: hidden;
   box-sizing: border-box;
-  border-radius: 24px;
   box-shadow: rgba(0,0,0, 0.2) 0 4px 24px;
+}
+
+@media (max-width: 567px) {
+
+  .farmfactory-root {
+    width: 100%;
+    padding: 40px 46px 40px 40px;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 567px) {
+
+  .farmfactory-root {
+    min-width: 410px;
+    padding: 48px 54px 48px 48px;
+    border-radius: 24px;
+  }
 }
 
 .farmfactory-widget {
@@ -35,8 +59,21 @@
 
 .farmfactory-widget .farmfactory-title {
   line-height: 100%;
-  font-size: 24px;
   color: #828282;
+}
+
+@media (max-width: 567px) {
+
+  .farmfactory-widget .farmfactory-title {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 567px) {
+
+  .farmfactory-widget .farmfactory-title {
+    font-size: 24px;
+  }
 }
 
 .farmfactory-buttons {
@@ -80,11 +117,25 @@
 }
 
 .farmfactory-value {
-  margin-top: 12px;
   font-weight: 700;
   line-height: 100%;
-  font-size: 48px;
   color: #151515;
+}
+
+@media (max-width: 567px) {
+
+  .farmfactory-value {
+    margin-top: 16px;
+    font-size: 40px;
+  }
+}
+
+@media (min-width: 567px) {
+
+  .farmfactory-value {
+    margin-top: 12px;
+    font-size: 48px;
+  }
 }
 
 
@@ -106,13 +157,6 @@
   line-height: 100%;
   font-size: 18px;
   color: #828282;
-}
-
-.farmfactory-form .farmfactory-title b {
-  margin-top: 8px;
-  line-height: 100%;
-  font-size: 32px;
-  display: block;
 }
 
 .farmfactory-form .farmfactory-input {
@@ -180,6 +224,7 @@
   border-radius: 8px;
   z-index: 5;
   background: #fff;
+  box-sizing: border-box;
 }
 
 .farmfactory-modal .farmfactory-closeButton {
