@@ -5,8 +5,6 @@ use FARMFACTORY\Controller;
 
 class MenuPageController extends Controller
 {
-    CONST MAIN_FILE = 'main.ea6eaa4f.chunk.js';
-
 
     /**
      *
