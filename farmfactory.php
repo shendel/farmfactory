@@ -6,14 +6,14 @@ Author: Denis Ivanov
 Requires PHP: 7.1
 Text Domain: farm
 Domain Path: /lang
-Version: 1.0.142
+Version: 1.0.0
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
 define( 'FARMFACTORY_TEMPLATE_DIR', __DIR__ . '/templates' );
 define( 'FARMFACTORY_BASE_DIR', __DIR__ );
 define( 'FARMFACTORY_BASE_FILE', __FILE__ );
-define( 'FARMFACTORY_VER', "1.0.140");
+define( 'FARMFACTORY_VER', "1.0.0");
 /**
  * Plugin Init
  */
@@ -29,10 +29,10 @@ function farm_load_scripts($hook) {
     $my_js_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'lib/index.js' ));
     $my_css_ver  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'style.css' ));
 
-	wp_enqueue_script( 'custom_js', plugins_url( 'lib/index.js', __FILE__ ), array(), $my_js_ver );
+	wp_enqueue_script( 'farmfactory-js', plugins_url( 'lib/index.js', __FILE__ ), array(), $my_js_ver );
 
-	wp_register_style( 'my_css',    plugins_url( 'style.css',    __FILE__ ), false,   $my_css_ver );
-	wp_enqueue_style ( 'my_css' );
+	wp_register_style( 'farmfactory-css',    plugins_url( 'style.css',    __FILE__ ), false,   $my_css_ver );
+	wp_enqueue_style ( 'farmfactory-css' );
 }
 add_action('wp_enqueue_scripts', 'farm_load_scripts');
 
