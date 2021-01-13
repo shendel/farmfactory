@@ -18,7 +18,7 @@
                             </th>
                             <td>
                                 <div class="farmfactory-form-inline">
-                                    <input value="<?php echo esc_attr(get_option('farmfactory_stakingAddress',"0xaFF4481D10270F50f203E0763e2597776068CBc5")); ?>"
+                                    <input value="<?php echo esc_attr(get_option('farmfactory_stakingAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
                                            name="farmfactory_stakingAddress" type="text" class="large-text js-farmfactory-load-icon ">
                                     <br>
                                     <?php esc_html_e('ERC20 address', 'farmfactory'); ?> <?php esc_html_e('of token\'s contract which users will stake (deposit). You can find erc20 address here https://etherscan.io/tokens . For example "0xdac17f958d2ee523a2206206994597c13d831ec7"  (USDT)', 'farmfactory'); ?>
@@ -32,7 +32,7 @@
                             </th>
                             <td>
                                 <div class="farmfactory-form-inline">
-                                    <input value="<?php echo esc_attr(get_option('farmfactory_rewardsAddress',"0xaFF4481D10270F50f203E0763e2597776068CBc5")); ?>"
+                                    <input value="<?php echo esc_attr(get_option('farmfactory_rewardsAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
                                            name="farmfactory_rewardsAddress" type="text" class="large-text js-farmfactory-load-icon ">
                                     <br>
                                     <?php esc_html_e('ERC20 address of reward token which users will earn. You can use the same as "Staking address"', 'farmfactory'); ?>
@@ -46,10 +46,10 @@
                             </th>
                             <td>
                                 <div class="farmfactory-form-inline">
-                                    <input value="<?php echo esc_attr(get_option('farmfactory_networkName','kovan')); ?>"
+                                    <input value="<?php echo esc_attr(get_option('farmfactory_networkName','ropsten')); ?>"
                                            name="farmfactory_networkName" type="text" class="large-text js-farmfactory-load-icon ">
                                     <br>
-                                    <?php esc_html_e('We recommend to test on testnet (https://github.com/kovan-testnet/faucet) with testnet tokens (https://github.com/bokkypoobah/WeenusTokenFaucet) before launch', 'farmfactory'); ?>
+                                    <?php esc_html_e('We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
                                 </div>
                             </td>
                         </tr>
@@ -64,7 +64,7 @@
                                            name="farmfactory_farmAddress" type="text" class="large-text js-farmfactory-load-icon ">
 
                                     <br><b><?php esc_html_e('How to create farm contract:', 'farmfactory'); ?></b><br>
-                                    <?php esc_html_e('1. Go to this interface  (or https://kovan.etherscan.io/address/0x867f4a2a230de019370931ef3f21a09504fd87f2#writeContract for kovan tesntet (networkid=42)', 'farmfactory'); ?> <br>
+                                    <?php esc_html_e('1. Go to this interface  (or https://ropsten.etherscan.io/address/0x5698fd782B20ac6759F279206e5edE9739ddebEe#writeContract for kovan tesntet (networkid=42)', 'farmfactory'); ?> <br>
                                     <?php esc_html_e('2. Connect metamask (click "Connect to web3")', 'farmfactory'); ?><Br>
                                     <?php esc_html_e('3. Open "Create farm" dialog (https://screenshots.wpmix.net/chrome_v0wRXGUaKS0rwhHfoQKN1eonZqQLxIXv.png see screenshot) and enter this variables:', 'farmfactory'); ?> <br>
                                     <?php esc_html_e('4. Enter _rewardsToken (address) the same as you entered above ', 'farmfactory'); ?><br>
@@ -100,7 +100,7 @@
 						<?php
 					}
 					?>
-                    <?php esc_html_e('1. https://etherscan.io/address/'.get_option('farmfactory_farmAddress').'#writeContract - Open your farming contract. (in https://kovan.etherscan.io/address/'.esc_attr(get_option('farmfactory_farmAddress')).'#writeContract - in covan testnet)', 'farmfactory'); ?><br>
+                    <?php esc_html_e('1. https://ropsten.etherscan.io/address/'.get_option('farmfactory_farmAddress').'#writeContract - Open your farming contract. (in https://etherscan.io/address/'.esc_attr(get_option('farmfactory_farmAddress')).'#writeContract - in mainnet)', 'farmfactory'); ?><br>
                     <?php esc_html_e('2. Connect to web3', 'farmfactory'); ?><Br>
                     <?php esc_html_e('3. Click "3. notifyRewardAmount"', 'farmfactory'); ?><br>
                     <?php esc_html_e('4. Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract', 'farmfactory'); ?><br>
