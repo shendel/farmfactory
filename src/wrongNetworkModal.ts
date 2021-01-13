@@ -20,7 +20,7 @@ const html = (networkName) => `
 const open = () => {
   const { opts } = getState()
 
-  document.getElementById(constants.ids.modalsRoot).innerHTML = html(opts.networkName.toUpperCase)
+  document.getElementById(constants.ids.modalsRoot).innerHTML = html(opts.networkName.toUpperCase())
 
   document.getElementById(constants.ids.wrongNetworkModal.closeButton).addEventListener('click', () => {
     close()
