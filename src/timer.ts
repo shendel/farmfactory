@@ -15,7 +15,7 @@ const init = async () => {
   }
 
   if (!contracts) {
-    const web3 = new Web3(constants.infuraNetworks[opts.networkName])
+    const web3 = new Web3(constants.networks[opts.networkName])
     const farm = await createContract('farm', web3)
 
     contracts = {
