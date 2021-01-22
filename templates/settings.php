@@ -42,14 +42,19 @@
 
                         <tr>
                             <th scope="row">
-                                <label><?php esc_html_e('NetworkId ', 'farmfactory'); ?></label>
+                                <label><?php esc_html_e('Newtwork ', 'farmfactory'); ?></label>
                             </th>
                             <td>
-                                <div class="farmfactory-form-inline">
-                                    <input value="<?php echo esc_attr(get_option('farmfactory_networkName','ropsten')); ?>"
-                                           name="farmfactory_networkName" type="text" class="large-text js-farmfactory-load-icon ">
+                                <div class="farmfactory-form-inline"><?php 
+								$farm_factory_network = get_option('farmfactory_networkName','ropsten');
+								?>
+                                    <select 
+                                           name="farmfactory_networkName">
+										   <option <?php if ($farm_factory_network == "ropsten") echo "selected"; ?>>ropsten</option>
+										   <option <?php if ($farm_factory_network == "mainnet") echo "selected"; ?>>mainnet</option>
+									</select>
                                     <br>
-                                    <?php esc_html_e('We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
+                                    <?php esc_html_e('Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
                                 </div>
                             </td>
                         </tr>
@@ -64,7 +69,11 @@
                                            name="farmfactory_farmAddress" type="text" class="large-text js-farmfactory-load-icon ">
 
                                     <br><b><?php esc_html_e('How to create farm contract:', 'farmfactory'); ?></b><br>
-                                    <?php esc_html_e('1. Go to this interface  (or https://ropsten.etherscan.io/address/0x5698fd782B20ac6759F279206e5edE9739ddebEe#writeContract for kovan tesntet (networkid=42)', 'farmfactory'); ?> <br>
+                                    <?php esc_html_e('1. Go to this interface ', 'farmfactory'); ?> <Br> <?php 
+										esc_html_e("- Ropsten network: https://ropsten.etherscan.io/address/0x5698fd782B20ac6759F279206e5edE9739ddebEe#writeContract",'farmfactory');
+										echo "<br>";
+										esc_html_e("- Mainnet network: https://etherscan.io/address/0x5698fd782B20ac6759F279206e5edE9739ddebEe#writeContract",'farmfactory');
+									?> <br>
                                     <?php esc_html_e('2. Connect metamask (click "Connect to web3")', 'farmfactory'); ?><Br>
                                     <?php esc_html_e('3. Open "Create farm" dialog (https://screenshots.wpmix.net/chrome_v0wRXGUaKS0rwhHfoQKN1eonZqQLxIXv.png see screenshot) and enter this variables:', 'farmfactory'); ?> <br>
                                     <?php esc_html_e('4. Enter _rewardsToken (address) the same as you entered above ', 'farmfactory'); ?><br>
