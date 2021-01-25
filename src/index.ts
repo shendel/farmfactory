@@ -78,13 +78,16 @@ const connectMetamask = async () => {
     return
   }
 
-  const interval = setInterval(() => {
-    if (window.ethereum.networkVersion) {
-      clearInterval(interval)
-      initMetamask()
-      window.ethereum.on('networkChanged', initMetamask)
-    }
-  }, 300)
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      if (window.ethereum.networkVersion) {
+        clearInterval(interval)
+        initMetamask()
+        window.ethereum.on('networkChanged', initMetamask)
+        resolve()
+      }
+    }, 500)
+  })
 }
 
 const loadScript = (src) => new Promise((resolve, reject) => {
