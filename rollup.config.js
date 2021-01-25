@@ -31,6 +31,6 @@ export default {
       runtimeHelpers: true,
       // preferBuiltins: false,
     }),
-    // uglify(),
+    uglify(),
   ],
 }

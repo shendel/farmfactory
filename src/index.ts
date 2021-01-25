@@ -48,7 +48,8 @@ const initMetamask = async () => {
       const accounts = await window.ethereum.request({ method: 'eth_accounts' })
 
       if (!accounts[0]) {
-        infoModal.open('Please create at least 1 account in MetaMask and reload the page')
+        localStorage.removeItem(accountUnlockedStorageKey)
+        connectModal.open()
       }
       else {
         setState({ account: accounts[0] })
