@@ -36,7 +36,7 @@ const initMetamask = async () => {
     42: 'kovan',
   })[window.ethereum.networkVersion]
 
-  if (opts.networkName.toLowerCase() !== activeNetwork.toLowerCase()) {
+  if (!activeNetwork || opts.networkName.toLowerCase() !== activeNetwork.toLowerCase()) {
     wrongNetworkModal.open()
     return
   }
@@ -77,8 +77,13 @@ const connectMetamask = async () => {
     return
   }
 
-  await initMetamask()
-  window.ethereum.on('networkChanged', initMetamask)
+  const interval = setInterval(() => {
+    if (window.ethereum.networkVersion) {
+      clearInterval(interval)
+      initMetamask()
+      window.ethereum.on('networkChanged', initMetamask)
+    }
+  }, 300)
 }
 
 const loadScript = (src) => new Promise((resolve, reject) => {
