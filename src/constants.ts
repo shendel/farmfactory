@@ -1,8 +1,8 @@
 export default {
   networks: {
-    mainnet: 'https://mainnet.etherscan.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
-    ropsten: 'https://ropsten.etherscan.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
-    kovan: 'https://kovan.etherscan.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+    mainnet: 'https://mainnet.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+    ropsten: 'https://ropsten.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+    kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
   },
   ids: {
     timerRoot: 'farmfactory-timer-root',

@@ -23,7 +23,16 @@ const init = async () => {
     }
   }
 
-  const farmingFinishDate = await contracts.farm.methods.periodFinish().call()
+  let farmingFinishDate
+
+  try {
+    farmingFinishDate = await contracts.farm.methods.periodFinish().call()
+  }
+  catch (err) {
+    console.error(err)
+    return
+  }
+
   const finishDate = Number(farmingFinishDate.toString())
 
   if (finishDate - Date.now() / 1000 > 0) {
