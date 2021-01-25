@@ -70,7 +70,7 @@
 
                                     <br><b><?php esc_html_e('How to create farm contract:', 'farmfactory'); ?></b><br>
                                     <?php esc_html_e('1. Go to this interface ', 'farmfactory'); ?> <Br> <?php 
-										esc_html_e("- Ropsten network: https://ropsten.etherscan.io/address/0x5698fd782B20ac6759F279206e5edE9739ddebEe#writeContract",'farmfactory');
+										esc_html_e("- Ropsten network: https://ropsten.etherscan.io/address/0x6722A8C2c47296361bb6334059Da3167363B2Aa3#code #writeContract",'farmfactory');
 										echo "<br>";
 										esc_html_e("- Mainnet network: https://etherscan.io/address/0x5698fd782B20ac6759F279206e5edE9739ddebEe#writeContract",'farmfactory');
 									?> <br>
