@@ -1,6 +1,7 @@
 export default {
   networks: {
     mainnet: 'https://mainnet.ropsten.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+    ropsten: 'https://ropsten.ropsten.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
     kovan: 'https://kovan.ropsten.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
   },
   ids: {
