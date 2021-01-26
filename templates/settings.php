@@ -72,7 +72,7 @@
                                     <?php esc_html_e('1. Go to this interface ', 'farmfactory'); ?> <Br> <?php 
 										esc_html_e("- Ropsten network: https://ropsten.etherscan.io/address/0x6722A8C2c47296361bb6334059Da3167363B2Aa3#writeContract",'farmfactory');
 										echo "<br>";
-										esc_html_e("- Mainnet network: https://etherscan.io/address/0x5698fd782B20ac6759F279206e5edE9739ddebEe#writeContract",'farmfactory');
+										esc_html_e("- Mainnet network: https://etherscan.io/address/0xd7504d72600d48de0889e93675e4e1eab1eb5a29#writeContract",'farmfactory');
 									?> <br>
                                     <?php esc_html_e('2. Connect metamask (click "Connect to web3")', 'farmfactory'); ?><Br>
                                     <?php esc_html_e('3. Open "Create farm" dialog (https://screenshots.wpmix.net/chrome_v0wRXGUaKS0rwhHfoQKN1eonZqQLxIXv.png see screenshot) and enter this variables:', 'farmfactory'); ?> <br>
