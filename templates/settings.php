@@ -21,7 +21,7 @@
                                     <input value="<?php echo esc_attr(get_option('farmfactory_stakingAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
                                            name="farmfactory_stakingAddress" type="text" class="large-text js-farmfactory-load-icon ">
                                     <br>
-                                    <?php esc_html_e('ERC20 address', 'farmfactory'); ?> <?php esc_html_e('of token\'s contract which users will stake (deposit). You can find erc20 address here https://etherscan.io/tokens . For example "0xdac17f958d2ee523a2206206994597c13d831ec7"  (USDT)', 'farmfactory'); ?>
+                                    <?php esc_html_e('ERC20 address', 'farmfactory'); ?> <?php esc_html_e('of token\'s contract which users will stake (deposit). Free test tokens https://github.com/bokkypoobah/WeenusTokenFaucet', 'farmfactory'); ?>
                                 </div>
                             </td>
                         </tr>
