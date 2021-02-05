@@ -6,14 +6,14 @@ Author: Denis Ivanov
 Requires PHP: 7.1
 Text Domain: farm
 Domain Path: /lang
-Version: 1.0.11
+Version: 1.0.12
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
 define( 'FARMFACTORY_TEMPLATE_DIR', __DIR__ . '/templates' );
 define( 'FARMFACTORY_BASE_DIR', __DIR__ );
 define( 'FARMFACTORY_BASE_FILE', __FILE__ );
-define( 'FARMFACTORY_VER', "1.0.11");
+define( 'FARMFACTORY_VER', "1.0.12");
 /**
  * Plugin Init
  */
