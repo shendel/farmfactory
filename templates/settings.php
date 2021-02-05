@@ -97,23 +97,19 @@
 									  const button = document.getElementById('button')
 
 									  farmDeployer.init({
-										rewardsAddress: '',
-										stakingAddress: '0x101848D5C5bBca18E6b4431eEdF6B95E9ADF82FA',
-										duration: 2000003,
-										decimal: 18,
-										onStartLoading: () => {
-										  // show loader
-										  button.disabled = true
-										},
-										onFinishLoading: () => {
-										  // hide loader
-										  button.disabled = false
-										},
-										onError: (err) => {
-										  console.error(err)
-										  button.disabled = true
-										}
-									  });
+									  onStartLoading: () => {
+									    // show loader
+									    button.disabled = true
+									  },
+									  onFinishLoading: () => {
+									    // hide loader
+									    button.disabled = false
+									  },
+									  onError: (err) => {
+									    console.error(err)
+									    button.disabled = true
+									  }
+									});
 
 									  button.addEventListener('click', () => {
 										if (button.disabled) {
