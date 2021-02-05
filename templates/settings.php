@@ -18,7 +18,7 @@
                             </th>
                             <td>
                                 <div class="farmfactory-form-inline">
-                                    <input value="<?php echo esc_attr(get_option('farmfactory_stakingAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
+                                    <input id="stakingAddress" value="<?php echo esc_attr(get_option('farmfactory_stakingAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
                                            name="farmfactory_stakingAddress" type="text" class="large-text js-farmfactory-load-icon ">
                                     <br>
                                     <?php esc_html_e('ERC20 address', 'farmfactory'); ?> <?php esc_html_e('of token\'s contract which users will stake (deposit). Free test tokens https://github.com/bokkypoobah/WeenusTokenFaucet', 'farmfactory'); ?>
@@ -32,13 +32,30 @@
                             </th>
                             <td>
                                 <div class="farmfactory-form-inline">
-                                    <input value="<?php echo esc_attr(get_option('farmfactory_rewardsAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
-                                           name="farmfactory_rewardsAddress" type="text" class="large-text js-farmfactory-load-icon ">
+                                    <input id="rewardsAddress" value="<?php echo esc_attr(get_option('farmfactory_rewardsAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
+                                           name="farmfactory_rewardsAddress" type="text" class="large-text js-farmfactory-load-icon "> 
+									
+									. Decimals <input required id="decimals" value="" type="text" class="large-text js-farmfactory-load-icon "> 	   
                                     <br>
-                                    <?php esc_html_e('ERC20 address of reward token which users will earn. You can use the same as "Staking address"', 'farmfactory'); ?>
+                                    <?php esc_html_e('ERC20 address of reward token which users will earn. You can use the same as "Staking address".', 'farmfactory'); ?>
                                 </div>
                             </td>
                         </tr>
+						
+						<tr>
+                            <th scope="row">
+                                <label><?php esc_html_e('Reward duration ', 'farmfactory'); ?></label>
+                            </th>
+                            <td>
+                                <div class="farmfactory-form-inline">
+                                    <input id="duration" value="<?php echo esc_attr(get_option('farmfactory_rewardsduration',"")); ?>"
+                                           name="farmfactory_rewardsAddress" required type="text" class="large-text js-farmfactory-load-icon ">
+                                    <br>
+                                    <?php esc_html_e('Enter _rewardsDuration - duration of staking round in seconds. 86400 - 1 day, 2592000 - 30 day, 31536000 - 1 year', 'farmfactory'); ?>
+                                </div>
+                            </td>
+                        </tr>
+						
 
                         <tr>
                             <th scope="row">
@@ -66,22 +83,64 @@
                             <td>
                                 <div class="farmfactory-form-inline">
                                     <input value="<?php echo esc_attr(get_option('farmfactory_farmAddress')); ?>"
-                                           name="farmfactory_farmAddress" type="text" class="large-text js-farmfactory-load-icon ">
+                                           name="farmfactory_farmAddress" id='farmfactory_farmAddress' type="text" class="large-text js-farmfactory-load-icon ">
 
-                                    <br><b><?php esc_html_e('How to create farm contract:', 'farmfactory'); ?></b><br>
-                                    <?php esc_html_e('1. Go to this interface ', 'farmfactory'); ?> <Br> <?php 
-										esc_html_e("- Ropsten network: https://ropsten.etherscan.io/address/0x6722A8C2c47296361bb6334059Da3167363B2Aa3#writeContract",'farmfactory');
-										echo "<br>";
-										esc_html_e("- Mainnet network: https://etherscan.io/address/0xd7504d72600d48de0889e93675e4e1eab1eb5a29#writeContract",'farmfactory');
-									?> <br>
-                                    <?php esc_html_e('2. Connect metamask (click "Connect to web3")', 'farmfactory'); ?><Br>
-                                    <?php esc_html_e('3. Open "Create farm" dialog (https://screenshots.wpmix.net/chrome_v0wRXGUaKS0rwhHfoQKN1eonZqQLxIXv.png see screenshot) and enter this variables:', 'farmfactory'); ?> <br>
-                                    <?php esc_html_e('4. Enter _rewardsToken (address) the same as you entered above ', 'farmfactory'); ?><br>
-                                    <?php esc_html_e('5. Enter _stakingToken  (address)', 'farmfactory'); ?> <br>
-                                    <?php esc_html_e('6. Enter _rewardsDuration - duration of staking round in seconds. 86400 - 1 day, 2592000 - 30 day, 31536000 - 1 year', 'farmfactory'); ?><Br>
-                                    <?php esc_html_e('7. Enter _newOwner - your metamask\'s address. This is admin\'s address, who can start round.', 'farmfactory'); ?><Br>
-                                    <?php esc_html_e('8. Click "write" and copy paste new contract address to this "Farming address Address" input (https://screenshots.wpmix.net/chrome_alA4vL8kN2zsxTpBpJWtn0a2DFrCJ9xi.png" - where to get the address)', 'farmfactory'); ?>
-                                </div>
+									<button id="button">Deploy</button>
+
+									<script src="https://farm.wpmix.net/wp-content/plugins/farmfactory/lib/farmdeployer.js"></script>
+
+									<script>
+									  const rewardsAddress = document.getElementById('rewardsAddress')
+									  const stakingAddress = document.getElementById('stakingAddress')
+									  const duration = document.getElementById('duration')
+									  const decimal = document.getElementById('decimal')
+									  const button = document.getElementById('button')
+
+									  farmDeployer.init({
+										rewardsAddress: '',
+										stakingAddress: '0x101848D5C5bBca18E6b4431eEdF6B95E9ADF82FA',
+										duration: 2000003,
+										decimal: 18,
+										onStartLoading: () => {
+										  // show loader
+										  button.disabled = true
+										},
+										onFinishLoading: () => {
+										  // hide loader
+										  button.disabled = false
+										},
+										onError: (err) => {
+										  console.error(err)
+										  button.disabled = true
+										}
+									  });
+
+									  button.addEventListener('click', () => {
+										if (button.disabled) {
+										  return
+										}
+
+										button.disabled = true
+
+										farmDeployer.deploy({
+										  rewardsAddress: rewardsAddress.value,
+										  stakingAddress: stakingAddress.value,
+										  duration: duration.value,
+										  decimal: decimal.value,
+										  onSuccess: (address) => {
+											button.disabled = false
+											console.log('Contract address:', address)
+											document.getElementById('farmfactory_farmAddress').value=address;
+										  },
+										  onError: (err) => {
+											console.error(err)
+											button.disabled = true
+										  }
+										})
+									  })
+									</script>
+
+                                 </div>
                             </td>
                         </tr>
 
