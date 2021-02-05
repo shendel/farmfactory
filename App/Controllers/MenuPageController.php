@@ -43,6 +43,8 @@ class MenuPageController extends Controller
 		if ( ! empty($_POST['farmfactory_networkName'])) update_option("farmfactory_networkName",$_POST['farmfactory_networkName']);
 		if ( ! empty($_POST['farmfactory_rewardsAddress'])) update_option("farmfactory_rewardsAddress",$_POST['farmfactory_rewardsAddress']);
 		if ( ! empty($_POST['farmfactory_farmAddress'])) update_option("farmfactory_farmAddress",$_POST['farmfactory_farmAddress']);
+		if ( ! empty($_POST['farmfactory_rewardsduration'])) update_option("farmfactory_rewardsduration",$_POST['farmfactory_rewardsduration']);
+		if ( ! empty($_POST['farmfactory_rewarddecimals'])) update_option("farmfactory_rewarddecimals",$_POST['farmfactory_rewarddecimals']);
 
 
 		if (!empty($_POST)) {
