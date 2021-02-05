@@ -2,9 +2,13 @@
 .idea
 .yarn
 .pnp.js
+.tmp
 
 *-lock.*
 yarn.lock
 
 node_modules
-index.html
+
+farmdeployer.html
+farmfactory.html
+Farm.json

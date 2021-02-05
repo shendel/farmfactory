@@ -20,12 +20,11 @@
     "dist"
   ],
   "license": "MIT",
-  "module": "dist/index.es.js",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "scripts": {
     "dev": "rollup -cw",
-    "build": "rimraf ./dist && rimraf ./lib && rollup -c"
+    "build:farmdeploy": "node ./bin/solc.js",
+    "build:farmfactory": "rollup -c",
+    "build": "rimraf ./lib && npm run build:farmdeploy && npm run build:farmfactory"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",
@@ -51,6 +50,8 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@metamask/detect-provider": "^1.2.0"
+    "@metamask/detect-provider": "^1.2.0",
+    "@openzeppelin/contracts": "^3.4.0",
+    "solc": "^0.6.8"
   }
 }
