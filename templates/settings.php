@@ -32,10 +32,10 @@
                             </th>
                             <td>
                                 <div class="farmfactory-form-inline">
-                                    <input id="rewardsAddress" value="<?php echo esc_attr(get_option('farmfactory_rewardsAddress',"0xba6879d0df4b09fc678ca065c00dd345adf0365e")); ?>"
-                                           name="farmfactory_rewardsAddress" type="text" class="large-text js-farmfactory-load-icon "> 
+                                    <input id="rewardsAddress" value="<?php echo esc_attr(get_option('farmfactory_rewardsAddress',"")); ?>"
+                                           name="farmfactory_rewardsAddress" style='width:80%' placeholder='0x....' type="text" class="large-text js-farmfactory-load-icon "> 
 									
-									. Decimals <input required id="decimals" value="" type="text" class="large-text js-farmfactory-load-icon "> 	   
+									. Decimals <input required name="farmfactory_rewarddecimals" id="farmfactory_rewarddecimals" value="<?php echo esc_attr(get_option('farmfactory_rewarddecimals',"")); ?>" style='width:10%' type="text" class="large-text js-farmfactory-load-icon "> 	   
                                     <br>
                                     <?php esc_html_e('ERC20 address of reward token which users will earn. You can use the same as "Staking address".', 'farmfactory'); ?>
                                 </div>
@@ -49,7 +49,7 @@
                             <td>
                                 <div class="farmfactory-form-inline">
                                     <input id="duration" value="<?php echo esc_attr(get_option('farmfactory_rewardsduration',"")); ?>"
-                                           name="farmfactory_rewardsAddress" required type="text" class="large-text js-farmfactory-load-icon ">
+                                           name="farmfactory_rewardsduration" required type="text" class="large-text js-farmfactory-load-icon ">
                                     <br>
                                     <?php esc_html_e('Enter _rewardsDuration - duration of staking round in seconds. 86400 - 1 day, 2592000 - 30 day, 31536000 - 1 year', 'farmfactory'); ?>
                                 </div>
@@ -69,6 +69,8 @@
                                            name="farmfactory_networkName">
 										   <option <?php if ($farm_factory_network == "ropsten") echo "selected"; ?>>ropsten</option>
 										   <option <?php if ($farm_factory_network == "mainnet") echo "selected"; ?>>mainnet</option>
+										   <option <?php if ($farm_factory_network == "rinkeby") echo "selected"; ?>>rinkeby</option>
+										   <option <?php if ($farm_factory_network == "bsc") echo "selected"; ?>>bsc</option> 
 									</select>
                                     <br>
                                     <?php esc_html_e('Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
@@ -85,7 +87,7 @@
                                     <input value="<?php echo esc_attr(get_option('farmfactory_farmAddress')); ?>"
                                            name="farmfactory_farmAddress" id='farmfactory_farmAddress' type="text" class="large-text js-farmfactory-load-icon ">
 
-									<button id="button">Deploy</button>
+									<br><button id="button">Deploy</button> - after deployment address will be automatically placed in the field above
 
 									<script src="https://farm.wpmix.net/wp-content/plugins/farmfactory/lib/farmdeployer.js"></script>
 
@@ -93,7 +95,7 @@
 									  const rewardsAddress = document.getElementById('rewardsAddress')
 									  const stakingAddress = document.getElementById('stakingAddress')
 									  const duration = document.getElementById('duration')
-									  const decimal = document.getElementById('decimal')
+									  const decimal = document.getElementById('farmfactory_rewarddecimals')
 									  const button = document.getElementById('button')
 
 									  farmDeployer.init({
@@ -117,7 +119,7 @@
 										}
 
 										button.disabled = true
-
+										
 										farmDeployer.deploy({
 										  rewardsAddress: rewardsAddress.value,
 										  stakingAddress: stakingAddress.value,
@@ -162,16 +164,19 @@
 						?>
                         <b><?php esc_html_e('Please go to "Main settings" and enter farm address contract before perform this instructions', 'farmfactory'); ?></b>
 						<?php
+					} else {
+						?>
+						1. <?php esc_html_e('Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract', 'farmfactory'); ?><br>
+						<input value="" type="text" class="large-text js-farmfactory-load-icon ">
+						2. <?php esc_html_e('Transfer required amount of tokens to the farm contract  ('.get_option('farmfactory_farmAddress').')', 'farmfactory'); ?>
+						<Br> 3. Click <input type="submit" name="mcwallet-add-token"
+                                       class="button button-primary mcwallet-add-token"
+                                       value="<?php esc_attr_e('Start Farming Period', 'farmfactory'); ?>">
+                                <span class="spinner"></span> <br><br>
+						<?php
 					}
 					?>
-                    <?php esc_html_e('1. https://ropsten.etherscan.io/address/'.get_option('farmfactory_farmAddress').'#writeContract - Open your farming contract. (in https://etherscan.io/address/'.esc_attr(get_option('farmfactory_farmAddress')).'#writeContract - in mainnet)', 'farmfactory'); ?><br>
-                    <?php esc_html_e('2. Connect to web3', 'farmfactory'); ?><Br>
-                    <?php esc_html_e('3. Click "3. notifyRewardAmount"', 'farmfactory'); ?><br>
-                    <?php esc_html_e('4. Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract', 'farmfactory'); ?><br>
-                    <?php esc_html_e('5. Don\'t forget to "Add Zeroes" (https://kovan.etherscan.io/address/'.esc_attr(get_option('farmfactory_rewardsAddress')).'#readContract - check "decimals" constant here)', 'farmfactory'); ?><br>
-                    <?php esc_html_e('6. Transfer required amount of tokens to the farm contract  ('.get_option('farmfactory_farmAddress').')', 'farmfactory'); ?><Br>
-                    <?php esc_html_e('7. Click "Write", done!', 'farmfactory'); ?>
-                    <br><br>
+                    
                     <h2><?php esc_html_e('Reward distributing', 'farmfactory'); ?></h2>
                     <?php esc_html_e('All distrubutes are autamatically. Put "[farmfactory]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory'); ?>
                     <br><br>
