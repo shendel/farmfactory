@@ -208,11 +208,11 @@ startFarmingButton.addEventListener('click', () => {
     amount: amount.value,
     onSuccess: () => {
       console.log('Farming started')
-      deployButton.disabled = false
+      startFarmingButton.disabled = false
     },
     onError: (err) => {
       console.error(err)
-      deployButton.disabled = false
+      startFarmingButton.disabled = false
     }
   })
 })
