@@ -16,7 +16,9 @@ export type State = {
   account: any
   contracts: any
   stakingTokenName: string
+  stakingDecimals: number
   rewardsTokenName: string
+  rewardsDecimals: number
 }
 
 let state: State = {
@@ -25,7 +27,9 @@ let state: State = {
   account: null,
   contracts: null,
   stakingTokenName: '',
+  stakingDecimals: null,
   rewardsTokenName: '',
+  rewardsDecimals: null,
 }
 
 export const getState = () => state

@@ -58,7 +58,7 @@ const errorHtml = (error) => `
 const getData = async () => {
   debug('getData')
 
-  const { opts, contracts, account, stakingTokenName, rewardsTokenName } = getState()
+  const { opts, contracts, account, stakingTokenName, stakingDecimals, rewardsTokenName, rewardsDecimals } = getState()
 
   if (!contracts) {
     return
@@ -84,8 +84,8 @@ const getData = async () => {
     const harvestButton = document.getElementById(constants.ids.widget.harvestButton)
     const withdrawButton = document.getElementById(constants.ids.widget.withdrawButton)
 
-    balanceNode.innerText = `${toFixed(farmingBalance / 1e18)} ${stakingTokenName}`
-    earnedTokensNode.innerText = `${toFixed(earnedTokens / 1e18)} ${rewardsTokenName}`
+    balanceNode.innerText = `${toFixed(farmingBalance / Math.pow(10, stakingDecimals))} ${stakingTokenName}`
+    earnedTokensNode.innerText = `${toFixed(earnedTokens / Math.pow(10, rewardsDecimals))} ${rewardsTokenName}`
 
     if (harvestButton) {
       if (earnedTokens > 0) {

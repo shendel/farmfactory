@@ -90,7 +90,7 @@ const addListeners = () => {
 }
 
 const show = async () => {
-  const { contracts, account, stakingTokenName } = getState()
+  const { contracts, account, stakingTokenName, stakingDecimals } = getState()
 
   const root = document.getElementById(constants.ids.widget.root)
   const title = document.getElementById(constants.ids.depositForm.title)
@@ -101,7 +101,7 @@ const show = async () => {
 
   const balance = await contracts.staking.methods.balanceOf(account).call()
 
-  title.innerHTML = `Balance: <b>${toFixed(Number(balance) / 1e18)} ${stakingTokenName}</b>`
+  title.innerHTML = `Balance: <b>${toFixed(Number(balance) / Math.pow(10, stakingDecimals))} ${stakingTokenName}</b>`
 }
 
 const hide = () => {
