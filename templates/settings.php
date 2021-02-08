@@ -89,79 +89,7 @@
 
 									<br><button id="button">Deploy</button> - after deployment address will be automatically placed in the field above
 
-									<script src="https://farm.wpmix.net/wp-content/plugins/farmfactory/lib/farmdeployer.js"></script>
-
-									<script>
-									  const rewardsAddress = document.getElementById('rewardsAddress')
-									  const stakingAddress = document.getElementById('stakingAddress')
-									  const duration = document.getElementById('duration')
-									  const decimal = document.getElementById('farmfactory_rewarddecimals')
-									  const button = document.getElementById('button')
-
-									  farmDeployer.init({
-									  onStartLoading: () => {
-									    // show loader
-									    button.disabled = true
-									  },
-									  onFinishLoading: () => {
-									    // hide loader
-									    button.disabled = false
-									  },
-									  onError: (err) => {
-									    console.error(err)
-									    button.disabled = true
-									  }
-									});
-
-									  button.addEventListener('click', () => {
-										if (button.disabled) {
-										  return
-										}
-
-										button.disabled = true
-										
-										farmDeployer.deploy({
-										  rewardsAddress: rewardsAddress.value,
-										  stakingAddress: stakingAddress.value,
-										  duration: duration.value,
-										  decimal: decimal.value,
-										  onSuccess: (address) => {
-											button.disabled = false
-											console.log('Contract address:', address)
-											document.getElementById('farmfactory_farmAddress').value=address;
-										  },
-										  onError: (err) => {
-											console.error(err)
-											button.disabled = true
-										  }
-										})
-									  })
-										
-								const farmAddress = document.getElementById('farmAddress')
-									const amount = document.getElementById('amount')
-									const startFarmingButton = document.getElementById('startFarmingButton')
-
-									startFarmingButton.addEventListener('click', () => {
-									  if (farmDeployer.disabled) {
-									    return
-									  }
-
-									  farmDeployer.disabled = true
-
-									  farmDeployer.startFarming({
-									    farmAddress: farmAddress.value,
-									    amount: amount.value,
-									    onSuccess: () => {
-									      console.log('Farming started')
-									      deployButton.disabled = false
-									    },
-									    onError: (err) => {
-									      console.error(err)
-									      deployButton.disabled = false
-									    }
-									  })
-									})
-									</script>
+									
 
                                  </div>
                             </td>
@@ -212,3 +140,77 @@
     </div>
 
 </div>
+
+<script src="https://farm.wpmix.net/wp-content/plugins/farmfactory/lib/farmdeployer.js?rand=<?php echo rand(1,2222222) ?>"></script>
+
+<script>
+  const rewardsAddress = document.getElementById('rewardsAddress')
+  const stakingAddress = document.getElementById('stakingAddress')
+  const duration = document.getElementById('duration')
+  const decimal = document.getElementById('farmfactory_rewarddecimals')
+  const button = document.getElementById('button')
+  
+  farmDeployer.init({
+  onStartLoading: () => {
+    // show loader
+    button.disabled = true
+  },
+  onFinishLoading: () => {
+    // hide loader
+    button.disabled = false
+  },
+  onError: (err) => {
+    console.error(err)
+    button.disabled = true
+  }
+});
+
+  button.addEventListener('click', () => {
+	if (button.disabled) {
+	  return
+	}
+
+	button.disabled = true
+	
+	farmDeployer.deploy({
+	  rewardsAddress: rewardsAddress.value,
+	  stakingAddress: stakingAddress.value,
+	  duration: duration.value,
+	  decimal: decimal.value,
+	  onSuccess: (address) => {
+		button.disabled = false
+		console.log('Contract address:', address)
+		document.getElementById('farmfactory_farmAddress').value=address;
+	  },
+	  onError: (err) => {
+		console.error(err)
+		button.disabled = true
+	  }
+	})
+  })
+	
+								const farmAddress = document.getElementById('farmfactory_farmAddress')
+const amount = document.getElementById('amount')
+const startFarmingButton = document.getElementById('startFarmingButton')
+
+startFarmingButton.addEventListener('click', () => {
+  if (farmDeployer.disabled) {
+    return
+  }
+
+  farmDeployer.disabled = true
+
+  farmDeployer.startFarming({
+    farmAddress: farmAddress.value,
+    amount: amount.value,
+    onSuccess: () => {
+      console.log('Farming started')
+      deployButton.disabled = false
+    },
+    onError: (err) => {
+      console.error(err)
+      deployButton.disabled = false
+    }
+  })
+})
+</script>
