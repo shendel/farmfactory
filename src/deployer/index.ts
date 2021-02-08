@@ -102,6 +102,30 @@ const deploy = async (params: Params) => {
     })
 }
 
+const startFarming = async ({ farmAddress, amount, onSuccess, onError }) => {
+  const { abi } = json
+
+  try {
+    const contract = new state.web3.eth.Contract(abi, farmAddress)
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' })
+
+    await contract.methods.notifyRewardAmount(amount).send({ from: accounts[0] })
+
+    if (typeof onSuccess === 'function') {
+      onSuccess()
+    }
+  }
+  catch (err) {
+    if (typeof onError === 'function') {
+      onError(err)
+    }
+  }
+}
+
+const stopFarming = () => {
+
+}
+
 const handleError = (err) => {
   if (typeof state.opts.onError === 'function') {
     state.opts.onError(err)
@@ -132,4 +156,6 @@ const init = async (opts: Opts) => {
 export default {
   init,
   deploy,
+  startFarming,
+  stopFarming,
 }
