@@ -4,6 +4,7 @@ import infoModal from './infoModal'
 import constants from './constants'
 import loader from './loader'
 import toFixed from './toFixed'
+import formatAmount from './formatAmount'
 
 
 const html = `
@@ -21,7 +22,7 @@ const html = `
 let isLoading = false
 
 const withdraw = async () => {
-  const { web3, contracts, account } = getState()
+  const { web3, contracts, account, rewardsDecimals } = getState()
 
   if (isLoading) {
     return
@@ -45,7 +46,9 @@ const withdraw = async () => {
       cancelButton.classList.add('disabled')
       withdrawButton.innerHTML = `Withdraw ${loader()}`
 
-      const value = web3.utils.toWei(String(amount))
+      // const value = web3.utils.toWei(String(amount))
+      const value = formatAmount(amount, rewardsDecimals)
+
       const res = await contracts.farm.methods.withdraw(value).send({ from: account })
 
       if (res.status) {

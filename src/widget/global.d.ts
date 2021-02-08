@@ -4,8 +4,9 @@ declare class Web3 {
 }
 
 interface Window {
-  Web3
+  Web3: any
   Big: any
+  BigNumber: any
   ethereum: any
   networkId: any
   farmAddress: any

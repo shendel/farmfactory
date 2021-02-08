@@ -122,7 +122,10 @@ const init = async (opts: State['opts']) => {
   timer.injectHtml()
 
   await connectMetamask()
-  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.1/web3.min.js')
+  await Promise.all([
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/8.0.2/bignumber.min.js'),
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.1/web3.min.js'),
+  ])
   await connectWeb3()
 }
 

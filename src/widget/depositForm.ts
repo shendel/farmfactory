@@ -4,6 +4,7 @@ import infoModal from './infoModal'
 import constants from './constants'
 import loader from './loader'
 import toFixed from './toFixed'
+import formatAmount from './formatAmount'
 
 
 const html = `
@@ -21,7 +22,7 @@ const html = `
 let isLoading = false
 
 const deposit = async () => {
-  const { web3, contracts, account } = getState()
+  const { web3, contracts, account, stakingDecimals } = getState()
 
   if (isLoading) {
     return
@@ -45,7 +46,9 @@ const deposit = async () => {
       cancelButton.classList.add('disabled')
       depositButton.innerHTML = `Deposit ${loader()}`
 
-      const value = web3.utils.toWei(String(amount))
+      // const value = web3.utils.toWei(String(amount))
+      const value = formatAmount(amount, stakingDecimals)
+
       const res = await contracts.farm.methods.stake(value).send({ from: account })
 
       if (res.status) {
