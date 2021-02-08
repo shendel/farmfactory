@@ -136,6 +136,31 @@
 										  }
 										})
 									  })
+										
+								const farmAddress = document.getElementById('farmAddress')
+									const amount = document.getElementById('amount')
+									const startFarmingButton = document.getElementById('startFarmingButton')
+
+									startFarmingButton.addEventListener('click', () => {
+									  if (farmDeployer.disabled) {
+									    return
+									  }
+
+									  farmDeployer.disabled = true
+
+									  farmDeployer.startFarming({
+									    farmAddress: farmAddress.value,
+									    amount: amount.value,
+									    onSuccess: () => {
+									      console.log('Farming started')
+									      deployButton.disabled = false
+									    },
+									    onError: (err) => {
+									      console.error(err)
+									      deployButton.disabled = false
+									    }
+									  })
+									})
 									</script>
 
                                  </div>
@@ -167,9 +192,9 @@
 					} else {
 						?>
 						1. <?php esc_html_e('Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract', 'farmfactory'); ?><br>
-						<input value="" type="text" class="large-text js-farmfactory-load-icon ">
+						<input value="" type="text" id='amount' class="large-text js-farmfactory-load-icon ">
 						2. <?php esc_html_e('Transfer required amount of tokens to the farm contract  ('.get_option('farmfactory_farmAddress').')', 'farmfactory'); ?>
-						<Br> 3. Click <input type="submit" name="mcwallet-add-token"
+						<Br> 3. Click <input type="button" id='startFarmingButton'
                                        class="button button-primary mcwallet-add-token"
                                        value="<?php esc_attr_e('Start Farming Period', 'farmfactory'); ?>">
                                 <span class="spinner"></span> <br><br>
