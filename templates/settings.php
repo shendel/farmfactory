@@ -72,7 +72,7 @@
 					<option <?php if ($farm_factory_network == "rinkeby") echo "selected"; ?>>rinkeby</option>
 					<option <?php if ($farm_factory_network == "bsc") echo "selected"; ?>>bsc</option> 
 					    
-					     <option <?php if ($farm_factory_network == "bsc_test") echo "selected"; ?>>bsc</option> 
+					     <option <?php if ($farm_factory_network == "bsc_test") echo "selected"; ?>>bsc_test</option> 
 									</select>
                                     <br>
                                     <?php esc_html_e('Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
