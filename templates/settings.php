@@ -97,7 +97,7 @@
 									  const duration = document.getElementById('duration')
 									  const decimal = document.getElementById('farmfactory_rewarddecimals')
 									  const button = document.getElementById('button')
-									  const startFarmingButton = document.getElementById('startFarmingButton')
+
 									  farmDeployer.init({
 									  onStartLoading: () => {
 									    // show loader
