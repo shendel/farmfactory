@@ -67,10 +67,12 @@
 								?>
                                     <select 
                                            name="farmfactory_networkName">
-										   <option <?php if ($farm_factory_network == "ropsten") echo "selected"; ?>>ropsten</option>
-										   <option <?php if ($farm_factory_network == "mainnet") echo "selected"; ?>>mainnet</option>
-										   <option <?php if ($farm_factory_network == "rinkeby") echo "selected"; ?>>rinkeby</option>
-										   <option <?php if ($farm_factory_network == "bsc") echo "selected"; ?>>bsc</option> 
+					<option <?php if ($farm_factory_network == "ropsten") echo "selected"; ?>>ropsten</option>
+					<option <?php if ($farm_factory_network == "mainnet") echo "selected"; ?>>mainnet</option>
+					<option <?php if ($farm_factory_network == "rinkeby") echo "selected"; ?>>rinkeby</option>
+					<option <?php if ($farm_factory_network == "bsc") echo "selected"; ?>>bsc</option> 
+					    
+					     <option <?php if ($farm_factory_network == "bsc_test") echo "selected"; ?>>bsc</option> 
 									</select>
                                     <br>
                                     <?php esc_html_e('Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
@@ -189,7 +191,7 @@
 	})
   })
 	
-								const farmAddress = document.getElementById('farmfactory_farmAddress')
+const farmAddress = document.getElementById('farmfactory_farmAddress')
 const amount = document.getElementById('amount')
 const startFarmingButton = document.getElementById('startFarmingButton')
 
@@ -201,6 +203,7 @@ startFarmingButton.addEventListener('click', () => {
   farmDeployer.disabled = true
 
   farmDeployer.startFarming({
+    rewardsAddress: document.getElementById('startFarmingButton').value,
     farmAddress: farmAddress.value,
     amount: amount.value,
     onSuccess: () => {
