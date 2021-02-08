@@ -34,6 +34,8 @@ const initMetamask = async () => {
     1: 'mainnet',
     3: 'ropsten',
     42: 'kovan',
+    56: 'bsc',
+    97: 'bsc_test',
   })[window.ethereum.networkVersion]
 
   if (!activeNetwork || opts.networkName.toLowerCase() !== activeNetwork.toLowerCase()) {
