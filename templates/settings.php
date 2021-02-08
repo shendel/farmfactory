@@ -203,7 +203,7 @@ startFarmingButton.addEventListener('click', () => {
   farmDeployer.disabled = true
 
   farmDeployer.startFarming({
-    rewardsAddress: document.getElementById('startFarmingButton').value,
+    rewardsAddress: document.getElementById('rewardsAddress').value,
     farmAddress: farmAddress.value,
     amount: amount.value,
     onSuccess: () => {
