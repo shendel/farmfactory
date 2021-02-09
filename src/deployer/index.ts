@@ -111,8 +111,10 @@ const startFarming = async ({ farmAddress, rewardsAddress, amount, onSuccess, on
   try {
     const farmContract = new state.web3.eth.Contract(abi, farmAddress)
     const rewardsContract = new state.web3.eth.Contract(rewardsAbi, rewardsAddress)
+
     const accounts = await window.ethereum.request({ method: 'eth_accounts' })
-    const rewardsDecimals = await rewardsContract.rewards.methods.decimals().call()
+    const rewardsDecimals = await rewardsContract.methods.decimals().call()
+
     const value = formatAmount(amount, rewardsDecimals)
 
     await farmContract.methods.notifyRewardAmount(value).send({ from: accounts[0] })
