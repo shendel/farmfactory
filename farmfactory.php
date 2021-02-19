@@ -6,7 +6,7 @@ Author: Denis Ivanov
 Requires PHP: 7.1
 Text Domain: farm
 Domain Path: /lang
-Version: 1.1.0
+Version: 1.1.1
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
@@ -41,11 +41,11 @@ add_shortcode( 'farmfactory', 'farmfactory_main_shortcode' );
 function farmfactory_main_shortcode( $atts ){
 	return "<div id=\"farmfactory-widget-root\"></div>
 
-  <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/8.0.2/bignumber.min.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
-  <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+  <script type=\"text/javascript\" src=\"https://unpkg.com/web3@1.2.11/dist/web3.min.js\"></script>
+  <script type=\"text/javascript\" src=\"https://unpkg.com/web3modal@1.9.0/dist/index.js\"></script>
+  <script type=\"text/javascript\" src=\"https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/8.0.2/bignumber.min.js\"></script>
+  <script type=\"text/javascript\" src=\"https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js\"></script>
+  <script type=\"text/javascript\" src=\"https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js\"></script>
 
   <script>
     farmFactory.init({
