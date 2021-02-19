@@ -4,12 +4,11 @@ import json from '@rollup/plugin-json'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { uglify } from 'rollup-plugin-uglify'
 import babel from 'rollup-plugin-babel'
-import pkg from './package.json'
 
 
 export default [
   {
-    input: 'src/widget/index.ts',
+    input: 'src/widget2/index.ts',
     output: {
       file: 'lib/farmfactory.js',
       format: 'iife',

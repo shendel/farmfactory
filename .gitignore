@@ -9,6 +9,5 @@ yarn.lock
 
 node_modules
 
-farmdeployer.html
-farmfactory.html
+/*.html
 Farm.json

@@ -8,12 +8,12 @@ import formatAmount from './formatAmount'
 
 
 const html = `
-  <div class="farmfactory-form farmfactory-withdraw">
-    <div class="farmfactory-title" id="${constants.ids.withdrawForm.title}"></div>
-    <input class="farmfactory-input" id="${constants.ids.withdrawForm.input}" type="number" value="" />
+  <div class="farmfactory-form farmfactory-deposit">
+    <div class="farmfactory-title" id="${constants.ids.depositForm.title}"></div>
+    <input class="farmfactory-input" id="${constants.ids.depositForm.input}" type="number" value="" />
     <div class="farmfactory-row">
-      <button class="farmfactory-button" id="${constants.ids.withdrawForm.cancelButton}">Cancel</button>
-      <button class="farmfactory-button" id="${constants.ids.withdrawForm.withdrawButton}">Withdraw</button>
+      <button class="farmfactory-button" id="${constants.ids.depositForm.cancelButton}">Cancel</button>
+      <button class="farmfactory-button" id="${constants.ids.depositForm.depositButton}">Deposit</button>
     </div>
   </div>
 `
@@ -21,8 +21,8 @@ const html = `
 
 let isLoading = false
 
-const withdraw = async () => {
-  const { web3, contracts, account, rewardsDecimals } = getState()
+const deposit = async () => {
+  const { web3, contracts, account, stakingDecimals } = getState()
 
   if (isLoading) {
     return
@@ -33,9 +33,9 @@ const withdraw = async () => {
     return
   }
 
-  const input = document.getElementById(constants.ids.withdrawForm.input) as HTMLInputElement
-  const cancelButton = document.getElementById(constants.ids.withdrawForm.cancelButton)
-  const withdrawButton = document.getElementById(constants.ids.withdrawForm.withdrawButton)
+  const input = document.getElementById(constants.ids.depositForm.input) as HTMLInputElement
+  const cancelButton = document.getElementById(constants.ids.depositForm.cancelButton)
+  const depositButton = document.getElementById(constants.ids.depositForm.depositButton)
 
   const amount = Number(input.value)
 
@@ -44,19 +44,19 @@ const withdraw = async () => {
       isLoading = true
 
       cancelButton.classList.add('disabled')
-      withdrawButton.innerHTML = `Withdraw ${loader()}`
+      depositButton.innerHTML = `Deposit ${loader()}`
 
       // const value = web3.utils.toWei(String(amount))
-      const value = formatAmount(amount, rewardsDecimals)
+      const value = formatAmount(amount, stakingDecimals)
 
-      const res = await contracts.farm.methods.withdraw(value).send({ from: account })
+      const res = await contracts.farm.methods.stake(value).send({ from: account })
 
       if (res.status) {
         infoModal.open('Transaction confirmed!')
       }
 
       hide()
-      events.dispatch('withdraw success')
+      events.dispatch('deposit success')
     }
     catch (err) {
       console.error(err)
@@ -72,14 +72,14 @@ const withdraw = async () => {
       isLoading = false
 
       cancelButton.classList.remove('disabled')
-      withdrawButton.innerHTML = 'Withdraw'
+      depositButton.innerHTML = 'Deposit'
     }
   }
 }
 
 const addListeners = () => {
-  const cancelButton = document.getElementById(constants.ids.withdrawForm.cancelButton)
-  const withdrawButton = document.getElementById(constants.ids.withdrawForm.withdrawButton)
+  const cancelButton = document.getElementById(constants.ids.depositForm.cancelButton)
+  const depositButton = document.getElementById(constants.ids.depositForm.depositButton)
 
   cancelButton.addEventListener('click', () => {
     if (!cancelButton.classList.contains('disabled')) {
@@ -87,8 +87,8 @@ const addListeners = () => {
     }
   })
 
-  withdrawButton.addEventListener('click', () => {
-    withdraw()
+  depositButton.addEventListener('click', () => {
+    deposit()
   })
 }
 
@@ -96,19 +96,19 @@ const show = async () => {
   const { contracts, account, stakingTokenName, stakingDecimals } = getState()
 
   const root = document.getElementById(constants.ids.widget.root)
-  const title = document.getElementById(constants.ids.withdrawForm.title)
+  const title = document.getElementById(constants.ids.depositForm.title)
 
-  root.classList.add('farmfactory-withdraw-visible')
+  root.classList.add('farmfactory-deposit-visible')
 
   title.innerHTML = `Balance: ${loader(true)}`
 
-  const balance = await contracts.farm.methods.balanceOf(account).call()
+  const balance = await contracts.staking.methods.balanceOf(account).call()
 
   title.innerHTML = `Balance: <b>${toFixed(Number(balance) / Math.pow(10, stakingDecimals))} ${stakingTokenName}</b>`
 }
 
 const hide = () => {
-  document.getElementById(constants.ids.widget.root).classList.remove('farmfactory-withdraw-visible')
+  document.getElementById(constants.ids.widget.root).classList.remove('farmfactory-deposit-visible')
 }
 
 

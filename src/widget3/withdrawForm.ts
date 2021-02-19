@@ -8,14 +8,7 @@ import formatAmount from './formatAmount'
 
 
 const html = `
-  <div class="farmfactory-form farmfactory-withdraw">
-    <div class="farmfactory-title" id="${constants.ids.withdrawForm.title}"></div>
-    <input class="farmfactory-input" id="${constants.ids.withdrawForm.input}" type="number" value="" />
-    <div class="farmfactory-row">
-      <button class="farmfactory-button" id="${constants.ids.withdrawForm.cancelButton}">Cancel</button>
-      <button class="farmfactory-button" id="${constants.ids.withdrawForm.withdrawButton}">Withdraw</button>
-    </div>
-  </div>
+  
 `
 
 
