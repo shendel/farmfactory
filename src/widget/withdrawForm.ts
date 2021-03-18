@@ -93,7 +93,7 @@ const addListeners = () => {
 }
 
 const show = async () => {
-  const { contracts, account, stakingTokenName, stakingDecimals } = getState()
+  const { contracts, account, rewardsTokenName, rewardsDecimals } = getState()
 
   const root = document.getElementById(constants.ids.widget.root)
   const title = document.getElementById(constants.ids.withdrawForm.title)
@@ -104,7 +104,7 @@ const show = async () => {
 
   const balance = await contracts.farm.methods.balanceOf(account).call()
 
-  title.innerHTML = `Balance: <b>${toFixed(Number(balance) / Math.pow(10, stakingDecimals))} ${stakingTokenName}</b>`
+  title.innerHTML = `Balance: <b>${toFixed(Number(balance) / Math.pow(10, rewardsDecimals))} ${rewardsTokenName}</b>`
 }
 
 const hide = () => {
