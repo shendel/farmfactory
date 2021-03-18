@@ -22,7 +22,7 @@ const html = `
 let isLoading = false
 
 const withdraw = async () => {
-  const { web3, contracts, account, rewardsDecimals } = getState()
+  const { contracts, account, stakingDecimals } = getState()
 
   if (isLoading) {
     return
@@ -47,7 +47,7 @@ const withdraw = async () => {
       withdrawButton.innerHTML = `Withdraw ${loader()}`
 
       // const value = web3.utils.toWei(String(amount))
-      const value = formatAmount(amount, rewardsDecimals)
+      const value = formatAmount(amount, stakingDecimals)
 
       const res = await contracts.farm.methods.withdraw(value).send({ from: account })
 
@@ -93,7 +93,7 @@ const addListeners = () => {
 }
 
 const show = async () => {
-  const { contracts, account, rewardsTokenName, rewardsDecimals } = getState()
+  const { contracts, account, stakingTokenName, stakingDecimals } = getState()
 
   const root = document.getElementById(constants.ids.widget.root)
   const title = document.getElementById(constants.ids.withdrawForm.title)
@@ -104,7 +104,7 @@ const show = async () => {
 
   const balance = await contracts.farm.methods.balanceOf(account).call()
 
-  title.innerHTML = `Balance: <b>${toFixed(Number(balance) / Math.pow(10, rewardsDecimals))} ${rewardsTokenName}</b>`
+  title.innerHTML = `Balance: <b>${toFixed(Number(balance) / Math.pow(10, stakingDecimals))} ${stakingTokenName}</b>`
 }
 
 const hide = () => {
