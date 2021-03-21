@@ -7,5 +7,6 @@
 | 15 feb | 94$ (envato 01.2021 earnings)  | 
 | 14 mar | 200$ (Ticket #T000065 from Sam Language: en)  | 
 | 15 mar | 743$ (envato 02.2021 earnings)  | 
+| 21 mar | 300$ (#T000071) |
 
 subtotal: 880 (paypal)
