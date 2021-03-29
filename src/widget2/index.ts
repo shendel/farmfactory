@@ -1,47 +1,28 @@
-import web3Modal from './web3Modal'
-import infoModal from './infoModal'
-import widget from './widget'
+import web3Modal from './web3modal'
+import { injectModalsRoot } from './modals'
+import Widget from './widget'
 import { setState } from './state'
+import type { State } from './state'
 
 
-type Opts = {
-  widget: any
-  wallet: any
-}
-
-const init = async (opts: Opts) => {
+const init = async (opts: State['opts']) => {
   if (!opts) {
     throw new Error('options required')
   }
 
-  const { networkName, farmAddress, rewardsAddress, stakingAddress } = opts.widget || {}
-
-  if (!networkName || !farmAddress || !rewardsAddress || !stakingAddress) {
-    throw new Error('widgetOptions required')
+  // https://ethereum.stackexchange.com/a/62217/620
+  if (location.protocol !== 'https:') {
+    throw new Error('FarmFactory requires HTTPS connection')
   }
 
   setState({ opts })
-
-  // Check that the web page is run in a secure context,
-  // as otherwise MetaMask won't be available
-  if (location.protocol !== 'https:') {
-    // https://ethereum.stackexchange.com/a/62217/620
-    infoModal.open('FarmFactory widget requires HTTPS connection.')
-    // document.querySelector('#btn-connect').setAttribute('disabled', 'disabled')
-    // return
-  }
-
-  const instance = web3Modal.init()
-
-  widget.injectHtml()
-
-  if (instance.providerController.cachedProvider) {
-    web3Modal.connect()
-  }
+  injectModalsRoot()
+  web3Modal.init()
 }
 
 const farmFactory = {
   init,
+  Widget,
 }
 
 

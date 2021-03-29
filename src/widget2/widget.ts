@@ -1,282 +1,432 @@
 import events from './events'
 import { getState } from './state'
 import infoModal from './infoModal'
-import constants from './constants'
-import connectForm from './connectForm'
-import depositForm from './depositForm'
-import withdrawForm from './withdrawForm'
-import toFixed from './toFixed'
-import loader from './loader'
+import web3modal from './web3modal'
+import depositModal from './depositModal'
+import withdrawModal from './withdrawModal'
+import { createContracts, toFixed } from './helpers'
 
-
-let isLoading = false
 
 const html = `
-  <div class="farmfactory-root farmfactory-connect-visible" id="${constants.ids.widget.root}">
-    ${connectForm.html}
-    ${depositForm.html}
-    ${withdrawForm.html}
-    <div class="farmfactory-widget">
-      <div class="farmfactory-line">
-        <div class="farmfactory-row">
-          <div class="farmfactory-title">Earned</div>
-          <div class="farmfactory-buttons">
-            <button class="farmfactory-button disabled" id="${constants.ids.widget.harvestButton}">Harvest</button>
-          </div>
-        </div>
-        <div class="farmfactory-value" id="${constants.ids.widget.earned}">&mdash;</div>
+  <div class="ff-widget-headline">
+    <div class="ff-widget-token-icons">
+      <div class="ff-widget-token-icon">
+        <span class="ff-skeleton"></span>
       </div>
-      <div class="farmfactory-line">
-        <div class="farmfactory-row">
-          <div class="farmfactory-title">Staked</div>
-          <div class="farmfactory-buttons" id="${constants.ids.widget.lpsButtons}"></div>
-        </div>
-        <div class="farmfactory-value" id="${constants.ids.widget.staked}">&mdash;</div>
+      <div class="ff-widget-token-icon">
+        <span class="ff-skeleton"></span>
+      </div>
+    </div>
+    <div class="ff-title-and-timer">
+      <div class="ff-widget-title">
+        <span class="ff-skeleton"></span>
+      </div>
+      <div class="ff-widget-timer">--:--:--:--</div>
+    </div>
+  </div>
+  <div class="ff-widget-section">
+    <div class="ff-widget-row2">
+      <div class="ff-widget-label">APY:</div>
+      <div class="ff-widget-value ff-widget-apy">
+        <span class="ff-skeleton"></span>
+      </div>
+    </div>  
+    <div class="ff-widget-row2">
+      <div class="ff-widget-label">Earn:</div>
+      <div class="ff-widget-value ff-widget-earn-token-name">
+        <span class="ff-skeleton"></span>
+      </div>
+    </div>  
+  </div>
+  </div>
+  <div class="ff-widget-section">
+    <div class="ff-widget-section-title">
+      <b class="ff-rewards-token-name">
+        <span class="ff-skeleton"></span>
+      </b> Earned
+    </div>
+    <div class="ff-widget-row">
+      <div class="ff-widget-value ff-widget-earned-amount">
+        <span class="ff-skeleton"></span>
+      </div>
+      <div>
+        <button class="ff-button ff-widget-harvest-button" type="button" disabled>Harvest</button>
       </div>
     </div>
   </div>
-`
-
-const approveButtonHtml = `
-  <button class="farmfactory-button" id="${constants.ids.widget.approveButton}">Approve</button>
-`
-
-const depositAndWithdrawButtonsHtml = `
-  <button class="farmfactory-button" id="${constants.ids.widget.depositButton}">Deposit</button>
-  <button class="farmfactory-button" id="${constants.ids.widget.withdrawButton}">Withdraw</button>
-`
-
-const errorHtml = (error) => `
-  <div class="farmfactory-root">
-    <div class="farmfactory-widget-error">
-      <span>${error}</span>
+  <div class="ff-widget-section">
+    <div class="ff-widget-section-title">
+      <b class="ff-staking-token-name">
+        <span class="ff-skeleton"></span>
+      </b> Staked
+    </div>
+    <div class="ff-widget-row">
+      <div class="ff-widget-value ff-widget-staked-amount">
+        <span class="ff-skeleton"></span>
+      </div>
+      <div>
+        <button class="ff-button ff-widget-deposit-button" type="button" disabled>Deposit</button>
+        <button class="ff-button ff-widget-withdraw-button" type="button" disabled>Withdraw</button>
+      </div>
     </div>
   </div>
+  <button class="ff-button ff-widget-unlock-button" type="button">Unlock wallet</button>
+  <button class="ff-button ff-widget-approve-button ff-hidden" type="button">Approve contract</button>
 `
 
+const getTokenIcon = (opt: Opts['stakingTokenIcon'], name: string, symbol: string): string => {
+  let icon: string
 
-const getData = async () => {
-  const { opts, contracts, account, stakingTokenName, stakingDecimals, rewardsTokenName, rewardsDecimals } = getState()
-
-  if (!contracts) {
-    return
+  if (opt) {
+    if (typeof opt === 'function') {
+      icon = opt(name, symbol)
+    }
+    else {
+      icon = opt
+    }
   }
 
-  try {
+  return icon
+}
+
+type GetTokenIconsValues = {
+  stakingTokenName: string
+  stakingTokenSymbol: string
+  rewardsTokenName: string
+  rewardsTokenSymbol: string
+}
+
+const getTokenIcons = (opts: Opts, values: GetTokenIconsValues) => {
+  const { stakingTokenName, stakingTokenSymbol, rewardsTokenName, rewardsTokenSymbol } = values
+
+  const stakingIcon = getTokenIcon(opts.stakingTokenIcon, stakingTokenName, stakingTokenSymbol)
+  const rewardsIcon = getTokenIcon(opts.rewardsTokenIcon, rewardsTokenName, rewardsTokenSymbol)
+
+  if (stakingIcon && rewardsIcon) {
+    return {
+      staking: stakingIcon,
+      rewards: rewardsIcon,
+    }
+  }
+
+  return null
+}
+
+type Opts = {
+  selector: string
+  farmAddress: string
+  stakingAddress: string
+  rewardsAddress: string
+  stakingTokenIcon?: string | ((name: string, symbol: string) => string)
+  rewardsTokenIcon?: string | ((name: string, symbol: string) => string)
+  apy?: number | (() => Promise<number>)
+}
+
+class Widget {
+
+  opts: Opts
+
+  elems: {
+    root: HTMLDivElement
+    tokenIcons: HTMLDivElement
+    title: HTMLDivElement
+    timer: HTMLDivElement
+    rewardsTokenSymbol: HTMLDivElement
+    stakingTokenSymbol: HTMLDivElement
+    apyValue: HTMLDivElement
+    earnTokenName: HTMLDivElement
+    earnedAmount: HTMLDivElement
+    stakedAmount:HTMLDivElement
+    unlockButton: HTMLButtonElement
+    approveButton: HTMLButtonElement
+    depositButton: HTMLButtonElement
+    withdrawButton: HTMLButtonElement
+    harvestButton: HTMLButtonElement
+  }
+
+  contracts: {
+    farm: any
+    staking: any
+    rewards: any
+  }
+
+  state: {
+    stakingTokenSymbol: any
+    stakingDecimals: any
+    rewardsTokenSymbol: any
+    rewardsDecimals: any
+  }
+
+  constructor(opts: Opts) {
+    this.opts = opts
+    this.elems = {} as any
+    this.state = {} as any
+
+    const { farmAddress, rewardsAddress, stakingAddress } = opts
+
+    if (!farmAddress || !rewardsAddress || !stakingAddress) {
+      throw new Error('Widget requires "farmAddress", "rewardsAddress", "stakingAddress" options')
+    }
+
+    this.injectHtml(opts)
+    events.subscribe('account connected', this.init)
+  }
+
+  injectHtml(opts) {
+    const root = document.getElementById(opts.selector) as HTMLDivElement
+
+    root.classList.add('ff-widget')
+    root.innerHTML = html
+
+    const tokenIcons        = root.querySelector('.ff-widget-token-icons') as HTMLDivElement
+    const title             = root.querySelector('.ff-widget-title') as HTMLDivElement
+    const timer             = root.querySelector('.ff-widget-timer') as HTMLDivElement
+    const rewardsTokenSymbol  = root.querySelector('.ff-rewards-token-name') as HTMLDivElement
+    const stakingTokenSymbol  = root.querySelector('.ff-staking-token-name') as HTMLDivElement
+    const apyValue          = root.querySelector('.ff-widget-apy') as HTMLDivElement
+    const earnTokenName     = root.querySelector('.ff-widget-earn-token-name') as HTMLDivElement
+    const earnedAmount      = root.querySelector('.ff-widget-earned-amount') as HTMLDivElement
+    const stakedAmount      = root.querySelector('.ff-widget-staked-amount') as HTMLDivElement
+    const unlockButton      = root.querySelector('.ff-widget-unlock-button') as HTMLButtonElement
+    const approveButton     = root.querySelector('.ff-widget-approve-button') as HTMLButtonElement
+    const depositButton     = root.querySelector('.ff-widget-deposit-button') as HTMLButtonElement
+    const withdrawButton    = root.querySelector('.ff-widget-withdraw-button') as HTMLButtonElement
+    const harvestButton     = root.querySelector('.ff-widget-harvest-button') as HTMLButtonElement
+
+    this.elems = {
+      root,
+      tokenIcons,
+      title,
+      timer,
+      rewardsTokenSymbol,
+      stakingTokenSymbol,
+      apyValue,
+      earnTokenName,
+      earnedAmount,
+      stakedAmount,
+      unlockButton,
+      approveButton,
+      depositButton,
+      withdrawButton,
+      harvestButton
+    }
+
+    unlockButton.addEventListener('click', () => {
+      web3modal.connect()
+    })
+
+    const createButton = (button, callback) => {
+      const text = button.innerHTML
+      let isLoading = false
+
+      button.addEventListener('click', async () => {
+        if (isLoading) {
+          return
+        }
+
+        isLoading = true
+        button.disabled = true
+        button.innerHTML = '<div class="ff-loader"></div>'
+
+        await callback()
+
+        button.disabled = false
+        button.innerHTML = text
+      })
+    }
+
+    createButton(approveButton, async () => {
+      const { web3, account } = getState()
+
+      const spender = opts.farmAddress
+      const value = web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+
+      try {
+        await this.contracts.staking.methods.approve(spender, value).send({ from: account })
+        this.elems.approveButton.classList.add('ff-hidden')
+      }
+      catch (err) {
+        console.error(err)
+        infoModal.open(err.message)
+      }
+    })
+
+    depositButton.addEventListener('click', () => {
+      depositModal.open({
+        contracts: this.contracts,
+        stakingDecimals: this.state.stakingDecimals,
+        stakingTokenSymbol: this.state.stakingTokenSymbol,
+      })
+    })
+
+    withdrawButton.addEventListener('click', () => {
+      withdrawModal.open({
+        contracts: this.contracts,
+        rewardsDecimals: this.state.rewardsDecimals,
+        rewardsTokenSymbol: this.state.rewardsTokenSymbol,
+      })
+    })
+
+    createButton(harvestButton, async () => {
+      const { account } = getState()
+
+      try {
+        await this.contracts.farm.methods.getReward().send({ from: account })
+      }
+      catch (err) {
+        console.error(err)
+        infoModal.open(err.message)
+      }
+    })
+  }
+
+  init = async () => {
+    const { farmAddress, rewardsAddress, stakingAddress } = this.opts
+
+    this.elems.unlockButton.classList.add('ff-hidden')
+
+    this.contracts = await createContracts({
+      farmAddress,
+      rewardsAddress,
+      stakingAddress,
+    })
+
+    const [
+      stakingTokenName,
+      stakingTokenSymbol,
+      stakingDecimals,
+      rewardsTokenName,
+      rewardsTokenSymbol,
+      rewardsDecimals,
+    ] = await Promise.all([
+      this.contracts.staking.methods.name().call(),
+      this.contracts.staking.methods.symbol().call(),
+      this.contracts.staking.methods.decimals().call(),
+      this.contracts.rewards.methods.name().call(),
+      this.contracts.rewards.methods.symbol().call(),
+      this.contracts.rewards.methods.decimals().call(),
+    ])
+
+    this.state.stakingTokenSymbol = stakingTokenSymbol
+    this.state.rewardsTokenSymbol = rewardsTokenSymbol
+
+    this.state.stakingDecimals = stakingDecimals
+    this.state.rewardsDecimals = rewardsDecimals
+
+    this.elems.rewardsTokenSymbol.innerHTML = rewardsTokenSymbol
+    this.elems.stakingTokenSymbol.innerHTML = stakingTokenSymbol
+
+    this.elems.title.innerHTML = `${rewardsTokenSymbol}-${stakingTokenSymbol}`
+
+    const tokenIcons = getTokenIcons(this.opts, {
+      stakingTokenName,
+      stakingTokenSymbol,
+      rewardsTokenName,
+      rewardsTokenSymbol,
+    })
+
+    if (tokenIcons) {
+      this.elems.tokenIcons.innerHTML = `
+        <img class="ff-widget-token-icon" src="${tokenIcons.rewards}" />
+        <img class="ff-widget-token-icon" src="${tokenIcons.staking}" />
+      `
+    }
+    else {
+      this.elems.tokenIcons.innerHTML = ''
+    }
+
+    if (typeof this.opts.apy === 'function') {
+      this.opts.apy()
+        .then((value) => {
+          this.elems.apyValue.innerHTML = `${value}%`
+        })
+    }
+    else {
+      this.elems.apyValue.innerHTML = `${this.opts.apy}%`
+    }
+
+    this.elems.earnTokenName.innerHTML = rewardsTokenSymbol
+
+    this.initTimer()
+    this.updateValues()
+
+    events.subscribe('deposit success', this.updateValues)
+    events.subscribe('withdraw success', this.updateValues)
+  }
+
+  initTimer = async () => {
+    let farmingFinishDate
+
+    try {
+      farmingFinishDate = await this.contracts.farm.methods.periodFinish().call()
+    }
+    catch (err) {
+      console.error(err)
+      return
+    }
+
+    const finishDate = Number(farmingFinishDate.toString())
+
+    if (finishDate - Date.now() / 1000 > 0) {
+      setInterval(() => {
+        let delta = Math.floor((finishDate * 1000 - Date.now()) / 1000)
+
+        const days = Math.floor(delta / 86400)
+
+        delta -= days * 86400
+
+        const hours = Math.floor(delta / 3600) % 24
+
+        delta -= hours * 3600
+
+        const minutes = Math.floor(delta / 60) % 60
+
+        delta -= minutes * 60
+
+        const seconds = delta % 60
+        const timeLeft = `${days < 10 ? `0${days}` : days}:${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`
+
+        this.elems.timer.innerHTML = timeLeft
+      }, 1000)
+    }
+    else {
+      this.elems.timer.innerHTML = 'Farming not started yet'
+    }
+  }
+
+  updateValues = async () => {
+    const { account } = getState()
+
     const [
       farmingBalance,
       earnedTokens,
       allowance,
     ] = await Promise.all([
-      contracts.farm.methods.balanceOf(account).call(),
-      contracts.farm.methods.earned(account).call(),
-      contracts.staking.methods.allowance(account, opts.widget.farmAddress).call(),
+      this.contracts.farm.methods.balanceOf(account).call(),
+      this.contracts.farm.methods.earned(account).call(),
+      this.contracts.staking.methods.allowance(account, this.opts.farmAddress).call(),
     ])
 
-    injectStakingButtons(Number(allowance) > 0)
-
-    const balanceNode = document.getElementById(constants.ids.widget.staked)
-    const earnedTokensNode = document.getElementById(constants.ids.widget.earned)
-    const harvestButton = document.getElementById(constants.ids.widget.harvestButton)
-    const withdrawButton = document.getElementById(constants.ids.widget.withdrawButton)
-
-    balanceNode.innerText = `${toFixed(farmingBalance / Math.pow(10, stakingDecimals))} ${stakingTokenName}`
-    earnedTokensNode.innerText = `${toFixed(earnedTokens / Math.pow(10, rewardsDecimals))} ${rewardsTokenName}`
-
-    if (harvestButton) {
-      if (earnedTokens > 0) {
-        harvestButton.classList.remove('disabled')
-      }
-      else {
-        harvestButton.classList.add('disabled')
-      }
+    if (Number(allowance) === 0) {
+      this.elems.approveButton.classList.remove('ff-hidden')
     }
 
-    if (withdrawButton) {
-      if (farmingBalance > 0) {
-        withdrawButton.classList.remove('disabled')
-      }
-      else {
-        withdrawButton.classList.add('disabled')
-      }
-    }
-  }
-  catch (err) {
-    console.error(err)
-    infoModal.open(err.message)
-  }
-}
+    const { stakingDecimals, rewardsDecimals } = this.state
 
-const harvest = async () => {
-  const { contracts, account } = getState()
+    this.elems.earnedAmount.innerText = toFixed(earnedTokens / Math.pow(10, rewardsDecimals))
+    this.elems.stakedAmount.innerText = toFixed(farmingBalance / Math.pow(10, stakingDecimals))
 
-  if (isLoading) {
-    return
-  }
-
-  if (!account) {
-    return
-  }
-
-  if (!contracts.farm) {
-    infoModal.open('Farm contract is not connected')
-    return
-  }
-
-  const harvestButton = document.getElementById(constants.ids.widget.harvestButton)
-
-  try {
-    isLoading = true
-    harvestButton.innerHTML = `Harvest ${loader()}`;
-
-    const res = await contracts.farm.methods.getReward().send({ from: account })
-
-    if (res.status) {
-      infoModal.open('Transaction confirmed!')
+    if (earnedTokens > 0) {
+      this.elems.harvestButton.disabled = false
     }
 
-    getData()
-  }
-  catch (err) {
-    console.error(err)
-    infoModal.open(err.message)
-  }
-  finally {
-    isLoading = false
-    harvestButton.innerHTML = 'Harvest';
-  }
-}
-
-const approve = async () => {
-  const { opts, web3, contracts, account } = getState()
-
-  if (isLoading) {
-    return
-  }
-
-  if (!account) {
-    return
-  }
-
-  if (!contracts.staking) {
-    infoModal.open('Staking contract is not connected')
-    return
-  }
-
-  try {
-    isLoading = true
-    document.getElementById(constants.ids.widget.approveButton).innerHTML = `Approve ${loader()}`;
-
-    const spender = opts.widget.farmAddress
-    const value = web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
-
-    const res = await contracts.staking.methods.approve(spender, value).send({ from: account })
-
-    if (res.status) {
-      infoModal.open('Transaction confirmed!')
+    if (farmingBalance > 0) {
+      this.elems.withdrawButton.disabled = false
     }
 
-    getData()
-  }
-  catch (err) {
-    console.error(err)
-    infoModal.open(err.message)
-  }
-  finally {
-    isLoading = false
-    document.getElementById(constants.ids.widget.approveButton).innerHTML = 'Approve';
+    this.elems.depositButton.disabled = false
   }
 }
 
-const connectWithdrawButton = () => {
-  const { opts } = getState()
 
-  const withdrawButton = document.getElementById(constants.ids.widget.withdrawButton)
-
-  if (opts.widget.withdrawButtonTitle) {
-    withdrawButton.innerText = opts.widget.withdrawButtonTitle
-  }
-
-  withdrawButton.addEventListener('click', () => {
-    if (!withdrawButton.classList.contains('disabled')) {
-      withdrawForm.show()
-    }
-  })
-}
-
-const connectDepositButton = () => {
-  const { opts } = getState()
-
-  const depositButton = document.getElementById(constants.ids.widget.depositButton)
-
-  if (opts.widget.depositButtonTitle) {
-    depositButton.innerText = opts.widget.depositButtonTitle
-  }
-
-  depositButton.addEventListener('click', () => {
-    depositForm.show()
-  })
-}
-
-const connectApproveButton = () => {
-  const approveButton = document.getElementById(constants.ids.widget.approveButton)
-
-  approveButton.addEventListener('click', () => {
-    approve()
-  })
-}
-
-const injectStakingButtons = (isApproved) => {
-  const node = document.getElementById(constants.ids.widget.lpsButtons)
-
-  if (isApproved) {
-    node.innerHTML = depositAndWithdrawButtonsHtml
-    connectDepositButton()
-    connectWithdrawButton()
-  }
-  else {
-    node.innerHTML = approveButtonHtml
-    connectApproveButton()
-  }
-}
-
-const initHarvest = () => {
-  const { opts } = getState()
-
-  const harvestButton = document.getElementById(constants.ids.widget.harvestButton)
-
-  if (opts.widget.harvestButtonTitle) {
-    harvestButton.innerText = opts.widget.harvestButtonTitle
-  }
-
-  harvestButton.addEventListener('click', () => {
-    if (!harvestButton.classList.contains('disabled')) {
-      harvest()
-    }
-  })
-}
-
-const injectHtml = () => {
-  document.getElementById(constants.ids.widgetRoot).innerHTML = html
-
-  connectForm.addListeners()
-  depositForm.addListeners()
-  withdrawForm.addListeners()
-
-  initHarvest()
-
-  events.subscribe('connect', getData)
-  events.subscribe('deposit success', getData)
-  events.subscribe('withdraw success', getData)
-}
-
-const showError = (error) => {
-  document.getElementById(constants.ids.widgetRoot).innerHTML = errorHtml(error)
-}
-
-
-export default {
-  injectHtml,
-  showError,
-  getData,
-}
+export default Widget
