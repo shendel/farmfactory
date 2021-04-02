@@ -8,7 +8,7 @@ import babel from 'rollup-plugin-babel'
 
 export default [
   {
-    input: 'src/widget2/index.ts',
+    input: 'src/widget/index.ts',
     output: {
       file: 'lib/farmfactory.js',
       format: 'iife',
