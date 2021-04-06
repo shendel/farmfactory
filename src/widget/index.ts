@@ -117,7 +117,7 @@ const init = async (opts: State['opts']) => {
   const widgetRoot = document.getElementById(constants.ids.widgetRoot)
 
   if (!widgetRoot) {
-    infoModal.open('Template variable not found! Please use {farmfactory-widget-root}.')
+    // infoModal.open('Template variable not found! Please use {farmfactory-widget-root}.')
     return
   }
 
