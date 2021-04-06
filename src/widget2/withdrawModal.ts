@@ -16,7 +16,7 @@ const withdrawModal = new Modal({
       <button class="ff-button" type="button">Withdraw</button>
     </div>
   `,
-  onOpen({ contracts, rewardsDecimals, rewardsTokenName }) {
+  onOpen({ contracts, stakingDecimals, stakingTokenSymbol }) {
     const { opts: { networkName }, account } = getState()
 
     let isLoading = false
@@ -28,9 +28,9 @@ const withdrawModal = new Modal({
 
     contracts.farm.methods.balanceOf(account).call()
       .then((balance) => {
-        const value = toFixed(Number(balance) / Math.pow(10, rewardsDecimals))
+        const value = toFixed(Number(balance) / Math.pow(10, stakingDecimals))
 
-        balanceNode.innerHTML = `Available to withdraw: <b>${value} ${rewardsTokenName}</b>`
+        balanceNode.innerHTML = `Available to withdraw: <b>${value} ${stakingTokenSymbol}</b>`
       })
 
     submitButton.addEventListener('click', async () => {
@@ -45,7 +45,7 @@ const withdrawModal = new Modal({
         submitButton.disabled = true
         submitButton.innerHTML = '<div class="ff-loader"></div>'
 
-        const value = formatAmount(amount, rewardsDecimals)
+        const value = formatAmount(amount, stakingDecimals)
 
         contracts.farm.methods.withdraw(value).send({ from: account })
           .on('transactionHash', (hash) => {

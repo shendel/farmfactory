@@ -7,7 +7,7 @@ import withdrawModal from './withdrawModal'
 import { createContracts, toFixed } from './helpers'
 
 
-const html = `
+const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
   <div class="ff-widget-headline">
     <div class="ff-widget-token-icons">
       <div class="ff-widget-token-icon">
@@ -25,12 +25,22 @@ const html = `
     </div>
   </div>
   <div class="ff-widget-section">
-    <div class="ff-widget-row2">
-      <div class="ff-widget-label">APY:</div>
-      <div class="ff-widget-value ff-widget-apy">
-        <span class="ff-skeleton"></span>
+    ${!withAPY ? '' : `
+      <div class="ff-widget-row2">
+        <div class="ff-widget-label">${apyLabel}:</div>
+        <div class="ff-widget-value ff-widget-apy">
+          <span class="ff-skeleton"></span>
+        </div>
       </div>
-    </div>  
+    `}
+    ${!withAPR ? '' : `
+      <div class="ff-widget-row2">
+        <div class="ff-widget-label">${aprLabel}:</div>
+        <div class="ff-widget-value ff-widget-apr">
+          <span class="ff-skeleton"></span>
+        </div>
+      </div>
+    `}  
     <div class="ff-widget-row2">
       <div class="ff-widget-label">Earn:</div>
       <div class="ff-widget-value ff-widget-earn-token-name">
@@ -74,12 +84,12 @@ const html = `
   <button class="ff-button ff-widget-approve-button ff-hidden" type="button">Approve contract</button>
 `
 
-const getTokenIcon = (opt: Opts['stakingTokenIcon'], name: string, symbol: string): string => {
+const getTokenIcon = (opt: Opts['stakingTokenIcon'], symbol: string): string => {
   let icon: string
 
   if (opt) {
     if (typeof opt === 'function') {
-      icon = opt(name, symbol)
+      icon = opt(symbol)
     }
     else {
       icon = opt
@@ -90,19 +100,17 @@ const getTokenIcon = (opt: Opts['stakingTokenIcon'], name: string, symbol: strin
 }
 
 type GetTokenIconsValues = {
-  stakingTokenName: string
   stakingTokenSymbol: string
-  rewardsTokenName: string
   rewardsTokenSymbol: string
 }
 
 const getTokenIcons = (opts: Opts, values: GetTokenIconsValues) => {
-  const { stakingTokenName, stakingTokenSymbol, rewardsTokenName, rewardsTokenSymbol } = values
+  const { stakingTokenSymbol, rewardsTokenSymbol } = values
 
-  const stakingIcon = getTokenIcon(opts.stakingTokenIcon, stakingTokenName, stakingTokenSymbol)
-  const rewardsIcon = getTokenIcon(opts.rewardsTokenIcon, rewardsTokenName, rewardsTokenSymbol)
+  const stakingIcon = getTokenIcon(opts.stakingTokenIcon, stakingTokenSymbol)
+  const rewardsIcon = getTokenIcon(opts.rewardsTokenIcon, rewardsTokenSymbol)
 
-  if (stakingIcon && rewardsIcon) {
+  if (stakingIcon || rewardsIcon) {
     return {
       staking: stakingIcon,
       rewards: rewardsIcon,
@@ -117,9 +125,14 @@ type Opts = {
   farmAddress: string
   stakingAddress: string
   rewardsAddress: string
-  stakingTokenIcon?: string | ((name: string, symbol: string) => string)
-  rewardsTokenIcon?: string | ((name: string, symbol: string) => string)
+  stakingTokenIcon?: string | ((symbol: string) => string)
+  rewardsTokenIcon?: string | ((symbol: string) => string)
+  title?: string | ((stakingSymbol: string, rewardsSymbol: string) => string)
   apy?: number | (() => Promise<number>)
+  apr?: number | (() => Promise<number>)
+  apyLabel?: string
+  aprLabel?: string
+  detailsLink?: string | ((stakingSymbol: string, rewardsSymbol: string) => string)
 }
 
 class Widget {
@@ -134,6 +147,7 @@ class Widget {
     rewardsTokenSymbol: HTMLDivElement
     stakingTokenSymbol: HTMLDivElement
     apyValue: HTMLDivElement
+    aprValue: HTMLDivElement
     earnTokenName: HTMLDivElement
     earnedAmount: HTMLDivElement
     stakedAmount:HTMLDivElement
@@ -176,22 +190,33 @@ class Widget {
     const root = document.getElementById(opts.selector) as HTMLDivElement
 
     root.classList.add('ff-widget')
-    root.innerHTML = html
 
-    const tokenIcons        = root.querySelector('.ff-widget-token-icons') as HTMLDivElement
-    const title             = root.querySelector('.ff-widget-title') as HTMLDivElement
-    const timer             = root.querySelector('.ff-widget-timer') as HTMLDivElement
+    // Html
+
+    root.innerHTML = getHtml({
+      withAPY: Boolean(this.opts.apy),
+      withAPR: Boolean(this.opts.apr),
+      apyLabel: this.opts.apyLabel,
+      aprLabel: this.opts.aprLabel,
+    })
+
+    // Queries
+
+    const tokenIcons          = root.querySelector('.ff-widget-token-icons') as HTMLDivElement
+    const title               = root.querySelector('.ff-widget-title') as HTMLDivElement
+    const timer               = root.querySelector('.ff-widget-timer') as HTMLDivElement
     const rewardsTokenSymbol  = root.querySelector('.ff-rewards-token-name') as HTMLDivElement
     const stakingTokenSymbol  = root.querySelector('.ff-staking-token-name') as HTMLDivElement
-    const apyValue          = root.querySelector('.ff-widget-apy') as HTMLDivElement
-    const earnTokenName     = root.querySelector('.ff-widget-earn-token-name') as HTMLDivElement
-    const earnedAmount      = root.querySelector('.ff-widget-earned-amount') as HTMLDivElement
-    const stakedAmount      = root.querySelector('.ff-widget-staked-amount') as HTMLDivElement
-    const unlockButton      = root.querySelector('.ff-widget-unlock-button') as HTMLButtonElement
-    const approveButton     = root.querySelector('.ff-widget-approve-button') as HTMLButtonElement
-    const depositButton     = root.querySelector('.ff-widget-deposit-button') as HTMLButtonElement
-    const withdrawButton    = root.querySelector('.ff-widget-withdraw-button') as HTMLButtonElement
-    const harvestButton     = root.querySelector('.ff-widget-harvest-button') as HTMLButtonElement
+    const apyValue            = root.querySelector('.ff-widget-apy') as HTMLDivElement
+    const aprValue            = root.querySelector('.ff-widget-apr') as HTMLDivElement
+    const earnTokenName       = root.querySelector('.ff-widget-earn-token-name') as HTMLDivElement
+    const earnedAmount        = root.querySelector('.ff-widget-earned-amount') as HTMLDivElement
+    const stakedAmount        = root.querySelector('.ff-widget-staked-amount') as HTMLDivElement
+    const unlockButton        = root.querySelector('.ff-widget-unlock-button') as HTMLButtonElement
+    const approveButton       = root.querySelector('.ff-widget-approve-button') as HTMLButtonElement
+    const depositButton       = root.querySelector('.ff-widget-deposit-button') as HTMLButtonElement
+    const withdrawButton      = root.querySelector('.ff-widget-withdraw-button') as HTMLButtonElement
+    const harvestButton       = root.querySelector('.ff-widget-harvest-button') as HTMLButtonElement
 
     this.elems = {
       root,
@@ -201,6 +226,7 @@ class Widget {
       rewardsTokenSymbol,
       stakingTokenSymbol,
       apyValue,
+      aprValue,
       earnTokenName,
       earnedAmount,
       stakedAmount,
@@ -262,21 +288,34 @@ class Widget {
     withdrawButton.addEventListener('click', () => {
       withdrawModal.open({
         contracts: this.contracts,
-        rewardsDecimals: this.state.rewardsDecimals,
-        rewardsTokenSymbol: this.state.rewardsTokenSymbol,
+        stakingDecimals: this.state.stakingDecimals,
+        stakingTokenSymbol: this.state.stakingTokenSymbol,
       })
     })
 
     createButton(harvestButton, async () => {
-      const { account } = getState()
+      const { opts: { networkName }, account } = getState()
 
-      try {
-        await this.contracts.farm.methods.getReward().send({ from: account })
-      }
-      catch (err) {
-        console.error(err)
-        infoModal.open(err.message)
-      }
+      return this.contracts.farm.methods.getReward().send({ from: account })
+        .on('transactionHash', (hash) => {
+          console.log('Harvest trx:', `https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}`)
+        })
+        .on('error', (err) => {
+          console.error(err)
+
+          infoModal.open({
+            title: 'Transaction failed',
+            message: 'Something went wrong. Try again later.'
+          })
+        })
+        .then(() => {
+          events.dispatch('harvest success')
+
+          infoModal.open({
+            title: 'Transaction successful',
+            message: 'The tokens were credited to the contract.'
+          })
+        })
     })
   }
 
@@ -292,17 +331,13 @@ class Widget {
     })
 
     const [
-      stakingTokenName,
       stakingTokenSymbol,
       stakingDecimals,
-      rewardsTokenName,
       rewardsTokenSymbol,
       rewardsDecimals,
     ] = await Promise.all([
-      this.contracts.staking.methods.name().call(),
       this.contracts.staking.methods.symbol().call(),
       this.contracts.staking.methods.decimals().call(),
-      this.contracts.rewards.methods.name().call(),
       this.contracts.rewards.methods.symbol().call(),
       this.contracts.rewards.methods.decimals().call(),
     ])
@@ -316,40 +351,91 @@ class Widget {
     this.elems.rewardsTokenSymbol.innerHTML = rewardsTokenSymbol
     this.elems.stakingTokenSymbol.innerHTML = stakingTokenSymbol
 
-    this.elems.title.innerHTML = `${rewardsTokenSymbol}-${stakingTokenSymbol}`
+    // Title
+
+    if (typeof this.opts.title === 'function') {
+      this.elems.title.innerHTML = this.opts.title(stakingTokenSymbol, rewardsTokenSymbol)
+    }
+    else if (typeof this.opts.title === 'string') {
+      this.elems.title.innerHTML = this.opts.title
+    }
+    else {
+      this.elems.title.innerHTML = `${rewardsTokenSymbol}-${stakingTokenSymbol}`
+    }
+
+    // Tokens
 
     const tokenIcons = getTokenIcons(this.opts, {
-      stakingTokenName,
       stakingTokenSymbol,
-      rewardsTokenName,
       rewardsTokenSymbol,
     })
 
     if (tokenIcons) {
       this.elems.tokenIcons.innerHTML = `
-        <img class="ff-widget-token-icon" src="${tokenIcons.rewards}" />
-        <img class="ff-widget-token-icon" src="${tokenIcons.staking}" />
+        ${tokenIcons.rewards ? `<img class="ff-widget-token-icon" src="${tokenIcons.rewards}" />` : ''}
+        ${tokenIcons.staking ? `<img class="ff-widget-token-icon" src="${tokenIcons.staking}" />` : ''}
       `
     }
     else {
       this.elems.tokenIcons.innerHTML = ''
     }
 
-    if (typeof this.opts.apy === 'function') {
-      this.opts.apy()
-        .then((value) => {
-          this.elems.apyValue.innerHTML = `${value}%`
-        })
+    // APY
+
+    if (this.elems.apyValue) {
+      if (typeof this.opts.apy === 'function') {
+        this.opts.apy()
+          .then((value) => {
+            this.elems.apyValue.innerHTML = `${value}%`
+          })
+      }
+      else {
+        this.elems.apyValue.innerHTML = `${this.opts.apy}%`
+      }
     }
-    else {
-      this.elems.apyValue.innerHTML = `${this.opts.apy}%`
+
+    // APR
+
+    if (this.elems.aprValue) {
+      if (typeof this.opts.apr === 'function') {
+        this.opts.apr()
+          .then((value) => {
+            this.elems.aprValue.innerHTML = `${value}%`
+          })
+      }
+      else {
+        this.elems.aprValue.innerHTML = `${this.opts.apr}%`
+      }
     }
+
+    // Details
+
+    if (this.opts.detailsLink) {
+      let href
+
+      if (typeof this.opts.detailsLink === 'function') {
+        href = this.opts.detailsLink(stakingTokenSymbol, rewardsTokenSymbol)
+      }
+      else {
+        href = this.opts.detailsLink
+      }
+
+      const details = document.createElement('a')
+      details.classList.add('ff-widget-details')
+      details.innerText = 'Details'
+      details.href = href
+
+      this.elems.root.appendChild(details)
+    }
+
+    // Other
 
     this.elems.earnTokenName.innerHTML = rewardsTokenSymbol
 
     this.initTimer()
     this.updateValues()
 
+    events.subscribe('harvest success', this.updateValues)
     events.subscribe('deposit success', this.updateValues)
     events.subscribe('withdraw success', this.updateValues)
   }
