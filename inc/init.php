@@ -1,13 +1,14 @@
 <?php
 /**
- * Multi Currency Wallet Init
+ * Farm Factory Init
+ *
+ * @package Farm Factory
  */
 
 /**
- * Wallet Functions
+ * Functions
  */
-//require MCWALLET_PATH . 'includes/functions.php';
-
+require FARMFACTORY_PATH . 'inc/functions.php';
 
 /**
  * Enqueue Scripts
@@ -20,6 +21,11 @@ require FARMFACTORY_PATH . 'inc/scripts.php';
 require FARMFACTORY_PATH . 'inc/shortcode.php';
 
 /**
+ * MetaBox
+ */
+require FARMFACTORY_PATH . 'inc/metabox.php';
+
+/**
  * Post Type
  */
-require FARMFACTORY_PATH . 'inc/post_type.php';
+require FARMFACTORY_PATH . 'inc/post-type.php';
