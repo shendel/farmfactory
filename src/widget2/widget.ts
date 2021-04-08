@@ -329,8 +329,17 @@ class Widget {
 
   initCommon = async () => {
     const { farmAddress, rewardsAddress, stakingAddress } = this.opts
+    const { opts: { networkName } } = getState()
 
-    const web3 = new window.Web3(window.Web3.givenProvider || window.ethereum)
+    const networks = {
+      mainnet: 'https://mainnet.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+      ropsten: 'https://ropsten.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+      kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+    }
+
+    const network = networks[networkName.toLowerCase()]
+
+    const web3 = new window.Web3(window.Web3.givenProvider || window.ethereum || network)
 
     this.readContracts = await createContracts(web3, {
       farmAddress,

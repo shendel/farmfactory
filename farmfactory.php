@@ -6,7 +6,7 @@ Author: Denis Ivanov
 Requires PHP: 7.1
 Text Domain: farm
 Domain Path: /lang
-Version: 2.0.3
+Version: 2.0.4
  */
 /* Define Plugin Constants */
 defined( 'ABSPATH' ) || exit;
