@@ -1,6 +1,3 @@
-import { getState } from '../state'
-
-
 type ContractType = 'farm' | 'rewards' | 'staking'
 
 const abis: { [key in ContractType]: any } = {} as any
@@ -18,9 +15,7 @@ type Opts = {
   stakingAddress: string
 }
 
-const createContract = (abi, address) => {
-  const { web3 } = getState()
-
+const createContract = (web3, abi, address) => {
   if (contracts[address]) {
     return Promise.resolve(contracts[address])
   }
@@ -28,11 +23,11 @@ const createContract = (abi, address) => {
   return new web3.eth.Contract(abi, address)
 }
 
-const createContracts = (opts: Opts) => {
+const createContracts = (web3, opts: Opts) => {
   return Promise.all([
-    createContract(abis.farm, opts.farmAddress),
-    createContract(abis.rewards, opts.rewardsAddress),
-    createContract(abis.staking, opts.stakingAddress),
+    createContract(web3, abis.farm, opts.farmAddress),
+    createContract(web3, abis.rewards, opts.rewardsAddress),
+    createContract(web3, abis.staking, opts.stakingAddress),
   ])
     .then(([ farm, rewards, staking ]) => {
       contracts[opts.farmAddress] = farm

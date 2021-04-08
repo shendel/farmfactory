@@ -24,7 +24,7 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
       <div class="ff-widget-timer">--:--:--:--</div>
     </div>
   </div>
-  <div class="ff-widget-section">
+  <div class="ff-widget-section ff-widget-stats">
     ${!withAPY ? '' : `
       <div class="ff-widget-row2">
         <div class="ff-widget-label">${apyLabel}:</div>
@@ -47,7 +47,6 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
         <span class="ff-skeleton"></span>
       </div>
     </div>  
-  </div>
   </div>
   <div class="ff-widget-section">
     <div class="ff-widget-section-title">
@@ -80,8 +79,10 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
       </div>
     </div>
   </div>
-  <button class="ff-button ff-widget-unlock-button" type="button">Unlock wallet</button>
-  <button class="ff-button ff-widget-approve-button ff-hidden" type="button">Approve contract</button>
+  <div class="ff-widget-footer">
+    <button class="ff-button ff-widget-unlock-button" type="button">Unlock wallet</button>
+    <button class="ff-button ff-widget-approve-button ff-hidden" type="button">Approve contract</button>
+  </div>
 `
 
 const getTokenIcon = (opt: Opts['stakingTokenIcon'], symbol: string): string => {
@@ -158,6 +159,12 @@ class Widget {
     harvestButton: HTMLButtonElement
   }
 
+  readContracts: {
+    farm: any
+    staking: any
+    rewards: any
+  }
+
   contracts: {
     farm: any
     staking: any
@@ -183,6 +190,7 @@ class Widget {
     }
 
     this.injectHtml(opts)
+    this.initCommon()
     events.subscribe('account connected', this.init)
   }
 
@@ -319,12 +327,12 @@ class Widget {
     })
   }
 
-  init = async () => {
+  initCommon = async () => {
     const { farmAddress, rewardsAddress, stakingAddress } = this.opts
 
-    this.elems.unlockButton.classList.add('ff-hidden')
+    const web3 = new window.Web3(window.Web3.givenProvider || window.ethereum)
 
-    this.contracts = await createContracts({
+    this.readContracts = await createContracts(web3, {
       farmAddress,
       rewardsAddress,
       stakingAddress,
@@ -336,10 +344,10 @@ class Widget {
       rewardsTokenSymbol,
       rewardsDecimals,
     ] = await Promise.all([
-      this.contracts.staking.methods.symbol().call(),
-      this.contracts.staking.methods.decimals().call(),
-      this.contracts.rewards.methods.symbol().call(),
-      this.contracts.rewards.methods.decimals().call(),
+      this.readContracts.staking.methods.symbol().call(),
+      this.readContracts.staking.methods.decimals().call(),
+      this.readContracts.rewards.methods.symbol().call(),
+      this.readContracts.rewards.methods.decimals().call(),
     ])
 
     this.state.stakingTokenSymbol = stakingTokenSymbol
@@ -433,6 +441,20 @@ class Widget {
     this.elems.earnTokenName.innerHTML = rewardsTokenSymbol
 
     this.initTimer()
+  }
+
+  init = async () => {
+    const { farmAddress, rewardsAddress, stakingAddress } = this.opts
+    const { web3 } = getState()
+
+    this.elems.unlockButton.classList.add('ff-hidden')
+
+    this.contracts = await createContracts(web3, {
+      farmAddress,
+      rewardsAddress,
+      stakingAddress,
+    })
+
     this.updateValues()
 
     events.subscribe('harvest success', this.updateValues)
@@ -444,7 +466,7 @@ class Widget {
     let farmingFinishDate
 
     try {
-      farmingFinishDate = await this.contracts.farm.methods.periodFinish().call()
+      farmingFinishDate = await this.readContracts.farm.methods.periodFinish().call()
     }
     catch (err) {
       console.error(err)
@@ -488,9 +510,9 @@ class Widget {
       earnedTokens,
       allowance,
     ] = await Promise.all([
-      this.contracts.farm.methods.balanceOf(account).call(),
-      this.contracts.farm.methods.earned(account).call(),
-      this.contracts.staking.methods.allowance(account, this.opts.farmAddress).call(),
+      this.readContracts.farm.methods.balanceOf(account).call(),
+      this.readContracts.farm.methods.earned(account).call(),
+      this.readContracts.staking.methods.allowance(account, this.opts.farmAddress).call(),
     ])
 
     if (Number(allowance) === 0) {

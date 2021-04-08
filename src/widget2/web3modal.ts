@@ -116,7 +116,7 @@ const init = (): any => {
   })
 
   if (instance.cachedProvider) {
-    connect()
+    // connect()
   }
 }
 

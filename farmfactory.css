@@ -109,17 +109,17 @@
 
 .ff-button {
   position: relative;
-  height: 40px;
-  padding: 0 24px;
+  height: 32px;
+  padding: 0 16px;
   border: 0;
   font-family: 'Kanit', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #fff;
   background-color: #5CC4D1;
   cursor: pointer;
   outline: none;
-  border-radius: 16px;
+  border-radius: 5px;
   transition: background-color 0.2s ease 0s;
 }
 
@@ -150,7 +150,7 @@
 .ff-text-field-container {
   background-color: #eeeaf4;
   padding: 16px 20px;
-  border-radius: 16px;
+  border-radius: 5px;
   box-shadow: rgb(74 74 104 / 10%) 0 2px 2px -1px inset;
 }
 
@@ -203,7 +203,7 @@
   font-family: 'Kanit', sans-serif;
   background-color: #fff;
   padding: 24px;
-  border-radius: 32px;
+  border-radius: 8px;
   box-shadow: rgb(25 19 38 / 10%) 0 2px 12px -8px, rgb(25 19 38 / 5%) 0 1px 1px;
 }
 
@@ -263,6 +263,10 @@
 
 .ff-widget-section {
   margin-top: 12px;
+}
+
+.ff-widget-stats {
+  margin-bottom: 20px;
 }
 
 .ff-widget-section-title {
@@ -338,7 +342,9 @@
 .ff-widget-unlock-button,
 .ff-widget-approve-button {
   width: 100%;
+  height: 40px;
   margin-top: 16px;
+  font-size: 16px;
 }
 
 .ff-widget-details {
@@ -355,6 +361,10 @@
 
 .ff-widget-details:hover {
   text-decoration: underline;
+}
+
+.ff-widget-footer {
+  margin-top: auto;
 }
 
 
@@ -380,7 +390,7 @@
   max-width: 560px;
   background-color: #fff;
   font-family: 'Kanit', sans-serif;
-  border-radius: 32px;
+  border-radius: 8px;
   box-shadow: rgb(25 19 38 / 10%) 0 2px 12px -8px, rgb(25 19 38 / 5%) 0 1px 1px;
 }
 
