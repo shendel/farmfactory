@@ -16,7 +16,7 @@ const depositModal = new Modal({
       <button class="ff-button" type="button">Deposit</button>
     </div>
   `,
-  onOpen({ contracts, stakingDecimals, stakingTokenName }) {
+  onOpen({ contracts, stakingDecimals, stakingTokenSymbol }) {
     const { opts: { networkName }, account } = getState()
 
     let isLoading = false
@@ -30,7 +30,7 @@ const depositModal = new Modal({
       .then((balance) => {
         const value = toFixed(Number(balance) / Math.pow(10, stakingDecimals))
 
-        balanceNode.innerHTML = `Available to deposit: <b>${value} ${stakingTokenName}</b>`
+        balanceNode.innerHTML = `Available to deposit: <b>${value} ${stakingTokenSymbol}</b>`
       })
 
     submitButton.addEventListener('click', async () => {
