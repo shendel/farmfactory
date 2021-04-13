@@ -26,11 +26,11 @@ function farmfactory_load_scripts() {
 
 	// create my own version codes.
 	$my_js_ver  = gmdate( 'ymd-Gis', filemtime( FARMFACTORY_PATH . 'lib/farmfactory.js' ) );
-	$my_css_ver = gmdate( 'ymd-Gis', filemtime( FARMFACTORY_PATH . 'farmfactory.css' ) );
+	$my_css_ver = gmdate( 'ymd-Gis', filemtime( FARMFACTORY_PATH . 'assets/css/farmfactory.css' ) );
 
 	wp_enqueue_script( 'farmfactory-js', FARMFACTORY_URL . 'lib/farmfactory.js', $dependencies, $my_js_ver, true );
 
-	wp_enqueue_style( 'farmfactory-css', FARMFACTORY_URL . 'farmfactory.css', false, $my_css_ver );
+	wp_enqueue_style( 'farmfactory-css', FARMFACTORY_URL . 'assets/css/farmfactory.css', false, $my_css_ver );
 
 	if ( wp_count_posts( 'farmfactory' ) ) {
 
@@ -42,7 +42,7 @@ function farmfactory_load_scripts() {
 				walletconnect: {
 					package: window.WalletConnectProvider.default,
 					options: {
-						infuraId: "' . get_option( 'farmfactory_infura_id' ) . '", // 8043bb2cf99347b1bfadfb233c5325c0
+						infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
 					},
 				},
 				fortmatic: {

@@ -22,7 +22,7 @@
 						<label for="blogname"><?php echo esc_html_e( 'Infura ID', 'farmfacotry' ); ?></label>
 					</th>
 					<td>
-						<input name="farmfactory_infura_id" type="text" value="<?php echo esc_attr( get_option( 'farmfactory_infura_id' ) ); ?>" class="regular-text">
+						<input name="farmfactory_infura_id" type="text" value="<?php echo esc_attr( get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) ); ?>" placeholder="<?php echo esc_attr( farmfactory_default_infura_id() ); ?>" class="regular-text">
 					</td>
 				</tr>
 
