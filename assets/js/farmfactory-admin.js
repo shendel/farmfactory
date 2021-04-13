@@ -1,5 +1,5 @@
 /**
- * Widget Admin Scripts
+ * Admin Scripts
  */
 (function( $ ){
 	"use strict";
@@ -92,5 +92,144 @@
 			}
 		});
 	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * @namespace wp.media.featuredImage
+	 * @memberOf wp.media
+	 */
+	wp.media.featuredIcon = {
+		/**
+		 * Get the featured image post ID
+		 *
+		 * @return {wp.media.view.settings.post.featuredImageId|number}
+		 */
+		get: function() {
+			return wp.media.view.settings.post.featuredImageId;
+		},
+		/**
+		 * Sets the featured image ID property and sets the HTML in the post meta box to the new featured image.
+		 *
+		 * @param {number} id The post ID of the featured image, or -1 to unset it.
+		 */
+		set: function( id ) {
+			var settings = wp.media.view.settings;
+
+			settings.post.featuredImageId = id;
+
+			wp.media.post( 'get-post-thumbnail-html', {
+				post_id:      settings.post.id,
+				thumbnail_id: settings.post.featuredImageId,
+				_wpnonce:     settings.post.nonce
+			}).done( function( html ) {
+				if ( '0' === html ) {
+					window.alert( wp.i18n.__( 'Could not set that as the thumbnail image. Try a different attachment.' ) );
+					return;
+				}
+				$( '.inside', '#farmimagediv' ).html( html );
+			});
+		},
+		/**
+		 * Remove the featured image id, save the post thumbnail data and
+		 * set the HTML in the post meta box to no featured image.
+		 */
+		remove: function() {
+			wp.media.featuredIcon.set( -1 );
+		},
+		/**
+		 * The Featured Image workflow
+		 *
+		 * @this wp.media.featuredImage
+		 *
+		 * @return {wp.media.view.MediaFrame.Select} A media workflow.
+		 */
+		frame: function() {
+			if ( this._frame ) {
+				wp.media.frame = this._frame;
+				return this._frame;
+			}
+
+			console.log('oooo');
+
+			this._frame = wp.media({
+				state: 'featured-image',
+				states: [ new wp.media.controller.FeaturedImage() , new wp.media.controller.EditImage() ]
+			});
+
+			this._frame.on( 'toolbar:create:featured-image', function( toolbar ) {
+				/**
+				 * @this wp.media.view.MediaFrame.Select
+				 */
+				this.createSelectToolbar( toolbar, {
+					text: wp.media.view.l10n.setFeaturedImage
+				});
+			}, this._frame );
+
+			this._frame.on( 'content:render:edit-image', function() {
+				var selection = this.state('featured-image').get('selection'),
+					view = new wp.media.view.EditImage( { model: selection.single(), controller: this } ).render();
+
+				this.content.set( view );
+
+				// After bringing in the frame, load the actual editor via an Ajax call.
+				view.loadEditor();
+
+			}, this._frame );
+
+			this._frame.state('featured-image').on( 'select', this.select );
+			return this._frame;
+		},
+		/**
+		 * 'select' callback for Featured Image workflow, triggered when
+		 *  the 'Set Featured Image' button is clicked in the media modal.
+		 *
+		 * @this wp.media.controller.FeaturedImage
+		 */
+		select: function() {
+			var selection = this.get('selection').single();
+
+			if ( ! wp.media.view.settings.post.featuredImageId ) {
+				return;
+			}
+
+			wp.media.featuredIcon.set( selection ? selection.id : -1 );
+		},
+		/**
+		 * Open the content media manager to the 'featured image' tab when
+		 * the post thumbnail is clicked.
+		 *
+		 * Update the featured image id when the 'remove' link is clicked.
+		 */
+		init: function() {
+			$('#farmimagediv').on( 'click', '#set-farm-thumbnail', function( event ) {
+				event.preventDefault();
+				// Stop propagation to prevent thickbox from activating.
+				event.stopPropagation();
+
+				wp.media.featuredIcon.frame().open();
+			}).on( 'click', '#remove-farm-thumbnail', function() {
+				wp.media.featuredImage.remove();
+				return false;
+			});
+		}
+	};
+
+	$( wp.media.featuredIcon.init );
+
 
 })( jQuery );

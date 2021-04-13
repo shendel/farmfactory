@@ -38,13 +38,22 @@ class FarmFactory_Meta_Box {
 	public function add_metabox() {
 
 		add_meta_box(
-			'banner_meta',
+			'farmfactory_meta',
 			esc_html__( 'Farm Factory Details', 'farmfactory' ),
 			array( $this, 'render_metabox' ),
 			'farmfactory',
 			'normal',
 			'high'
 		);
+
+		/*add_meta_box(
+			'farmimagediv',
+			esc_html__( 'Additional Token Icon', 'farmfactory' ),
+			array( $this, 'render_thumbnail' ),
+			'farmfactory',
+			'side',
+			'low'
+		);*/
 
 	}
 
@@ -63,6 +72,9 @@ class FarmFactory_Meta_Box {
 		$reward_address  = get_post_meta( $post->ID, 'reward_address', true );
 		$reward_decimals = get_post_meta( $post->ID, 'reward_decimals', true );
 		$reward_duration = get_post_meta( $post->ID, 'reward_duration', true );
+		$reward_duration = get_post_meta( $post->ID, 'reward_duration', true );
+		$farm_apy        = get_post_meta( $post->ID, 'farm_apy', true );
+		$farm_apy_label  = get_post_meta( $post->ID, 'farm_apy_label', true );
 		$network_name    = get_post_meta( $post->ID, 'network_name', true );
 		$farm_address    = get_post_meta( $post->ID, 'farm_address', true );
 
@@ -71,6 +83,8 @@ class FarmFactory_Meta_Box {
 		if ( empty( $reward_address ) ) $reward_address   = ''; // phpcs:ignore
 		if ( empty( $reward_decimals ) ) $reward_decimals = ''; // phpcs:ignore
 		if ( empty( $reward_duration ) ) $reward_duration = ''; // phpcs:ignore
+		if ( empty( $farm_apy ) ) $farm_apy               = ''; // phpcs:ignore
+		if ( empty( $farm_apy_label ) ) $farm_apy_label   = 'APY'; // phpcs:ignore
 		if ( empty( $network_name ) ) $network_name       = ''; // phpcs:ignore
 		if ( empty( $farm_address ) ) $farm_address       = ''; // phpcs:ignore
 
@@ -109,6 +123,22 @@ class FarmFactory_Meta_Box {
 		echo '	</tr>';
 
 		echo '	<tr>';
+		echo '		<th><label>' . esc_html__( 'Annual Percentage Yield (APY)', 'farmfactory' ) . '</label></th>';
+		echo '		<td>';
+		echo '			<input type="text" name="farm_apy" id="farmfactory_apy" class="large-text" value="' . esc_attr( $farm_apy ) . '">
+						';
+		echo '		</td>';
+		echo '	</tr>';
+
+			echo '	<tr>';
+		echo '		<th><label>' . esc_html__( 'APY label', 'farmfactory' ) . '</label></th>';
+		echo '		<td>';
+		echo '			<input type="text" name="farm_apy_label" id="farmfactory_apy_label" class="large-text" value="' . esc_attr( $farm_apy_label ) . '">
+						';
+		echo '		</td>';
+		echo '	</tr>';
+
+		echo '	<tr>';
 		echo '		<th><label>' . esc_html__( 'Newtwork', 'farmfactory' ) . '</label></th>';
 		echo '		<td>';
 		echo '		<strong>' . get_option( 'farmfactory_networkName','ropsten' ) . '</strong>';
@@ -121,7 +151,7 @@ class FarmFactory_Meta_Box {
 		echo '		<th><label>' . esc_html__( 'Farming Address', 'farmfactory' ) . '</label></th>';
 		echo '		<td>
 						<div class="farmfactory-form-inline">
-							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '">
+							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '" disabled>
 							<a class="button button-secondary" id="farmfactory_deploy_button">' . esc_html__( 'Deploy', 'farmfactory' ) . '</a>
 						</div>
 						<p class="desctiption">' . esc_html__( 'After deployment address will be automatically placed in the field above', 'farmfactory' ) . '</p>
@@ -175,13 +205,63 @@ class FarmFactory_Meta_Box {
 
 		echo '</table>';
 
-?>
+		echo '<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
+			<div class="farmfactory-loader"></div>
+		</div>';
 
-<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
-	<div class="farmfactory-loader"></div>
-</div>
+	}
 
-<?php
+	/**
+	 * Render Thumbnail
+	 *
+	 * @param object $post Post.
+	 */
+	public function render_thumbnail( $post ) {
+
+		/* Add nonce for security and authentication */
+		wp_nonce_field( 'farmfactory_thumb_action', 'farmfactory_thumb_nonce' );
+
+		$thumbnail_id = get_post_meta( $post->ID, '_farm_thumbnail_id', true );
+
+		$_wp_additional_image_sizes = wp_get_additional_image_sizes();
+
+		$post_type_object   = get_post_type_object( $post->post_type );
+		$set_thumbnail_link = '<p class="hide-if-no-js"><a href="%s" id="set-farm-thumbnail"%s class="thickbox">%s</a></p>';
+		$upload_iframe_src  = get_upload_iframe_src( 'image', $post->ID );
+
+		$content = sprintf(
+			$set_thumbnail_link,
+			esc_url( $upload_iframe_src ),
+			'',
+			esc_html__( $post_type_object->labels->set_featured_image )
+		);
+
+		if ( $thumbnail_id && get_post( $thumbnail_id ) ) {
+			$size = isset( $_wp_additional_image_sizes['post-thumbnail'] ) ? 'post-thumbnail' : array( 266, 266 );
+
+			$size = apply_filters( 'admin_post_thumbnail_size', $size, $thumbnail_id, $post );
+
+			$thumbnail_html = wp_get_attachment_image( $thumbnail_id, $size );
+
+			if ( ! empty( $thumbnail_html ) ) {
+				$content  = sprintf(
+					$set_thumbnail_link,
+					esc_url( $upload_iframe_src ),
+					' aria-describedby="set-post-thumbnail-desc"',
+					$thumbnail_html
+				);
+				$content .= '<p class="hide-if-no-js howto" id="set-farm-thumbnail-desc">' . esc_html__( 'Click the image to edit or update', 'farmfactory' ) . '</p>';
+				$content .= '<p class="hide-if-no-js"><a href="#" id="remove-farm-thumbnail">' . esc_html( $post_type_object->labels->remove_featured_image ) . '</a></p>';
+			}
+		}
+
+		$content .= '<input type="hidden" id="_farm_thumbnail_id" name="_farm_thumbnail_id" value="' . esc_attr( $thumbnail_id ? $thumbnail_id : '-1' ) . '" />';
+
+		echo $content;
+
+
+		//var_dump($thumbnail_id);
+
 
 	}
 
@@ -211,18 +291,13 @@ class FarmFactory_Meta_Box {
 			return;
 		}
 
-		$staking_address = get_post_meta( $post->ID, 'staking_address', true );
-		$reward_address  = get_post_meta( $post->ID, 'reward_address', true );
-		$reward_decimals = get_post_meta( $post->ID, 'reward_decimals', true );
-		$reward_duration = get_post_meta( $post->ID, 'reward_duration', true );
-		$network_name    = get_post_meta( $post->ID, 'network_name', true );
-		$farm_address    = get_post_meta( $post->ID, 'farm_address', true );
-
 		/* Sanitize user input */
 		$staking_address = isset( $_POST['staking_address'] ) ? sanitize_text_field( $_POST['staking_address'] ) : '';
 		$reward_address  = isset( $_POST['reward_address'] ) ? sanitize_text_field( $_POST['reward_address'] ) : '';
 		$reward_decimals = isset( $_POST['reward_decimals'] ) ? sanitize_text_field( $_POST['reward_decimals'] ) : '';
 		$reward_duration = isset( $_POST['reward_duration'] ) ? sanitize_text_field( $_POST['reward_duration'] ) : '';
+		$farm_apy        = isset( $_POST['farm_apy'] ) ? sanitize_text_field( $_POST['farm_apy'] ) : '';
+		$farm_apy_label  = isset( $_POST['farm_apy_label'] ) ? sanitize_text_field( $_POST['farm_apy_label'] ) : '';
 		$network_name    = isset( $_POST['network_name'] ) ? sanitize_text_field( $_POST['network_name'] ) : '';
 		$farm_address    = isset( $_POST['farm_address'] ) ? sanitize_text_field( $_POST['farm_address'] ) : '';
 
@@ -230,6 +305,8 @@ class FarmFactory_Meta_Box {
 		update_post_meta( $post_id, 'staking_address', $staking_address );
 		update_post_meta( $post_id, 'reward_address', $reward_address );
 		update_post_meta( $post_id, 'reward_decimals', $reward_decimals );
+		update_post_meta( $post_id, 'farm_apy', $farm_apy );
+		update_post_meta( $post_id, 'farm_apy_label', $farm_apy_label );
 		update_post_meta( $post_id, 'reward_duration', $reward_duration );
 		update_post_meta( $post_id, 'network_name', $network_name );
 		update_post_meta( $post_id, 'farm_address', $farm_address );
