@@ -6,6 +6,25 @@
  */
 
 /**
+ * Fram inline scripts
+ *
+ * @param number $id Pos id.
+ */
+function farmfactory_shortcode_inline_scripts( $id ) {
+	$inline_scripts  = "\n";
+	$inline_scripts .= "\t" . 'const widget' . esc_js( $id ) . ' = new farmFactory.Widget({' . "\n";
+	$inline_scripts .= "\t\t" . 'selector: "ff-widget-' . esc_js( $id ) . '",' . "\n";
+	$inline_scripts .= "\t\t" . 'farmAddress: "' . get_post_meta( $id, 'farm_address', true ) . '",' . "\n";
+	$inline_scripts .= "\t\t" . 'rewardsAddress: "' . get_post_meta( $id, 'reward_address', true ) . '",' . "\n";
+	$inline_scripts .= "\t\t" . 'stakingAddress: "' . get_post_meta( $id, 'staking_address', true ) . '",' . "\n";
+	$inline_scripts .= "\t\t" . 'apy: "' . get_post_meta( $id, 'farm_apy', true ) . '",' . "\n";
+	$inline_scripts .= "\t\t" . 'apyLabel: "' . get_post_meta( $id, 'farm_apy_label', true ) . '",' . "\n";
+	$inline_scripts .= "\t\t" . 'rewardsTokenIcon: "' . get_the_post_thumbnail_url( $id, 'medium' ) . '",' . "\n";
+	$inline_scripts .= "\t" . '});' . "\n";
+	return $inline_scripts;
+}
+
+/**
  * Main Shortcode
  */
 function farmfactory_main_shortcode( $atts ) {
@@ -14,31 +33,49 @@ function farmfactory_main_shortcode( $atts ) {
 		'id' => null,
 	), $atts );
 
-	$id = $atts['id'];
+	$id             = $atts['id'];
+	$html           = '';
+	$farms          = wp_count_posts( 'farmfactory' )->publish;
+	$inline_scripts = '';
+	$html_before    = '<div class="ff-widgets-container">';
+	$html_after     = '</div>';
 
-	if ( ! $id ) {
-		return;
+	if ( null !== $id && get_post( $id ) ) {
+
+		$inline_scripts = farmfactory_shortcode_inline_scripts( $id );
+
+		$html = '<div id="ff-widget-' . esc_attr( $id ) . '"></div>';
+
+	} elseif ( null === $id ) {
+
+		$farm_args  = array(
+			'post_type'      => 'farmfactory',
+			'posts_per_page' => -1,
+		);
+		$farm_query = new WP_Query( $farm_args );
+
+		if ( $farm_query->have_posts() ) :
+			while ( $farm_query->have_posts() ) :
+				$farm_query->the_post();
+				$id = get_the_ID();
+
+				$inline_scripts .= farmfactory_shortcode_inline_scripts( $id );
+
+				$html .= '<div id="ff-widget-' . esc_attr( $id ) . '"></div>';
+
+			endwhile;
+		endif;
+
+		wp_reset_postdata();
+
 	}
 
-	$post = get_post( $id );
-
-	if ( ! $post ) {
-		return;
+	if ( $farms ) {
+		$html = $html_before . $html . $html_after;
+		wp_add_inline_script( 'farmfactory-js', $inline_scripts, 'after' );
 	}
 
-	$inline_scripts = '
-	const widget' . esc_js( $id ) . ' = new farmFactory.Widget({
-		selector: "ff-widget-' . esc_js( $id ) . '",
-		farmAddress: "' . get_post_meta( $id, 'farm_address', true ) . '",
-		rewardsAddress: "' . get_post_meta( $id, 'reward_address', true ) . '",
-		stakingAddress: "' . get_post_meta( $id, 'staking_address', true ) . '",
-		rewardsTokenIcon: "' . get_the_post_thumbnail_url( $id, 'medium' ) . '",
-	});
-	';
-
-	wp_add_inline_script( 'farmfactory-js', $inline_scripts, 'after' );
-
-	return '<div id="ff-widget-' . esc_attr( $id ) . '"></div>';
+	return $html;
 }
 add_shortcode( 'farmfactory', 'farmfactory_main_shortcode' );
 
