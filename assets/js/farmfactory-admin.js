@@ -34,11 +34,6 @@
 	$( button ).on( 'click', function(e) {
 		e.preventDefault();
 
-		/*if ( ! $( farmAddress ).val() ) {
-			farmAddress.focus();
-			return;
-		}*/
-
 		if (button.disabled) {
 			return
 		}
@@ -104,11 +99,6 @@
 
 
 
-
-
-
-
-
 	/**
 	 * @namespace wp.media.featuredImage
 	 * @memberOf wp.media
@@ -120,7 +110,7 @@
 		 * @return {wp.media.view.settings.post.featuredImageId|number}
 		 */
 		get: function() {
-			return wp.media.view.settings.post.featuredImageId;
+			return wp.media.view.settings.post.featuredIconId;
 		},
 		/**
 		 * Sets the featured image ID property and sets the HTML in the post meta box to the new featured image.
@@ -130,18 +120,18 @@
 		set: function( id ) {
 			var settings = wp.media.view.settings;
 
-			settings.post.featuredImageId = id;
+			settings.post.featuredIconId = id;
 
 			wp.media.post( 'get-post-thumbnail-html', {
 				post_id:      settings.post.id,
-				thumbnail_id: settings.post.featuredImageId,
+				thumbnail_id: settings.post.featuredIconId,
 				_wpnonce:     settings.post.nonce
 			}).done( function( html ) {
 				if ( '0' === html ) {
 					window.alert( wp.i18n.__( 'Could not set that as the thumbnail image. Try a different attachment.' ) );
 					return;
 				}
-				$( '.inside', '#farmimagediv' ).html( html );
+				$( '.inside', '#postimagediv' ).html( html );
 			});
 		},
 		/**
@@ -163,8 +153,6 @@
 				wp.media.frame = this._frame;
 				return this._frame;
 			}
-
-			console.log('oooo');
 
 			this._frame = wp.media({
 				state: 'featured-image',
@@ -207,7 +195,7 @@
 				return;
 			}
 
-			wp.media.featuredIcon.set( selection ? selection.id : -1 );
+			wp.media.featuredImage.set( selection ? selection.id : -1 );
 		},
 		/**
 		 * Open the content media manager to the 'featured image' tab when
@@ -223,13 +211,54 @@
 
 				wp.media.featuredIcon.frame().open();
 			}).on( 'click', '#remove-farm-thumbnail', function() {
-				wp.media.featuredImage.remove();
+				wp.media.featuredIcon.remove();
 				return false;
 			});
 		}
 	};
 
-	$( wp.media.featuredIcon.init );
+	//$( wp.media.featuredIcon.init );
 
+	/**
+	 * Select/Upload icon
+	 */
+	$('#farmimagediv').on('click', '#set-farm-thumbnail', function(e){
+		e.preventDefault();
+
+		var button = $(this),
+			custom_uploader = wp.media({
+				title: farmfactory.l18n.featuredImage,
+				library : {
+					type : 'image'
+				},
+			button: {
+				text: farmfactory.l18n.setFeaturedImage,
+			},
+			multiple: false
+		}).on('select', function() {
+			var attachment = custom_uploader.state().get('selection').first().toJSON();
+
+			$('#_farm_thumbnail_id').val( attachment.id );
+
+			var html = '<p><a href="#" id="set-farm-thumbnail"><img src="' + attachment.url + '"></a></p>' +
+			'<p class="howto">' + farmfactory.l18n.clickTheImage + '</p>' +
+			'<p><a href="#" id="remove-farm-thumbnail">' + farmfactory.l18n.removeFeaturedImage + '</a></p>';
+			$('.farmfactory-thumbnail-container').html( html );
+		})
+		.open();
+	});
+
+	/**
+	 * Select/Upload icon
+	 */
+	$('#farmimagediv').on('click', '#remove-farm-thumbnail', function(e){
+		e.preventDefault();
+
+		$('#_farm_thumbnail_id').val( '-1' );
+
+		var html = '<p><a href="#" id="set-farm-thumbnail">' + farmfactory.l18n.setFeaturedImage + '</a></p>';
+
+		$('.farmfactory-thumbnail-container').html( html );
+	});
 
 })( jQuery );

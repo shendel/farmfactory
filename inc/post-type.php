@@ -24,7 +24,7 @@ function farmfactory_post_type() {
 		'search_items'          => esc_html__( 'Search Farm', 'farmfactory' ),
 		'not_found'             => esc_html__( 'Not found', 'farmfactory' ),
 		'not_found_in_trash'    => esc_html__( 'Not found in Trash', 'farmfactory' ),
-		'featured_image'        => esc_html__( 'Token Icon', 'farmfactory' ),
+		'featured_image'        => esc_html__( 'Reward Token Icon', 'farmfactory' ),
 		'set_featured_image'    => esc_html__( 'Set token icon', 'farmfactory' ),
 		'remove_featured_image' => esc_html__( 'Remove token icon', 'farmfactory' ),
 		'use_featured_image'    => esc_html__( 'Use as token icon', 'farmfactory' ),

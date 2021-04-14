@@ -46,14 +46,14 @@ class FarmFactory_Meta_Box {
 			'high'
 		);
 
-		/*add_meta_box(
+		add_meta_box(
 			'farmimagediv',
-			esc_html__( 'Additional Token Icon', 'farmfactory' ),
+			esc_html__( 'Staking Token Icon', 'farmfactory' ),
 			array( $this, 'render_thumbnail' ),
 			'farmfactory',
 			'side',
 			'low'
-		);*/
+		);
 
 	}
 
@@ -219,49 +219,35 @@ class FarmFactory_Meta_Box {
 	public function render_thumbnail( $post ) {
 
 		/* Add nonce for security and authentication */
-		wp_nonce_field( 'farmfactory_thumb_action', 'farmfactory_thumb_nonce' );
+		wp_nonce_field( 'farmfactory_meta_action', 'farmfactory_meta_nonce' );
+
+		$post             = get_post( $post );
+		$post_type_object = get_post_type_object( $post->post_type );
 
 		$thumbnail_id = get_post_meta( $post->ID, '_farm_thumbnail_id', true );
 
-		$_wp_additional_image_sizes = wp_get_additional_image_sizes();
-
-		$post_type_object   = get_post_type_object( $post->post_type );
-		$set_thumbnail_link = '<p class="hide-if-no-js"><a href="%s" id="set-farm-thumbnail"%s class="thickbox">%s</a></p>';
-		$upload_iframe_src  = get_upload_iframe_src( 'image', $post->ID );
-
-		$content = sprintf(
-			$set_thumbnail_link,
-			esc_url( $upload_iframe_src ),
-			'',
-			esc_html__( $post_type_object->labels->set_featured_image )
-		);
+		$content = '<div class="farmfactory-thumbnail-container">';
 
 		if ( $thumbnail_id && get_post( $thumbnail_id ) ) {
-			$size = isset( $_wp_additional_image_sizes['post-thumbnail'] ) ? 'post-thumbnail' : array( 266, 266 );
 
-			$size = apply_filters( 'admin_post_thumbnail_size', $size, $thumbnail_id, $post );
-
-			$thumbnail_html = wp_get_attachment_image( $thumbnail_id, $size );
+			$thumbnail_html = wp_get_attachment_image( $thumbnail_id, 'large' );
 
 			if ( ! empty( $thumbnail_html ) ) {
-				$content  = sprintf(
-					$set_thumbnail_link,
-					esc_url( $upload_iframe_src ),
-					' aria-describedby="set-post-thumbnail-desc"',
-					$thumbnail_html
-				);
-				$content .= '<p class="hide-if-no-js howto" id="set-farm-thumbnail-desc">' . esc_html__( 'Click the image to edit or update', 'farmfactory' ) . '</p>';
-				$content .= '<p class="hide-if-no-js"><a href="#" id="remove-farm-thumbnail">' . esc_html( $post_type_object->labels->remove_featured_image ) . '</a></p>';
+
+				$content .= '<p><a href="#" id="set-farm-thumbnail">' . $thumbnail_html . '</a></p>';
+
+				$content .= '<p class="howto" id="set-farm-thumbnail-desc">' . esc_html__( 'Click the image to edit or update', 'farmfactory' ) . '</p>';
+				$content .= '<p><a href="#" id="remove-farm-thumbnail">' . $post_type_object->labels->remove_featured_image . '</a></p>';
 			}
+		} else {
+			$content .= '<p><a href="#" id="set-farm-thumbnail">' . $post_type_object->labels->set_featured_image . '</a></p>';
 		}
 
-		$content .= '<input type="hidden" id="_farm_thumbnail_id" name="_farm_thumbnail_id" value="' . esc_attr( $thumbnail_id ? $thumbnail_id : '-1' ) . '" />';
+		$content .= '</div>';
+
+		$content .= '<input type="hidden" id="_farm_thumbnail_id" name="_farm_thumbnail_id" value="' . esc_attr( $thumbnail_id ? $thumbnail_id : '-1' ) . '">';
 
 		echo $content;
-
-
-		//var_dump($thumbnail_id);
-
 
 	}
 
@@ -300,6 +286,7 @@ class FarmFactory_Meta_Box {
 		$farm_apy_label  = isset( $_POST['farm_apy_label'] ) ? sanitize_text_field( $_POST['farm_apy_label'] ) : '';
 		$network_name    = isset( $_POST['network_name'] ) ? sanitize_text_field( $_POST['network_name'] ) : '';
 		$farm_address    = isset( $_POST['farm_address'] ) ? sanitize_text_field( $_POST['farm_address'] ) : '';
+		$farm_thumbnail  = isset( $_POST['_farm_thumbnail_id'] ) ? sanitize_text_field( $_POST['_farm_thumbnail_id'] ) : '-1';
 
 		/* Update the meta field in the database */
 		update_post_meta( $post_id, 'staking_address', $staking_address );
@@ -310,6 +297,7 @@ class FarmFactory_Meta_Box {
 		update_post_meta( $post_id, 'reward_duration', $reward_duration );
 		update_post_meta( $post_id, 'network_name', $network_name );
 		update_post_meta( $post_id, 'farm_address', $farm_address );
+		update_post_meta( $post_id, '_farm_thumbnail_id', $farm_thumbnail );
 
 	}
 

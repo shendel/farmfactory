@@ -82,6 +82,20 @@ function farmfactory_admin_scripts( $hook ) {
 
 			wp_enqueue_script( 'farmfactory-admin', FARMFACTORY_URL . 'assets/js/farmfactory-admin.js', array( 'farmfactory-deployer' ), $ver, true );
 
+			$post_type_object = get_post_type_object( $typenow );
+
+			/* Translatable string */
+			wp_localize_script('farmfactory-admin', 'farmfactory',
+				array(
+					'l18n' => array(
+						'featuredImage'       => esc_html__( 'Staking Token Icon', 'farmfactory' ),
+						'setFeaturedImage'    => $post_type_object->labels->set_featured_image,
+						'removeFeaturedImage' => $post_type_object->labels->remove_featured_image,
+						'clickTheImage'       => esc_html__( 'Click the image to edit or update', 'farmfactory' ),
+					),
+				)
+			);
+
 		}
 	}
 
