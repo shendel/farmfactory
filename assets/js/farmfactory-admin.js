@@ -261,4 +261,29 @@
 		$('.farmfactory-thumbnail-container').html( html );
 	});
 
+	/**
+	 * Clipboard
+	 */
+	var copyFarmShortcodeClipboard = new ClipboardJS( '.copy-farm-shortcode' );
+	var copyFarmShortcodeSuccessTimeout;
+	copyFarmShortcodeClipboard.on( 'success', function( event ) {
+		var triggerElement = $( event.trigger );
+		var successElement = $( '.success', triggerElement.closest( '.copy-to-clipboard-container' ) );
+
+		// Clear the selection and move focus back to the trigger.
+		event.clearSelection();
+		// Handle ClipboardJS focus bug, see https://github.com/zenorocha/clipboard.js/issues/680
+		triggerElement.trigger( 'focus' );
+
+		// Show success visual feedback.
+		clearTimeout( copyFarmShortcodeSuccessTimeout );
+		successElement.removeClass( 'hidden' );
+
+		// Hide success visual feedback after 3 seconds since last success.
+		copyFarmShortcodeSuccessTimeout = setTimeout( function() {
+			successElement.addClass( 'hidden' );
+		}, 3000 );
+
+	} );
+
 })( jQuery );

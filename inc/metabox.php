@@ -304,3 +304,22 @@ class FarmFactory_Meta_Box {
 }
 
 new FarmFactory_Meta_Box;
+
+/**
+ * Shortcode
+ */
+function farmfactory_post_submitbox( $post ) {
+	if ( 'farmfactory' === $post->post_type ) {
+		?>
+		<div class="misc-pub-section">
+			<p class="description"><strong><?php esc_html_e( 'Shortcode', 'farmfactory' ); ?><strong></p>
+			<input type="text" class="large-text farmfactory-schortcode-copy" value='[farmfactory id="<?php echo esc_attr( $post->ID ); ?>"]' readonly>
+			<div class="copy-to-clipboard-container">
+				<button type="button" class="button button-small copy-farm-shortcode" data-clipboard-target=".farmfactory-schortcode-copy"><?php esc_html_e( 'Copy Shortcode to clipboard', 'farmfactory' ); ?></button>
+				<span class="success hidden" aria-hidden="true"><?php esc_html_e( 'Copied!', 'farmfactory' ); ?></span>
+			</div>
+		</div>
+		<?php
+	}
+}
+add_action( 'post_submitbox_misc_actions', 'farmfactory_post_submitbox' );
