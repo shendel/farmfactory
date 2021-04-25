@@ -48,7 +48,7 @@ function farmfactory_load_scripts() {
 				fortmatic: {
 					package: window.Fortmatic,
 					options: {
-						key: "' . get_option( 'farmfactory_fortmatic_key' ) . '", // pk_test_391E26A3B43A3350
+						key: "' . get_option( 'farmfactory_fortmatic_key_deprecated' ) . '",
 					},
 				},
 			},

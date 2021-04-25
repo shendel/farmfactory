@@ -6,6 +6,11 @@
  */
 
 /**
+ * Init
+ */
+require FARMFACTORY_PATH . 'App/autoload.php';
+
+/**
  * Functions
  */
 require FARMFACTORY_PATH . 'inc/functions.php';

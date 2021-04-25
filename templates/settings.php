@@ -1,3 +1,11 @@
+<?php
+/**
+ * Settings Page
+ *
+ * @package FarmFactory
+ */
+
+?>
 
 <div class="wrap">
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
@@ -8,11 +16,11 @@
 
 				<tr>
 					<th scope="row">
-						<label><?php esc_html_e('Info', 'farmfactory'); ?></label>
+						<label><?php esc_html_e( 'Info', 'farmfactory' ); ?></label>
 					</th>
 					<td>
 						<p class="description">
-							<?php esc_html_e('First of all please','farmfactory'); ?> <a href="update-core.php?force-check=1"><?php esc_html_e('check for updates','farmfactory'); ?></a>. <?php esc_html_e('How to use? Just enter [farmfactory] shortcode in your page or post and fill this form:','farmfactory'); ?>
+							<?php esc_html_e( 'First of all please','farmfactory' ); ?> <a href="update-core.php?force-check=1"><?php esc_html_e(' check for updates', 'farmfactory' ); ?></a>.<br> <?php esc_html_e( 'How to use? Just enter [farmfactory] shortcode in your page or post.', 'farmfactory' ); ?>
 						</p>
 					</td>
 				</tr>
@@ -26,6 +34,8 @@
 					</td>
 				</tr>
 
+				<?php
+				/*
 				<tr>
 					<th scope="row">
 						<label for="blogname"><?php echo esc_html_e( 'Fortmatic Key', 'farmfacotry' ); ?></label>
@@ -34,6 +44,8 @@
 						<input name="farmfactory_fortmatic_key" type="text" value="<?php echo esc_attr( get_option( 'farmfactory_fortmatic_key' ) ); ?>" class="regular-text">
 					</td>
 				</tr>
+				*/
+				?>
 
 				<tr>
 					<th scope="row">
