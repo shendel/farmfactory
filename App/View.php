@@ -2,18 +2,15 @@
 namespace FARMFACTORY;
 defined( 'ABSPATH' ) || exit;
 
-
 class View {
 
 	protected $data = [];
-
 
 	public function __get( $name ) {
 
 		return $this->data[ $name ] ?? null;
 
 	}
-
 
 	public function __set( $name, $value ) {
 
@@ -25,19 +22,17 @@ class View {
 		return isset( $this->data[ $name ] );
 	}
 
-
 	public function render( $template, $arr = [] ) {
 		ob_start();
-		$this->display($template , $arr =[]);
+		$this->display($template , $arr = [] );
 		$content = ob_get_contents();
 		ob_end_clean();
 		return $content;
 	}
 
-	public function display( String $template , $arr =[] )  {
-        extract($arr);
-        include FARMFACTORY_TEMPLATE_DIR. $template;
+	public function display( String $template, $arr = [] ) {
+		extract( $arr );
+		include FARMFACTORY_TEMPLATE_DIR . $template;
 	}
-
 
 }
