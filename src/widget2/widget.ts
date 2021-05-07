@@ -48,7 +48,7 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
       </div>
     </div>  
   </div>
-  <div class="ff-widget-section">
+  <div class="ff-widget-section ff-widget-earn-section ff-hidden">
     <div class="ff-widget-section-title">
       <b class="ff-rewards-token-name">
         <span class="ff-skeleton"></span>
@@ -59,11 +59,11 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
         <span class="ff-skeleton"></span>
       </div>
       <div>
-        <button class="ff-button ff-widget-harvest-button ff-hidden" type="button" disabled>Harvest</button>
+        <button class="ff-button ff-widget-harvest-button" type="button" disabled>Harvest</button>
       </div>
     </div>
   </div>
-  <div class="ff-widget-section">
+  <div class="ff-widget-section ff-widget-stake-section ff-hidden">
     <div class="ff-widget-section-title">
       <b class="ff-staking-token-name">
         <span class="ff-skeleton"></span>
@@ -74,8 +74,8 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
         <span class="ff-skeleton"></span>
       </div>
       <div>
-        <button class="ff-button ff-widget-deposit-button ff-hidden" type="button" disabled>Deposit</button>
-        <button class="ff-button ff-widget-withdraw-button ff-hidden" type="button" disabled>Withdraw</button>
+        <button class="ff-button ff-widget-deposit-button" type="button" disabled>Deposit</button>
+        <button class="ff-button ff-widget-withdraw-button" type="button" disabled>Withdraw</button>
       </div>
     </div>
   </div>
@@ -152,7 +152,9 @@ class Widget {
     aprValue: HTMLDivElement
     earnTokenName: HTMLDivElement
     earnedAmount: HTMLDivElement
-    stakedAmount:HTMLDivElement
+    stakedAmount: HTMLDivElement
+    earnSection: HTMLDivElement
+    stakeSection: HTMLDivElement
     unlockButton: HTMLButtonElement
     approveButton: HTMLButtonElement
     depositButton: HTMLButtonElement
@@ -219,6 +221,8 @@ class Widget {
     const apyValue            = root.querySelector('.ff-widget-apy') as HTMLDivElement
     const aprValue            = root.querySelector('.ff-widget-apr') as HTMLDivElement
     const earnTokenName       = root.querySelector('.ff-widget-earn-token-name') as HTMLDivElement
+    const earnSection         = root.querySelector('.ff-widget-earn-section') as HTMLDivElement
+    const stakeSection        = root.querySelector('.ff-widget-stake-section') as HTMLDivElement
     const earnedAmount        = root.querySelector('.ff-widget-earned-amount') as HTMLDivElement
     const stakedAmount        = root.querySelector('.ff-widget-staked-amount') as HTMLDivElement
     const unlockButton        = root.querySelector('.ff-widget-unlock-button') as HTMLButtonElement
@@ -237,6 +241,8 @@ class Widget {
       apyValue,
       aprValue,
       earnTokenName,
+      earnSection,
+      stakeSection,
       earnedAmount,
       stakedAmount,
       unlockButton,
@@ -289,9 +295,8 @@ class Widget {
 
   handleApproved = () => {
     this.elems.approveButton.classList.add('ff-hidden')
-    this.elems.harvestButton.classList.remove('ff-hidden')
-    this.elems.depositButton.classList.remove('ff-hidden')
-    this.elems.withdrawButton.classList.remove('ff-hidden')
+    this.elems.earnSection.classList.remove('ff-hidden')
+    this.elems.stakeSection.classList.remove('ff-hidden')
 
     this.elems.depositButton.addEventListener('click', () => {
       depositModal.open({
@@ -454,6 +459,7 @@ class Widget {
     }
     else if (this.opts.detailsClick) {
       const details = document.createElement('div')
+
       details.classList.add('ff-widget-details')
       details.innerText = 'Details'
       details.onclick = () => {
@@ -541,8 +547,6 @@ class Widget {
       this.readContracts.farm.methods.earned(account).call(),
       this.readContracts.staking.methods.allowance(account, this.opts.farmAddress).call(),
     ])
-
-    console.log(44444, allowance)
 
     if (Number(allowance) === 0) {
       this.elems.approveButton.classList.remove('ff-hidden')
