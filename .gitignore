@@ -9,6 +9,7 @@ yarn.lock
 
 node_modules
 
+/*.css
 /*.html
 Farm.json
 /example/

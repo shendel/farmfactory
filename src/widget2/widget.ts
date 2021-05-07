@@ -59,7 +59,7 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
         <span class="ff-skeleton"></span>
       </div>
       <div>
-        <button class="ff-button ff-widget-harvest-button" type="button" disabled>Harvest</button>
+        <button class="ff-button ff-widget-harvest-button ff-hidden" type="button" disabled>Harvest</button>
       </div>
     </div>
   </div>
@@ -74,8 +74,8 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
         <span class="ff-skeleton"></span>
       </div>
       <div>
-        <button class="ff-button ff-widget-deposit-button" type="button" disabled>Deposit</button>
-        <button class="ff-button ff-widget-withdraw-button" type="button" disabled>Withdraw</button>
+        <button class="ff-button ff-widget-deposit-button ff-hidden" type="button" disabled>Deposit</button>
+        <button class="ff-button ff-widget-withdraw-button ff-hidden" type="button" disabled>Withdraw</button>
       </div>
     </div>
   </div>
@@ -134,6 +134,7 @@ type Opts = {
   apyLabel?: string
   aprLabel?: string
   detailsLink?: string | ((stakingSymbol: string, rewardsSymbol: string) => string)
+  detailsClick?: (stakingSymbol: string, rewardsSymbol: string) => void
 }
 
 class Widget {
@@ -249,27 +250,7 @@ class Widget {
       web3modal.connect()
     })
 
-    const createButton = (button, callback) => {
-      const text = button.innerHTML
-      let isLoading = false
-
-      button.addEventListener('click', async () => {
-        if (isLoading) {
-          return
-        }
-
-        isLoading = true
-        button.disabled = true
-        button.innerHTML = '<div class="ff-loader"></div>'
-
-        await callback()
-
-        button.disabled = false
-        button.innerHTML = text
-      })
-    }
-
-    createButton(approveButton, async () => {
+    this.createButton(approveButton, async () => {
       const { web3, account } = getState()
 
       const spender = opts.farmAddress
@@ -277,15 +258,42 @@ class Widget {
 
       try {
         await this.contracts.staking.methods.approve(spender, value).send({ from: account })
-        this.elems.approveButton.classList.add('ff-hidden')
+        this.handleApproved()
       }
       catch (err) {
         console.error(err)
         infoModal.open(err.message)
       }
     })
+  }
 
-    depositButton.addEventListener('click', () => {
+  createButton = (button, callback) => {
+    const text = button.innerHTML
+    let isLoading = false
+
+    button.addEventListener('click', async () => {
+      if (isLoading) {
+        return
+      }
+
+      isLoading = true
+      button.disabled = true
+      button.innerHTML = '<div class="ff-loader"></div>'
+
+      await callback()
+
+      button.disabled = false
+      button.innerHTML = text
+    })
+  }
+
+  handleApproved = () => {
+    this.elems.approveButton.classList.add('ff-hidden')
+    this.elems.harvestButton.classList.remove('ff-hidden')
+    this.elems.depositButton.classList.remove('ff-hidden')
+    this.elems.withdrawButton.classList.remove('ff-hidden')
+
+    this.elems.depositButton.addEventListener('click', () => {
       depositModal.open({
         contracts: this.contracts,
         stakingDecimals: this.state.stakingDecimals,
@@ -293,7 +301,7 @@ class Widget {
       })
     })
 
-    withdrawButton.addEventListener('click', () => {
+    this.elems.withdrawButton.addEventListener('click', () => {
       withdrawModal.open({
         contracts: this.contracts,
         stakingDecimals: this.state.stakingDecimals,
@@ -301,7 +309,7 @@ class Widget {
       })
     })
 
-    createButton(harvestButton, async () => {
+    this.createButton(this.elems.harvestButton, async () => {
       const { opts: { networkName }, account } = getState()
 
       return this.contracts.farm.methods.getReward().send({ from: account })
@@ -444,6 +452,16 @@ class Widget {
 
       this.elems.root.appendChild(details)
     }
+    else if (this.opts.detailsClick) {
+      const details = document.createElement('div')
+      details.classList.add('ff-widget-details')
+      details.innerText = 'Details'
+      details.onclick = () => {
+        this.opts.detailsClick(stakingTokenSymbol, rewardsTokenSymbol)
+      }
+
+      this.elems.root.appendChild(details)
+    }
 
     // Other
 
@@ -524,8 +542,13 @@ class Widget {
       this.readContracts.staking.methods.allowance(account, this.opts.farmAddress).call(),
     ])
 
+    console.log(44444, allowance)
+
     if (Number(allowance) === 0) {
       this.elems.approveButton.classList.remove('ff-hidden')
+    }
+    else {
+      this.handleApproved()
     }
 
     const { stakingDecimals, rewardsDecimals } = this.state
