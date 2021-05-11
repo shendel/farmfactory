@@ -151,10 +151,10 @@ class FarmFactory_Meta_Box {
 		echo '		<th><label>' . esc_html__( 'Farming Address', 'farmfactory' ) . '</label></th>';
 		echo '		<td>
 						<div class="farmfactory-form-inline">
-							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '">
+							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '" readonly>
 							<a class="button button-secondary" id="farmfactory_deploy_button">' . esc_html__( 'Deploy', 'farmfactory' ) . '</a>
 						</div>
-						<p class="desctiption">' . esc_html__( 'After deployment address will be automatically placed in the field above. If you have already deployed Farm contract then add its address to the field above 👆, otherwise you need to create new one - press "Deploy" to call the contract creation process. Do not enter erc20 addresses here', 'farmfactory' ) . '</p>
+						<p class="desctiption">' . esc_html__( 'After deployment address will be automatically placed in the field above', 'farmfactory' ) . '</p>
 				</td>';
 		echo '	</tr>';
 
