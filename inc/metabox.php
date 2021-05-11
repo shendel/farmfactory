@@ -154,7 +154,7 @@ class FarmFactory_Meta_Box {
 							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '">
 							<a class="button button-secondary" id="farmfactory_deploy_button">' . esc_html__( 'Deploy', 'farmfactory' ) . '</a>
 						</div>
-						<p class="desctiption">' . esc_html__( 'After deployment address will be automatically placed in the field above. If you have already deployed Farm contract then add its address to the field below, otherwise you need to create new one - press "Deploy" to call the contract creation process.', 'farmfactory' ) . '</p>
+						<p class="desctiption">' . esc_html__( 'After deployment address will be automatically placed in the field above. If you have already deployed Farm contract then add its address to the field above 👆, otherwise you need to create new one - press "Deploy" to call the contract creation process.', 'farmfactory' ) . '</p>
 				</td>';
 		echo '	</tr>';
 
