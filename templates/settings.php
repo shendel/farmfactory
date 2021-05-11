@@ -60,6 +60,8 @@
 								'rinkeby',
 								'bsc',
 								'bsc_test',
+								'matic',
+								'matic_test',
 							);
 						?>
 						<select name="farmfactory_networkName">

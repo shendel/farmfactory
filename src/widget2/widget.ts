@@ -348,6 +348,8 @@ class Widget {
       mainnet: 'https://mainnet.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
       ropsten: 'https://ropsten.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
       kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+      matic: 'https://betav2.matic.network',
+      matic_test: 'https://betav2.matic.network',
     }
 
     const network = networks[networkName.toLowerCase()]
