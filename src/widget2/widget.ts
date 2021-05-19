@@ -42,6 +42,12 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
       </div>
     `}  
     <div class="ff-widget-row2">
+      <div class="ff-widget-label">Deposit:</div>
+      <div class="ff-widget-value ff-widget-deposit-token-name">
+        <span class="ff-skeleton"></span>
+      </div>
+    </div>  
+    <div class="ff-widget-row2">
       <div class="ff-widget-label">Earn:</div>
       <div class="ff-widget-value ff-widget-earn-token-name">
         <span class="ff-skeleton"></span>
@@ -150,6 +156,7 @@ class Widget {
     stakingTokenSymbol: HTMLDivElement
     apyValue: HTMLDivElement
     aprValue: HTMLDivElement
+    depositTokenName: HTMLDivElement
     earnTokenName: HTMLDivElement
     earnedAmount: HTMLDivElement
     stakedAmount: HTMLDivElement
@@ -220,6 +227,7 @@ class Widget {
     const stakingTokenSymbol  = root.querySelector('.ff-staking-token-name') as HTMLDivElement
     const apyValue            = root.querySelector('.ff-widget-apy') as HTMLDivElement
     const aprValue            = root.querySelector('.ff-widget-apr') as HTMLDivElement
+    const depositTokenName    = root.querySelector('.ff-widget-deposit-token-name') as HTMLDivElement
     const earnTokenName       = root.querySelector('.ff-widget-earn-token-name') as HTMLDivElement
     const earnSection         = root.querySelector('.ff-widget-earn-section') as HTMLDivElement
     const stakeSection        = root.querySelector('.ff-widget-stake-section') as HTMLDivElement
@@ -240,6 +248,7 @@ class Widget {
       stakingTokenSymbol,
       apyValue,
       aprValue,
+      depositTokenName,
       earnTokenName,
       earnSection,
       stakeSection,
@@ -473,6 +482,7 @@ class Widget {
 
     // Other
 
+    this.elems.depositTokenName.innerHTML = stakingTokenSymbol
     this.elems.earnTokenName.innerHTML = rewardsTokenSymbol
 
     this.initTimer()
