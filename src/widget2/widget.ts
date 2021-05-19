@@ -441,11 +441,11 @@ class Widget {
       if (typeof this.opts.apr === 'function') {
         this.opts.apr()
           .then((value) => {
-            this.elems.aprValue.innerHTML = `${value}%`
+            this.elems.aprValue.innerHTML = `${value}`
           })
       }
       else {
-        this.elems.aprValue.innerHTML = `${this.opts.apr}%`
+        this.elems.aprValue.innerHTML = `${this.opts.apr}`
       }
     }
 
