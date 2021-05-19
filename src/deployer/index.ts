@@ -25,14 +25,26 @@ type Params = {
   stakingAddress: string
   duration: number
   decimal: number
+  onTrx: (trxHash: string) => void
   onSuccess: (address: string) => void
-  onError: (error: Error) => void
+  onError: (error: Error | string) => void
+  onFinally: () => void
 }
 
 const deploy = async (params: Params) => {
   const { abi, bytecode } = json
   const { rewardsAddress, stakingAddress, duration, decimal } = params
   const { web3 } = getState()
+
+  const onTrx = params.onTrx || (() => {})
+  const onSuccess = params.onSuccess || (() => {})
+  const onError = params.onError || (() => {})
+  const onFinally = params.onFinally || (() => {})
+
+  if (!rewardsAddress || !stakingAddress || !duration || !decimal) {
+    onError('All fields should be filled: rewardsAddress, stakingAddress, duration, decimal.')
+    return
+  }
 
   let contract
   let accounts
@@ -42,30 +54,37 @@ const deploy = async (params: Params) => {
     accounts = await window.ethereum.request({ method: 'eth_accounts' })
   }
   catch (err) {
-    if (typeof params.onError === 'function') {
-      params.onError(err)
-    }
+    onError(err)
+    return
+  }
 
+  if (!accounts || !accounts[0]) {
+    onError('Wallet account is undefined.')
     return
   }
 
   contract.deploy({
     data: '0x' + bytecode,
-    arguments: [ rewardsAddress, stakingAddress, duration, decimal ]
+    arguments: [ rewardsAddress, stakingAddress, duration, decimal ],
   })
     .send({
       from: accounts[0],
       gas: 3000000,
-    }, (error, transactionHash) => {})
-    .on('error', function(error) {
-      if (typeof params.onError === 'function') {
-        params.onError(error)
-      }
     })
-    .on('receipt', function(receipt) {
-      if (typeof params.onSuccess === 'function') {
-        params.onSuccess(receipt.contractAddress)
-      }
+    .on('transactionHash', (hash) => {
+      console.log('transaction hash:', hash)
+      onTrx(hash)
+    })
+    .on('error', (error) => {
+      console.log('transaction error:', error)
+      onError(error)
+    })
+    .on('receipt', (receipt) => {
+      console.log('transaction receipt:', receipt)
+      onSuccess(receipt.contractAddress)
+    })
+    .then(() => {
+      onFinally()
     })
 }
 

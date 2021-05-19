@@ -34,18 +34,26 @@
 	$( button ).on( 'click', function(e) {
 		e.preventDefault();
 
-		if (button.disabled) {
-			return
-		}
+    if (!rewardsAddress || !stakingAddress || !duration || !decimal) {
+      alert('All fields should be filled: rewardsAddress, stakingAddress, duration, decimal.');
+      return;
+    }
 
-		button.disabled = true;
-		loaderOverlay.classList.add('visible');
+    if (button.disabled) {
+      return
+    }
+
+    button.disabled = true;
+    loaderOverlay.classList.add('visible');
 
 		farmDeployer.deploy({
 			rewardsAddress: rewardsAddress.value,
 			stakingAddress: stakingAddress.value,
 			duration: duration.value,
 			decimal: decimal.value,
+      onTrx: (trxHash) => {
+			  alert(`Transaction hash: ${trxHash}. Send this hash to the support if you have a problem with deploy.`)
+      },
 			onSuccess: (address) => {
 				console.log('Contract address:', address);
 				button.disabled = false;
