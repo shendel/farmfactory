@@ -359,6 +359,9 @@ class Widget {
       kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
       matic: 'https://betav2.matic.network',
       matic_test: 'https://betav2.matic.network',
+      // https://docs.binance.org/smart-chain/developer/create-wallet.html
+      bsc: 'https://bsc-dataseed1.binance.org:443',
+      bsc_test: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     }
 
     const network = networks[networkName.toLowerCase()]
