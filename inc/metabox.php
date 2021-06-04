@@ -126,6 +126,7 @@ class FarmFactory_Meta_Box {
 		echo '		<th><label>' . esc_html__( 'Annual Percentage Yield (APY)', 'farmfactory' ) . '</label></th>';
 		echo '		<td>';
 		echo '			<input type="text" name="farm_apy" id="farmfactory_apy" class="large-text" value="' . esc_attr( $farm_apy ) . '">
+						<p class="description">' . sprintf( esc_html__( 'APY you write in the admin doesn\'t affect the contract logic. It\'s just a value to display in the widget', 'farmfactory' ), '<br>' ) . '</p>
 						';
 		echo '		</td>';
 		echo '	</tr>';
