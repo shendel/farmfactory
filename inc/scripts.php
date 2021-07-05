@@ -11,7 +11,7 @@
 function farmfactory_load_scripts() {
 
 	wp_register_script( 'web3', FARMFACTORY_URL . 'assets/js/web3.min.js', array(), '1.2.11', true );
-	wp_register_script( 'web3modal', FARMFACTORY_URL . 'assets/js/web3modal.min.js', array(), '1.9.3', true );
+	wp_register_script( 'web3modal', FARMFACTORY_URL . 'assets/js/web3modal.min.js', array(), '1.9.4', true );
 	wp_register_script( 'bignumber', FARMFACTORY_URL . 'assets/js/bignumber.min.js', array(), '8.0.2', true );
 	wp_register_script( 'web3-provider', FARMFACTORY_URL . 'assets/js/web3-provider.min.js', array(), '1.2.1', true );
 	wp_register_script( 'fortmatic', FARMFACTORY_URL . 'assets/js/fortmatic.js', array(), '2.0.6', true );
