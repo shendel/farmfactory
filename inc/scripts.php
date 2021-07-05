@@ -61,7 +61,7 @@ function farmfactory_load_scripts() {
 						rpc: {
 						  56: "https://bsc-dataseed1.binance.org:443",
             },
-            network: 'binance',
+            network: "binance",
 					},
 				},
 				fortmatic: {
