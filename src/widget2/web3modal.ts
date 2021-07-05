@@ -104,6 +104,9 @@ const init = (): any => {
     disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera
   })
 
+  // @ts-ignore
+  window.web3ModalInstance = instance
+
   instance.on('connect', async (proxy) => {
     console.log('web3modal initialized')
   })

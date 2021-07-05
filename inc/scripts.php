@@ -35,14 +35,34 @@ function farmfactory_load_scripts() {
 	if ( wp_count_posts( 'farmfactory' ) ) {
 
 	$inline_scripts = '
+	var networkName = "' . get_option( 'farmfactory_networkName', 'ropsten' ) . '";
+
+	var chainIds = {
+	  "mainnet": 1,
+    "ropsten": 3,
+    "rinkeby": 4,
+    "kovan": 42,
+    "bsc": 56,
+    "bsc_test": 97,
+    "matic": 137,
+    "matic_test": 80001,
+	};
+
+	var chainId = chainIds[networkName.toLowerCase()];
+
 	farmFactory.init({
-		networkName: "' . get_option( 'farmfactory_networkName', 'ropsten' ) . '",
+		networkName: networkName,
 		wallet: {
 			providerOptions: {
 				walletconnect: {
 					package: window.WalletConnectProvider.default,
 					options: {
 						infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
+						rpc: {
+						  56: "https://bsc-dataseed1.binance.org:443",
+              97: "https://data-seed-prebsc-1-s1.binance.org:8545",
+            },
+            chainId: chainId,
 					},
 				},
 				fortmatic: {

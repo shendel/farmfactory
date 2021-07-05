@@ -366,7 +366,7 @@ class Widget {
 
     const network = networks[networkName.toLowerCase()]
 
-    const web3 = new window.Web3(window.Web3.givenProvider || window.ethereum || network)
+    const web3 = new window.Web3(network || window.Web3.givenProvider || window.ethereum)
 
     this.readContracts = await createContracts(web3, {
       farmAddress,
