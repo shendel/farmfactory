@@ -60,9 +60,8 @@ function farmfactory_load_scripts() {
 						infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
 						rpc: {
 						  56: "https://bsc-dataseed1.binance.org:443",
-              97: "https://data-seed-prebsc-1-s1.binance.org:8545",
             },
-            chainId: chainId,
+            network: 'binance',
 					},
 				},
 				fortmatic: {
