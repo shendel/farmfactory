@@ -41,7 +41,7 @@ const fetchAccountData = async () => {
     disconnect()
   }
   else {
-    console.log('account connected')
+    console.log('account connected:', account)
     events.dispatch('account connected')
   }
 }

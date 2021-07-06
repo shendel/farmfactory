@@ -497,7 +497,7 @@ class Widget {
 
     this.elems.unlockButton.classList.add('ff-hidden')
 
-    this.contracts = await createContracts(web3, {
+    this.contracts = createContracts(web3, {
       farmAddress,
       rewardsAddress,
       stakingAddress,
