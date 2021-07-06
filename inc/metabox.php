@@ -152,10 +152,11 @@ class FarmFactory_Meta_Box {
 		echo '		<th><label>' . esc_html__( 'Farming Address', 'farmfactory' ) . '</label></th>';
 		echo '		<td>
 						<div class="farmfactory-form-inline">
-							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '" readonly>
+							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '">
 							<a class="button button-secondary" id="farmfactory_deploy_button">' . esc_html__( 'Deploy', 'farmfactory' ) . '</a>
 						</div>
-						<p class="desctiption">' . esc_html__( 'After deployment address will be automatically placed in the field above', 'farmfactory' ) . '</p>
+						<p class="desctiption">' . esc_html__( 'Use "Deploy" button next to the field to create new Farm contract. After deployment address will be automatically placed in the field above', 'farmfactory' ) . '</p>
+						<p class="desctiption" style="color: red;">' . esc_html__( 'If you have Farm contract address then you can pass it to this field. NOTE: please be sure that you fill Farm contract address! If you are not sure PLEASE PRESS "Deploy" button!!! Otherwise, this may lead to incorrect operations of the program and you may lose your tokens!"', 'farmfactory' ) . '</p>
 				</td>';
 		echo '	</tr>';
 
@@ -188,7 +189,7 @@ class FarmFactory_Meta_Box {
 							</p>
 							<p class="desctiption">
 							' . sprintf( esc_html__('Need help? Contact our team using %s.', 'farmfactory'), '<a href="https://t.me/farmsupportbot" target="_blank">https://t.me/farmsupportbot</a>' ) . '</p>
-							
+
 					</td>';
 			echo '	</tr>';
 
