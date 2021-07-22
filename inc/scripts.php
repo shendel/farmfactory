@@ -50,19 +50,30 @@ function farmfactory_load_scripts() {
 
 	var chainId = chainIds[networkName.toLowerCase()];
 
+	var walletConnectOptions;
+
+	if (chainId === 56 || chainId === 97) {
+	  walletConnectOptions = {
+      infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
+      rpc: {
+        56: "https://bsc-dataseed1.binance.org:443",
+       },
+       network: "binance",
+    };
+	}
+	else {
+	  walletConnectOptions = {
+	    infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
+	  }
+	}
+
 	farmFactory.init({
 		networkName: networkName,
 		wallet: {
 			providerOptions: {
 				walletconnect: {
 					package: window.WalletConnectProvider.default,
-					options: {
-						infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
-						rpc: {
-						  56: "https://bsc-dataseed1.binance.org:443",
-            },
-            network: "binance",
-					},
+					options: walletConnectOptions,
 				},
 				fortmatic: {
 					package: window.Fortmatic,
