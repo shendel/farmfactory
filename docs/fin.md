@@ -9,6 +9,7 @@
 | 15 mar | 743$ (envato 02.2021 earnings)  | 
 | 2 apr mar | -880$ gorinich party  | 
 | 15 jun | 2004$ (envato 02.2021-05.2021 earnings)  | 
+| 15 jul | 1000$ (1500 (envato 06.2021 earnings) - $500 freelancers) | 
 
 other (only sales, not custom job etc)..
 | date   | amount | 
@@ -18,3 +19,10 @@ other (only sales, not custom job etc)..
 | ------ | ---- |
 | 20 jun | 400$ (@rekl...) |
 | 29 jun | 499$ (@bitcoinau...) |
+
+
+minus freelancers
+| date   | amount | 
+|--------|-----------------------------|
+| 28.07.21 |  -$330 (ion)   |
+| 28.07.21 |  -$160 (dis)   |
