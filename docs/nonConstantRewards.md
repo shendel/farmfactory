@@ -118,3 +118,53 @@ library SafeMath {
     }
 }
 ```
+# костыли на стороне фронтенда
+см farm.swaponline.io
+```
+Contract with bank (to distribute accross users): <span id='stakingCtr'>(loading)</span> <br> 
+
+Current bank: <span id='curbalance'>(loading)</span> BSC <br>
+<br>
+Farm contract: <span id='farmCtr'>loading</span>
+
+
+<script>var myshare,x;
+	function calcstat() { 
+var curbalance;
+		document.querySelector("#stakingCtr").innerHTML = '<a href="https://bscscan.com/search?f=0&q='+widget8.opts.rewardsAddress+'" target=_blank>'+widget8.opts.rewardsAddress+'</a>';curbalance
+		document.querySelector("#farmCtr").innerHTML = '<a href="https://bscscan.com/search?f=0&q='+widget8.opts.farmAddress+'" target=_blank>'+widget8.opts.farmAddress+'</a>';
+var opts = {
+method: 'GET',
+headers: {}
+};
+fetch('https://api.bscscan.com/api?module=account&action=balance&address='+widget8.opts.rewardsAddress+'&tag=latest&apikey=GGGHTAFK7QKE7N335QW1SGIH9X1PXFFIWH', opts).then(function (response) {
+return response.json();
+})
+.then(function (body) {
+curbalance = body.result;
+document.querySelector("#curbalance").innerHTML = body.result/1000000000000000000;
+
+	
+if (document.querySelector(".ff-widget-earned-amount").innerHTML.match(/skeleton/)) return true;
+
+if (x==1) return true;
+	
+x = 1;
+ myshare = document.querySelector(".ff-widget-earned-amount").innerHTML; 
+			
+												 document.querySelector(".ff-widget-apy").innerHTML = myshare+"%"; 
+												 document.querySelector(".ff-widget-earned-amount").innerHTML = (curbalance/100*myshare)/1000000000000000000 + " BSC"; 
+
+	
+});
+		
+document.querySelector(".ff-widget-title").innerHTML="SWAP-BSC"
+document.querySelector(".ff-widget-earn-token-name").innerHTML="BSC"
+document.querySelector(".ff-widget-section-title").innerHTML="BSC Earned"
+
+		
+	}
+	
+	
+setInterval(calcstat,3000) 
+	```
