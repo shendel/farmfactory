@@ -19,6 +19,7 @@ other (only sales, not custom job etc)..
 | ------ | ---- |
 | 20 jun | 400$ (@rekl...) |
 | 29 jun | 499$ (@bitcoinau...) |
+| 31 aug | 477$ (etheum by) |
 
 
 minus freelancers
