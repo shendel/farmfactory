@@ -28,7 +28,7 @@
 | 20 jun | 400$ (@rekl...) |
 | 29 jun | 499$ (@bitcoinau...) |
 | 31 aug | 477$ (etheum by) |
-
+| 29 oct 21 | 490$ #T000201  |
 
 ## minus
 | date   | amount | 
