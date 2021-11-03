@@ -62,6 +62,8 @@
 								'bsc_test',
 								'matic',
 								'matic_test',
+								'xdai',
+								'aurora'
 							);
 						?>
 						<select name="farmfactory_networkName">
