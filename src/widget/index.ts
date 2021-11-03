@@ -37,6 +37,8 @@ const initMetamask = async () => {
     42: 'kovan',
     56: 'bsc',
     97: 'bsc_test',
+    100: 'xdai',
+    1313161554: 'aurora'
   })[window.ethereum.networkVersion]
 
   if (!activeNetwork || opts.networkName.toLowerCase() !== activeNetwork.toLowerCase()) {
