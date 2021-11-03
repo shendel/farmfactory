@@ -362,6 +362,8 @@ class Widget {
       // https://docs.binance.org/smart-chain/developer/create-wallet.html
       bsc: 'https://bsc-dataseed1.binance.org:443',
       bsc_test: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+      xdai: 'https://rpc.xdaichain.com',
+      aurora: 'https://mainnet.aurora.dev'
     }
 
     const network = networks[networkName.toLowerCase()]
