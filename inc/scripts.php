@@ -46,6 +46,8 @@ function farmfactory_load_scripts() {
     "bsc_test": 97,
     "matic": 137,
     "matic_test": 80001,
+    "xdai": 100,
+    "aurora": 1313161554
 	};
 
 	var chainId = chainIds[networkName.toLowerCase()];
