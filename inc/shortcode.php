@@ -87,3 +87,16 @@ function farmfactory_timer_shortcode() {
 	return '<div id="farmfactory-timer-root"></div>';
 }
 add_shortcode( 'farmfactoryTimer', 'farmfactory_timer_shortcode' );
+
+/**
+ * Price Shortcode
+ */
+function farmfactory_price_shortcode( $attrs ) {
+  $attrs = shortcode_atts( array(
+    'address' => null,
+    'network' => null
+	), $attrs );
+
+  return '<span data-farm-container="price" data-token="' . $attrs['address'] . '" data-network="' . $attrs['network'] .'" data-api-key="YdC2b3OQsjrbBaBrFO62rsI6idlLENgfBp0taq8Dvj7z35k9B3VamcXhIlS6rMFw">...</span>';
+}
+add_shortcode( 'farmfactoryPrice', 'farmfactory_price_shortcode' );
