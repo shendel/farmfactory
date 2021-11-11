@@ -16,7 +16,7 @@ define( 'FARMFACTORY_BASE_DIR', __DIR__ );
 define( 'FARMFACTORY_BASE_FILE', __FILE__ );
 define( 'FARMFACTORY_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FARMFACTORY_URL', plugin_dir_url( __FILE__ ) );
-define( 'FARMFACTORY_VER', '2.0.31');
+define( 'FARMFACTORY_VER', '2.0.32');
 
 /**
  * Plugin Init
