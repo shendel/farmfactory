@@ -21,7 +21,7 @@ function farmfactory_load_scripts() {
 		'web3modal',
 		'bignumber',
 		'web3-provider',
-		'fortmatic',
+		'fortmatic'
 	);
 
 	// create my own version codes.
@@ -29,6 +29,7 @@ function farmfactory_load_scripts() {
 	$my_css_ver = gmdate( 'ymd-Gis', filemtime( FARMFACTORY_PATH . 'assets/css/farmfactory.css' ) );
 
 	wp_enqueue_script( 'farmfactory-js', FARMFACTORY_URL . 'lib/farmfactory.js', $dependencies, $my_js_ver, true );
+  wp_enqueue_script( 'token-price', FARMFACTORY_URL . 'assets/js/token-price.js', array(), '1.0.0', true);
 
 	wp_enqueue_style( 'farmfactory-css', FARMFACTORY_URL . 'assets/css/farmfactory.css', false, $my_css_ver );
 
