@@ -1,7 +1,8 @@
 ## payouts
 | date   | amount | status |
 |--------|-----------------|------------|
-| 15.10.2021 |  $2827  | on noxon's bannk |
+| 15.11.2021 |  $4 914  | on noxon's bannk |
+
 
 инструкция: смотрим когда была последняя income, добавляем income который был с тех пор (считать поступивший кеш только), добавляем в "minus" расходку. далее смотрим когда был последний payout, и считаем прибыль с той даты, добавляем новую строку в payouts и в статусе пишем у когдо бабки, после трат пишем wasted. 
 
@@ -18,6 +19,7 @@
 | 15 jun | 2004$ (envato 02.2021-05.2021 earnings)  | 
 | 15 jul | 1000$ (1500 (envato 06.2021 earnings) - $500 freelancers) | 
 | 15 oct | 2350$ (2500 (envato 07,08,09.2021 earnings) - 150 freelancers) | 
+| 15 nov | 2087$ (2147.94$ envato 10.2021 earnings - 60 freelancers) | 
 
 ### other (only sales, not custom job etc)..
 | date   | amount | 
@@ -36,7 +38,7 @@
 | 28.07.21 |  -$330 (ion)   |
 | 28.07.21 |  -$160 (dis)   |
 | 08.09.21 |  -$160 (dis)   |
-| 15.10.21 |  -$150 (ion)   |
+| 15.10.21 |  -$60 (shendel tokenprice shortcode)   |
 
 
 
