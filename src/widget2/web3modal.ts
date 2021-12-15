@@ -106,6 +106,11 @@ const init = (): any => {
     disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera
   })
 
+  try {
+    localStorage.removeItem('walletconnect')
+  }
+  catch (err) {}
+
   // @ts-ignore
   window.web3ModalInstance = instance
 
