@@ -10,6 +10,6 @@ yarn.lock
 node_modules
 
 /*.css
-/*.html
+_html
 Farm.json
 /example/

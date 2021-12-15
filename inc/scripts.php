@@ -55,11 +55,13 @@ function farmfactory_load_scripts() {
 
 	var walletConnectOptions;
 
-	if (chainId === 56 || chainId === 97) {
+	if (chainId === 56 || chainId === 97 || chainId === "56" || chainId === "97") {
 	  walletConnectOptions = {
       infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
       rpc: {
-        56: "https://bsc-dataseed1.binance.org:443",
+        1: "https://bsc-dataseed.binance.org",
+        56: "https://bsc-dataseed.binance.org",
+        97: "https://data-seed-prebsc-1-s1.binance.org:8545",
       },
       network: "binance",
     };
