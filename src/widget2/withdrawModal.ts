@@ -51,7 +51,14 @@ const withdrawModal = new Modal({
           .on('transactionHash', (hash) => {
             const trxNode = document.createElement('div')
             trxNode.classList.add('ff-transaction-link')
-            trxNode.innerHTML = `Pending transaction: <a href="https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}" target="_blank">${hash}</a>`
+
+            let explorerLinkWithHash = `https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}`
+
+            if (networkName.toLowerCase() === "xdai") {
+              explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
+            }
+
+            trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`
 
             this.elems.content.insertBefore(trxNode, buttonContainer)
           })

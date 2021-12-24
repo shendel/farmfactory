@@ -61,7 +61,7 @@
 								'bsc',
 								'bsc_test',
 								'matic',
-								'matic_test',
+								'mumbai',
 								'xdai',
 								'aurora'
 							);

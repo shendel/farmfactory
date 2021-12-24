@@ -20,7 +20,7 @@ const fetchAccountData = async () => {
     56: 'bsc',
     97: 'bsc_test',
     137: 'matic',
-    80001: 'matic_test',
+    80001: 'mumbai',
     1313161554: 'aurora',
     100: 'xdai'
   })[chainId]
