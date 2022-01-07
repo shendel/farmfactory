@@ -3,6 +3,7 @@
 |--------|-----------------|------------|
 | 15.10.2021 |  2827   | on noxon's bannk |
 | 15.11.2021 |  2087 (+ 2827 не потратили) = $4 914  | on noxon's bannk |
+| 15.12.2021 |  2974 (+ 350к руб) = $2974 + 350к налом  | on noxon's bannk |
 
 
 инструкция: смотрим когда была последняя payouts, добавляем income+other income который был с тех пор (кастом джоб не считаем, там индивидуально), добавляем в "minus" расходку. далее смотрим когда был последний payout, и считаем прибыль с той даты, добавляем новую строку в payouts и в статусе пишем у когдо бабки, после трат пишем wasted. 
@@ -21,6 +22,7 @@
 | 15 jul | 1000$ (1500 (envato 06.2021 earnings) - $500 freelancers) | 
 | 15 oct | 2350$ (2500 (envato 07,08,09.2021 earnings) - 150 freelancers) | 
 | 15 nov | 2087$ (2147.94$ envato 10.2021 earnings - 60 freelancers) | 
+| 15 dec | 2974$ (3034$ envato 11.2021 earnings - 60 freelancers) | 
 
 ### other income (only sales, not custom job etc)..
 | date   | amount | 
@@ -40,6 +42,7 @@
 | 28.07.21 |  -$160 (dis)   |
 | 08.09.21 |  -$160 (dis)   |
 | 15.10.21 |  -$60 (shendel tokenprice shortcode)   |
+| 15.12.21 |  -$60 (vit walletconnect fix)   |
 
 
 
