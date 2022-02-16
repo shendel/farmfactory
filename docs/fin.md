@@ -6,6 +6,8 @@
 | 15.12.2021 |  2974 (+ 350к руб) = $2974 + 350к налом  |  |
 | 07.01.2022 |  0  | lotte | 
 | 15.01.2022 |  1649  | bank |
+| 15.01.2022 |  5514 (+1649) = 7 163$ | bank |
+
 
 
 инструкция: смотрим когда была последняя payouts, добавляем income+other income который был с тех пор (кастом джоб не считаем, там индивидуально), добавляем в "minus" расходку. далее смотрим когда был последний payout, и считаем прибыль с той даты, добавляем новую строку в payouts и в статусе пишем у когдо бабки, после трат пишем wasted. 
@@ -25,7 +27,8 @@
 | 15 oct | 2350$ (2500 (envato 07,08,09.2021 earnings) - 150 freelancers) | 
 | 15 nov | 2087$ (2147.94$ envato 10.2021 earnings - 60 freelancers) | 
 | 15 dec 21 | 2974$ (3034$ envato 11.2021 earnings - 60 freelancers) | 
-| 15 01 22 | 1649$ (1769$ envato - 120 freelancers ) | 
+| 15 01 22 | 1649$ (1769$ envato - 120 freelancers ) |
+| 15 02 22 | 5514$ (4194$ envato + 1500 other - 180 freelancers ) |
 
 ### other income (only sales, not custom job etc)..
 | date   | amount | 
@@ -37,6 +40,7 @@
 | 29 jun | 499$ (@bitcoinau...) |
 | 31 aug | 477$ (etheum by) |
 | 29 oct 21 | 490$ #T000201  |
+| 17.01 | 1500$ #T000248 |
 
 ## minus
 | date   | amount | 
@@ -47,5 +51,6 @@
 | 15.10.21 |  -$60 (shendel tokenprice shortcode)   |
 | 15.12.21 |  -$60 (vit walletconnect fix)   |
 | 15.01.22 |  -$120 (vit support & fixes)   |
+| 15.02.22 |  -$180 (vit support & fixes)   |
 
 
