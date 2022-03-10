@@ -89,127 +89,139 @@ class FarmFactory_Meta_Box {
 		if ( empty( $farm_address ) ) $farm_address       = ''; // phpcs:ignore
 
 		// Form fields.
-		echo '<table class="form-table">';
+		?>
+		<table class="form-table">
 
-		echo '	<tr>';
-		echo '		<th><label>' . esc_html__( 'Staking erc20 Address', 'farmfactory' ) . '</label></th>';
-		echo '		<td>';
-		echo '			<input type="text" name="staking_address" id="stakingAddress" class="large-text" value="' . esc_attr( $staking_address ) . '">
-						<p class="description">' . sprintf( esc_html__( 'ERC20 address of token&#039;s contract which users will stake (deposit). Free test tokens %s.', 'farmfactory' ), '<a href="https://github.com/bokkypoobah/WeenusTokenFaucet" target="_blank">https://github.com/bokkypoobah/WeenusTokenFaucet</a>' ) . '</p>
-					';
-		echo '		</td>';
-		echo '	</tr>';
+		  	<tr>
+				<th>
+			  		<label><?php echo esc_html__( 'Staking erc20 Address', 'farmfactory' ); ?></label>
+				</th>
+		    	<td>
+		      		<input type="text" name="staking_address" id="stakingAddress" class="large-text" value="<?php echo esc_attr( $staking_address ); ?>">
+		      		<p class="description"><?php echo sprintf( esc_html__( 'ERC20 address of token&#039;s contract which users will stake (deposit). Free test tokens %s.', 'farmfactory' ), '<a href="https://github.com/bokkypoobah/WeenusTokenFaucet" target="_blank">https://github.com/bokkypoobah/WeenusTokenFaucet</a>' ); ?></p>
+		    	</td>
+		  	</tr>
 
-		echo '	<tr>';
-		echo '		<th><label>' . esc_html__( 'Reward erc20 address', 'farmfactory' ) . '</label></th>';
-		echo '		<td>';
-		echo '			<div class="farmfactory-form-inline">
-						<input type="text" name="reward_address" id="rewardsAddress" class="large-text" value="' . esc_attr( $reward_address ) . '">
-						<span>' . esc_html__( '.Decimals', 'farmfactory' ) . '</span>
-						<input type="number" name="reward_decimals" id="farmfactory_reward_decimals" class="small-text" value="' . esc_attr( $reward_decimals ) . '">
-						</div>
-						<p class="description">' . esc_html__( 'ERC20 address of reward token which users will earn. You can use the same as "Staking address".', 'farmfactory' ) . '</p>
-					';
-		echo '		</td>';
-		echo '	</tr>';
+		  	<tr>
+		    	<th>
+			  		<label><?php echo esc_html__( 'Reward erc20 address', 'farmfactory' ); ?></label>
+				</th>
+				<td>
+			  		<div class="farmfactory-form-inline">
+						<input type="text" name="reward_address" id="rewardsAddress" class="large-text" value="<?php echo esc_attr( $reward_address ); ?>">
+						<span><?php echo esc_html__( '.Decimals', 'farmfactory' ); ?></span>
+						<input type="number" name="reward_decimals" id="farmfactory_reward_decimals" class="small-text" value="<?php echo esc_attr( $reward_decimals ); ?>">
+			  		</div>
+			  		<p class="description"><?php echo esc_html__( 'ERC20 address of reward token which users will earn. You can use the same as "Staking address".', 'farmfactory' ); ?></p>
+				</td>
+		  	</tr>
 
-		echo '	<tr>';
-		echo '		<th><label>' . esc_html__( 'Reward Duration', 'farmfactory' ) . '</label></th>';
-		echo '		<td>';
-		echo '			<input type="text" name="reward_duration" id="farmfactory_duration" class="large-text" value="' . esc_attr( $reward_duration ) . '">
-						<p class="description">' . sprintf( esc_html__( 'Enter _rewardsDuration - duration of staking round in seconds.%s 86400 - 1 day, 2592000 - 30 day, 31536000 - 1 year', 'farmfactory' ), '<br>' ) . '</p>
-						';
-		echo '		</td>';
-		echo '	</tr>';
+		  	<tr>
+				<th>
+					<label><?php echo esc_html__( 'Reward Duration', 'farmfactory' ); ?></label>
+				</th>
+				<td>
+			  		<input type="text" name="reward_duration" id="farmfactory_duration" class="large-text" value="<?php echo esc_attr( $reward_duration ); ?>">
+			  		<p class="description"><?php echo sprintf( esc_html__( 'Enter _rewardsDuration - duration of staking round in seconds.%s 86400 - 1 day, 2592000 - 30 day, 31536000 - 1 year', 'farmfactory' ), '<br>' ); ?></p>
+				</td>
+		  	</tr>
 
-		echo '	<tr>';
-		echo '		<th><label>' . esc_html__( 'Annual Percentage Yield (APY)', 'farmfactory' ) . '</label></th>';
-		echo '		<td>';
-		echo '			<input type="text" name="farm_apy" id="farmfactory_apy" class="large-text" value="' . esc_attr( $farm_apy ) . '">
-						<p class="description">' . sprintf( esc_html__( 'APY you write in the admin doesn\'t affect the contract logic. It\'s just a value to display in the widget', 'farmfactory' ), '<br>' ) . '</p>
-						';
-		echo '		</td>';
-		echo '	</tr>';
+		  	<tr>
+				<th>
+					<label><?php echo esc_html__( 'Annual Percentage Yield (APY)', 'farmfactory' ); ?></label>
+				</th>
+				<td>
+					<input type="text" name="farm_apy" id="farmfactory_apy" class="large-text" value="<?php echo esc_attr( $farm_apy ); ?>">
+					<p class="description"><?php echo sprintf( esc_html__( 'APY you write in the admin doesn\'t affect the contract logic. It\'s just a value to display in the widget', 'farmfactory' ), '<br>' ); ?></p>
+				</td>
+			</tr>
 
-			echo '	<tr>';
-		echo '		<th><label>' . esc_html__( 'APY label', 'farmfactory' ) . '</label></th>';
-		echo '		<td>';
-		echo '			<input type="text" name="farm_apy_label" id="farmfactory_apy_label" class="large-text" value="' . esc_attr( $farm_apy_label ) . '">
-						';
-		echo '		</td>';
-		echo '	</tr>';
+			<tr>
+				<th>
+					<label><?php echo esc_html__( 'APY label', 'farmfactory' ); ?></label>
+				</th>
+				<td>
+					<input type="text" name="farm_apy_label" id="farmfactory_apy_label" class="large-text" value="<?php echo esc_attr( $farm_apy_label ); ?>">
+				</td>
+			</tr>
 
-		echo '	<tr>';
-		echo '		<th><label>' . esc_html__( 'Newtwork', 'farmfactory' ) . '</label></th>';
-		echo '		<td>';
-		echo '		<strong>' . get_option( 'farmfactory_networkName','ropsten' ) . '</strong>';
+			<tr>
+				<th>
+					<label><?php echo esc_html__( 'Newtwork', 'farmfactory' ); ?></label>
+				</th>
+				<td>
+					<strong><?php get_option( 'farmfactory_networkName','ropsten' ); ?></strong>
+					<p class="desctiption"><?php echo esc_html__( 'Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory' ); ?></p>
+				</td>
+			</tr>
 
-		echo '			<p class="desctiption">' . esc_html__( 'Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory' ) . '</p>';
-		echo '		</td>';
-		echo '	</tr>';
+			<tr>
+				<th>
+					<label><?php echo esc_html__( 'Farming Address', 'farmfactory' ); ?></label>
+				</th>
+				<td>
+					<div class="farmfactory-form-inline">
+						<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="<?php echo esc_attr( $farm_address ); ?>">
+						<a class="button button-secondary" id="farmfactory_deploy_button"><?php echo esc_html__( 'Deploy', 'farmfactory' ); ?></a>
+					</div>
+					<p class="desctiption"><?php echo esc_html__( 'Use "Deploy" button next to the field to create new Farm contract. After deployment address will be automatically placed in the field above', 'farmfactory' ); ?></p>
+					<p class="desctiption" style="color: red;"><?php echo esc_html__( 'If you have Farm contract address then you can pass it to this field. NOTE: please be sure that you fill Farm contract address! If you are not sure PLEASE PRESS "Deploy" button!!! Otherwise, this may lead to incorrect operations of the program and you may lose your tokens!"', 'farmfactory' ); ?></p>
+				</td>
+			</tr>
 
-		echo '	<tr>';
-		echo '		<th><label>' . esc_html__( 'Farming Address', 'farmfactory' ) . '</label></th>';
-		echo '		<td>
-						<div class="farmfactory-form-inline">
-							<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="' . esc_attr( $farm_address ) . '">
-							<a class="button button-secondary" id="farmfactory_deploy_button">' . esc_html__( 'Deploy', 'farmfactory' ) . '</a>
-						</div>
-						<p class="desctiption">' . esc_html__( 'Use "Deploy" button next to the field to create new Farm contract. After deployment address will be automatically placed in the field above', 'farmfactory' ) . '</p>
-						<p class="desctiption" style="color: red;">' . esc_html__( 'If you have Farm contract address then you can pass it to this field. NOTE: please be sure that you fill Farm contract address! If you are not sure PLEASE PRESS "Deploy" button!!! Otherwise, this may lead to incorrect operations of the program and you may lose your tokens!"', 'farmfactory' ) . '</p>
-				</td>';
-		echo '	</tr>';
+			<?php if ( get_post_meta( get_the_ID(), 'farm_address', true ) ) {
+				?>
+				<tr>
+					<th>
+						<label><?php echo esc_html__( 'Start/Stop farming period', 'farmfactory' ); ?></label>
+					</th>
+					<td>
+						<p class="desctiption">
+							<strong>1.</strong> <?php echo esc_html__( 'Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract.', 'farmfactory'); ?>
+							<input value="" type="number" id="amount" class="medium-text js-farmfactory-load-icon">
+						</p>
+						<p class="desctiption">
+							<strong>2.</strong><?php echo esc_html__('Transfer required amount of tokens to the farm contract: (' . get_post_meta( get_the_ID(), 'farm_address', true ) . ')', 'farmfactory'); ?>
+						</p>
+						<p class="desctiption">
+							<strong>3.</strong> Click <input type="button" id="farmfactory_startFarmingButton" class="button button-primary mcwallet-add-token" value="<?php echo esc_attr__('Start Farming Period', 'farmfactory'); ?>">
+							<span class="spinner"></span>
+						</p>
+					</td>
+				</tr>
 
-		if ( get_post_meta( get_the_ID(), 'farm_address', true ) ) {
+				<tr>
+					<th>
+						<label><?php echo esc_html__( 'Reward distributing', 'farmfactory' ); ?></label>
+					</th>
+					<td>
+						<p class="desctiption">
+							<?php echo esc_html__('All distrubutes are autamatically. Put "[farmfactory id="<?php get_the_ID(); ?>"]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory'); ?>
+						</p>
+						<p class="desctiption">
+							<?php echo sprintf( esc_html__('Need help? Contact our team using %s.', 'farmfactory'), '<a href="https://t.me/farmsupportbot" target="_blank">https://t.me/farmsupportbot</a>' ); ?>
+						</p>
+					</td>
+				</tr>
 
-			echo '	<tr>';
-			echo '		<th><label>' . esc_html__( 'Start/Stop farming period', 'farmfactory' ) . '</label></th>';
-			echo '		<td>
-							<p class="desctiption">
-								<strong>1.</strong> ' . esc_html__( 'Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract.', 'farmfactory') . '
-								<input value="" type="number" id="amount" class="medium-text js-farmfactory-load-icon">
-							</p>
-							<p class="desctiption">
-								<strong>2.</strong>' . esc_html__('Transfer required amount of tokens to the farm contract: (' . get_post_meta( get_the_ID(), 'farm_address', true ) . ')', 'farmfactory') . '
-							</p>
-							<p class="desctiption">
-								<strong>3.</strong> Click <input type="button" id="farmfactory_startFarmingButton" class="button button-primary mcwallet-add-token" value="' . esc_attr__('Start Farming Period', 'farmfactory') . '">
-								<span class="spinner"></span>
+			<?php } else { ?>
 
-							</p>
+				<tr>
+					<th><label><?php echo esc_html__( 'Start/Stop farming period', 'farmfactory' ); ?></label></th>';
+					<td>
+						<p class="desctiption">
+							<?php echo esc_html__('Please enter farm address contract and press publish before perform this instructions.', 'farmfactory'); ?>
+						</p>
+					</td>
+				</tr>
+			<?php } ?>
 
+		</table>
 
-					</td>';
-			echo '	</tr>';
-
-			echo '	<tr>';
-			echo '		<th><label>' . esc_html__( 'Reward distributing', 'farmfactory' ) . '</label></th>';
-			echo '		<td>
-							<p class="desctiption">' . esc_html__('All distrubutes are autamatically. Put "[farmfactory id="' . get_the_ID() . '"]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory') . '
-							</p>
-							<p class="desctiption">
-							' . sprintf( esc_html__('Need help? Contact our team using %s.', 'farmfactory'), '<a href="https://t.me/farmsupportbot" target="_blank">https://t.me/farmsupportbot</a>' ) . '</p>
-
-					</td>';
-			echo '	</tr>';
-
-		} else {
-
-			echo '	<tr>';
-			echo '		<th><label>' . esc_html__( 'Start/Stop farming period', 'farmfactory' ) . '</label></th>';
-			echo '		<td>
-							<p class="desctiption">
-							' . esc_html__('Please enter farm address contract and press publish before perform this instructions.', 'farmfactory') . '
-							</p>
-						</td>';
-			echo '	</tr>';
-		}
-
-		echo '</table>';
-
-		echo '<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
+		<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
 			<div class="farmfactory-loader"></div>
-		</div>';
+		</div>
+		<?php
 
 	}
 
