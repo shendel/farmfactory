@@ -97,8 +97,20 @@ class FarmFactory_Meta_Box {
 			  		<label><?php echo esc_html__( 'Staking erc20 Address', 'farmfactory' ); ?></label>
 				</th>
 		    	<td>
-		      		<input type="text" name="staking_address" id="stakingAddress" class="large-text" value="<?php echo esc_attr( $staking_address ); ?>">
+					<div class="farmfactory-form-inline">
+						<input type="text" name="staking_address" id="stakingAddress" class="large-text" value="<?php echo esc_attr( $staking_address ); ?>">
+					  	<a class="button button-secondary" id="farmfactory_fetch_staking_token_button"><?php echo esc_html__( 'Fetch', 'farmfactory' ) ?></a>
+					</div>
 		      		<p class="description"><?php echo sprintf( esc_html__( 'ERC20 address of token&#039;s contract which users will stake (deposit). Free test tokens %s.', 'farmfactory' ), '<a href="https://github.com/bokkypoobah/WeenusTokenFaucet" target="_blank">https://github.com/bokkypoobah/WeenusTokenFaucet</a>' ); ?></p>
+		    	</td>
+		  	</tr>
+
+			<tr id="staking_token_info" style="display: none">
+				<th>
+			  		<label><?php echo esc_html__( 'Staking token info', 'farmfactory' ); ?></label>
+				</th>
+		    	<td>
+		      		<p class="description"> Here will be staking token info</p>
 		    	</td>
 		  	</tr>
 
@@ -111,9 +123,19 @@ class FarmFactory_Meta_Box {
 						<input type="text" name="reward_address" id="rewardsAddress" class="large-text" value="<?php echo esc_attr( $reward_address ); ?>">
 						<span><?php echo esc_html__( '.Decimals', 'farmfactory' ); ?></span>
 						<input type="number" name="reward_decimals" id="farmfactory_reward_decimals" class="small-text" value="<?php echo esc_attr( $reward_decimals ); ?>">
+						<a class="button button-secondary" id="farmfactory_fetch_reward_token_button"><?php echo esc_html__( 'Fetch', 'farmfactory' ) ?></a>
 			  		</div>
 			  		<p class="description"><?php echo esc_html__( 'ERC20 address of reward token which users will earn. You can use the same as "Staking address".', 'farmfactory' ); ?></p>
 				</td>
+		  	</tr>
+
+			<tr id="reward_token_info" style="display: none">
+				<th>
+			  		<label><?php echo esc_html__( 'Reward token info', 'farmfactory' ); ?></label>
+				</th>
+		    	<td>
+		      		<p class="description"> Here will be reward token info</p>
+		    	</td>
 		  	</tr>
 
 		  	<tr>
@@ -220,6 +242,7 @@ class FarmFactory_Meta_Box {
 
 		<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
 			<div class="farmfactory-loader"></div>
+			<div class="farmfactory-loader-status" id="farmfactory_loaderStatus">Loading...</div>
 		</div>
 		<?php
 
