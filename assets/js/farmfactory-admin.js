@@ -15,6 +15,7 @@
 
 	var getValue = (id) => document.getElementById(id).value;
 	var setValue = (id, value) => document.getElementById(id).value = value;
+	var getHtmlText = (id) => document.getElementById(id).textContent;
 	var setHtml = (id, value) => document.getElementById(id).innerHTML = value;
 	var showBlock = (id) => document.getElementById(id).style.display = '';
 	var hideBlock = (id) => document.getElementById(id).style.display = 'none';
@@ -48,7 +49,7 @@
 		}
 	});
 
-	$( fetchStakingTokenButton ).on('click', function (e) {
+	$( fetchStakingTokenButton ).on('click', async function (e) {
 		e.preventDefault()
 
 		const unlockButton = () => {
@@ -56,7 +57,7 @@
 			hideLoader();
 		}
 
-		const tokenAddress = getValue('rewardsAddress');
+		const tokenAddress = getValue('stakingAddress');
 
 		if (!window.Web3.utils.isAddress(tokenAddress)) {
 		  return errMessage( 'Staking token address is not correct' );
@@ -68,10 +69,17 @@
 		fetchStakingTokenButton.disabled = true
 		hideBlock('staking_token_info')
 
-		setTimeout(function(){
+		try {
+			const tokenInfo = await farmDeployer.getTokenInfo({ tokenAddress });
+			console.log('staking tokenInfo', tokenInfo);
+
 			showBlock('staking_token_info');
-			unlockButton()
-		},3000);
+		} catch (error) {
+			console.error(error);
+			errMessage( `Staking token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
+		} finally {
+			unlockButton();
+		}
 
 		// const networkOption = $('#farm_blockchain OPTION:selected')
 		// const rpc = networkOption.data('rpc')
@@ -98,7 +106,7 @@
 		// 	})
 	})
 
-	$( fetchRewardTokenButton ).on('click', function (e) {
+	$( fetchRewardTokenButton ).on('click', async function (e) {
 		e.preventDefault()
 
 		const unlockButton = () => {
@@ -118,10 +126,17 @@
 		fetchRewardTokenButton.disabled = true
 		hideBlock('reward_token_info')
 
-		setTimeout(function(){
+		try {
+			const tokenInfo = await farmDeployer.getTokenInfo({ tokenAddress });
+			console.log('reward tokenInfo', tokenInfo);
+
 			showBlock('reward_token_info');
-			unlockButton()
-		},3000);
+		} catch (error) {
+			console.error(error);
+			errMessage( `Reward token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
+		} finally {
+			unlockButton();
+		}
 
 		// const networkOption = $('#farm_blockchain OPTION:selected')
 		// const rpc = networkOption.data('rpc')

@@ -72,7 +72,6 @@ class FarmFactory_Meta_Box {
 		$reward_address  = get_post_meta( $post->ID, 'reward_address', true );
 		$reward_decimals = get_post_meta( $post->ID, 'reward_decimals', true );
 		$reward_duration = get_post_meta( $post->ID, 'reward_duration', true );
-		$reward_duration = get_post_meta( $post->ID, 'reward_duration', true );
 		$farm_apy        = get_post_meta( $post->ID, 'farm_apy', true );
 		$farm_apy_label  = get_post_meta( $post->ID, 'farm_apy_label', true );
 		$network_name    = get_post_meta( $post->ID, 'network_name', true );
@@ -85,7 +84,7 @@ class FarmFactory_Meta_Box {
 		if ( empty( $reward_duration ) ) $reward_duration = ''; // phpcs:ignore
 		if ( empty( $farm_apy ) ) $farm_apy               = ''; // phpcs:ignore
 		if ( empty( $farm_apy_label ) ) $farm_apy_label   = 'APY'; // phpcs:ignore
-		if ( empty( $network_name ) ) $network_name       = ''; // phpcs:ignore
+		if ( empty( $network_name ) ) $network_name       = get_option( 'farmfactory_networkName', 'ropsten' ); // phpcs:ignore
 		if ( empty( $farm_address ) ) $farm_address       = ''; // phpcs:ignore
 
 		// Form fields.
@@ -172,7 +171,7 @@ class FarmFactory_Meta_Box {
 					<label><?php echo esc_html__( 'Newtwork', 'farmfactory' ); ?></label>
 				</th>
 				<td>
-					<strong><?php get_option( 'farmfactory_networkName','ropsten' ); ?></strong>
+					<strong id="network_name"><?php echo $network_name ?></strong>
 					<p class="desctiption"><?php echo esc_html__( 'Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory' ); ?></p>
 				</td>
 			</tr>
@@ -218,7 +217,7 @@ class FarmFactory_Meta_Box {
 					</th>
 					<td>
 						<p class="desctiption">
-							<?php echo esc_html__('All distrubutes are autamatically. Put "[farmfactory id="<?php get_the_ID(); ?>"]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory'); ?>
+							<?php echo esc_html__('All distrubutes are autamatically. Put "[farmfactory id="' . get_the_ID() . '"]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory'); ?>
 						</p>
 						<p class="desctiption">
 							<?php echo sprintf( esc_html__('Need help? Contact our team using %s.', 'farmfactory'), '<a href="https://t.me/farmsupportbot" target="_blank">https://t.me/farmsupportbot</a>' ); ?>
