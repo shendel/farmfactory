@@ -16,7 +16,7 @@ const html = `
         </svg>
       </button>
       <div class="farmfactory-inner">
-        <img class="farmfactory-svgLogo" src="https://metamask.io/images/mm-logo.svg" alt="Metamask" />
+        <img class="farmfactory-svgLogo" src="https://docs.metamask.io/metamask-fox.svg" alt="Metamask" />
       </div>
       <div class="farmfactory-footer">
         <button class="farmfactory-button yellow" id="${constants.ids.connectModal.connectButton}">Connect</button>

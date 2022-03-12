@@ -122,7 +122,7 @@ function farmfactory_admin_scripts( $hook ) {
 
 			$ver = wp_rand( 1, 2222222 );
 
-			wp_enqueue_script( 'farmfactory-deployer', '//farm.wpmix.net/wp-content/plugins/farmfactory/lib/farmdeployer.js', array(), $ver, true );
+			wp_enqueue_script( 'farmfactory-deployer', FARMFACTORY_URL . 'lib/farmdeployer.js', array(), $ver, true );
 
 			wp_enqueue_script( 'farmfactory-admin', FARMFACTORY_URL . 'assets/js/farmfactory-admin.js', array( 'farmfactory-deployer' ), $ver, true );
 
