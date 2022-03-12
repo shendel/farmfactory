@@ -49,8 +49,8 @@
 		}
 	});
 
-	$( fetchStakingTokenButton ).on('click', async function (e) {
-		e.preventDefault()
+	$( fetchStakingTokenButton ).on('click', function (e) {
+		e.preventDefault();
 
 		const unlockButton = () => {
 			fetchStakingTokenButton.disabled = false;
@@ -63,51 +63,36 @@
 		  return errMessage( 'Staking token address is not correct' );
 		}
 
-		showLoader()
+		showLoader();
 
-		setLoaderStatus( 'Fetching staking token info' )
-		fetchStakingTokenButton.disabled = true
-		hideBlock('staking_token_info')
+		setLoaderStatus( 'Fetching staking token info' );
+		fetchStakingTokenButton.disabled = true;
+		hideBlock('staking_token_info');
 
-		try {
-			const tokenInfo = await farmDeployer.getTokenInfo({ tokenAddress });
-			console.log('staking tokenInfo', tokenInfo);
+		farmDeployer.getTokenInfo({ tokenAddress })
+			.then((tokenInfo) => {
+				console.log('staking tokenInfo', tokenInfo);
 
-			showBlock('staking_token_info');
-		} catch (error) {
-			console.error(error);
-			errMessage( `Staking token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
-		} finally {
-			unlockButton();
-		}
+				setHtml('staking_token_name_view', tokenInfo.name);
+				setValue('staking_token_name', tokenInfo.name);
+				setHtml('staking_token_symbol_view', ` (${tokenInfo.symbol}). `);
+				setValue('staking_token_symbol', tokenInfo.symbol);
+				setHtml('staking_decimals_view', `Decimals: ${tokenInfo.decimals}`);
+				setValue('staking_decimals', tokenInfo.decimals);
 
-		// const networkOption = $('#farm_blockchain OPTION:selected')
-		// const rpc = networkOption.data('rpc')
-		// const chainId = networkOption.data('chain')
-		// fetchTokenInfo( { rpc, chainId }, tokenAddress )
-		// 	.then((tokenInfo) => {
-		// 		setHtml('dao_token_name_view', tokenInfo.name)
-		// 		setValue('dao_token_name', tokenInfo.name)
-		// 		setHtml('dao_token_symbol_view', tokenInfo.symbol)
-		// 		setValue('dao_token_symbol', tokenInfo.symbol)
-		// 		setHtml('dao_token_decimals_view', tokenInfo.decimals)
-		// 		setValue('dao_token_decimals', tokenInfo.decimals)
-		// 		unlockButton()
-		// 		showBlock('dao_token_info')
-		// 		showNotice( langMsg( 'Token info fetched' ) )
-		// 	})
-		// 	.catch((err) => {
-		// 		unlockButton()
-		// 		if (err === 'wrong network') {
-		// 			errMessage( 'Select correct network: ' + networkOption.text() )
-		// 		} else {
-		// 			errMessage(err.message)
-		// 		}
-		// 	})
+				showBlock('staking_token_info');
+			})
+			.catch((error) => {
+				console.error(error);
+				errMessage( `Staking token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
+			})
+			.finally(() => {
+				unlockButton();
+			})
 	})
 
-	$( fetchRewardTokenButton ).on('click', async function (e) {
-		e.preventDefault()
+	$( fetchRewardTokenButton ).on('click', function (e) {
+		e.preventDefault();
 
 		const unlockButton = () => {
 			fetchRewardTokenButton.disabled = false;
@@ -120,62 +105,48 @@
 		  return errMessage( 'Reward token address is not correct' );
 		}
 
-		showLoader()
+		showLoader();
 
-		setLoaderStatus( 'Fetching reward token info' )
-		fetchRewardTokenButton.disabled = true
-		hideBlock('reward_token_info')
+		setLoaderStatus( 'Fetching reward token info' );
+		fetchRewardTokenButton.disabled = true;
+		hideBlock('reward_token_info');
 
-		try {
-			const tokenInfo = await farmDeployer.getTokenInfo({ tokenAddress });
-			console.log('reward tokenInfo', tokenInfo);
+		farmDeployer.getTokenInfo({ tokenAddress })
+			.then((tokenInfo) => {
+				console.log('reward tokenInfo', tokenInfo);
 
-			showBlock('reward_token_info');
-		} catch (error) {
-			console.error(error);
-			errMessage( `Reward token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
-		} finally {
-			unlockButton();
-		}
+				setHtml('reward_token_name_view', tokenInfo.name);
+				setValue('reward_token_name', tokenInfo.name);
+				setHtml('reward_token_symbol_view', ` (${tokenInfo.symbol}). `);
+				setValue('reward_token_symbol', tokenInfo.symbol);
+				setHtml('reward_decimals_view', `Decimals: ${tokenInfo.decimals}`);
+				setValue('reward_decimals', tokenInfo.decimals);
 
-		// const networkOption = $('#farm_blockchain OPTION:selected')
-		// const rpc = networkOption.data('rpc')
-		// const chainId = networkOption.data('chain')
-		// fetchTokenInfo( { rpc, chainId }, tokenAddress )
-		// 	.then((tokenInfo) => {
-		// 		setHtml('dao_token_name_view', tokenInfo.name)
-		// 		setValue('dao_token_name', tokenInfo.name)
-		// 		setHtml('dao_token_symbol_view', tokenInfo.symbol)
-		// 		setValue('dao_token_symbol', tokenInfo.symbol)
-		// 		setHtml('dao_token_decimals_view', tokenInfo.decimals)
-		// 		setValue('dao_token_decimals', tokenInfo.decimals)
-		// 		unlockButton()
-		// 		showBlock('dao_token_info')
-		// 		showNotice( langMsg( 'Token info fetched' ) )
-		// 	})
-		// 	.catch((err) => {
-		// 		unlockButton()
-		// 		if (err === 'wrong network') {
-		// 			errMessage( 'Select correct network: ' + networkOption.text() )
-		// 		} else {
-		// 			errMessage(err.message)
-		// 		}
-		// 	})
+				showBlock('reward_token_info');
+			})
+			.catch((error) => {
+				console.error(error);
+				errMessage( `Reward token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
+			})
+			.finally(() => {
+				unlockButton();
+			})
 	})
 
 	$( deployButton ).on( 'click', function(e) {
 	  	e.preventDefault();
 
 		const duration = getValue('farmfactory_duration')
-		const rewardTokenDecimal = getValue('farmfactory_reward_decimals')
-
-		if (!rewardTokenDecimal) {
-			errMessage('Firstly you should to fetch reward and staking tokens data.');
-			return;
-		}
+		const stakingTokenDecimal = getValue('staking_decimals')
+		const rewardTokenDecimal = getValue('reward_decimals')
 
 	  	if (!rewardsAddress || !stakingAddress || !duration ) {
 	    	errMessage('All fields should be filled: rewardsAddress, stakingAddress, duration.');
+			return;
+		}
+
+		if (!stakingTokenDecimal || !rewardTokenDecimal) {
+			errMessage('Firstly you should to fetch reward and staking tokens data.');
 			return;
 		}
 
@@ -197,7 +168,7 @@
 			duration,
 			decimal: rewardTokenDecimal,
 			onTrx: (trxHash) => {
-				errMessage(`Transaction hash: ${trxHash}. Send this hash to the support if you have a problem with deploy.`);
+				errMessage(`Transaction hash: ${trxHash}. Send this hash to the support via support@onout.org if you have a problem with deploy.`);
 			},
 			onSuccess: (address) => {
 				console.log('Contract address:', address);
@@ -213,7 +184,7 @@
 
 	});
 
-	startFarmingButton.addEventListener('click', () => {
+	startFarmingButton?.addEventListener('click', () => {
 		if (farmDeployer.disabled) {
 			return;
 		}
