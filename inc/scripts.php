@@ -11,7 +11,7 @@
 function farmfactory_load_scripts() {
 
 	wp_register_script( 'web3', FARMFACTORY_URL . 'assets/js/web3.min.js', array(), '1.5.1', true );
-	wp_register_script( 'web3modal', FARMFACTORY_URL . 'assets/js/web3modal.min.js', array(), '1.9.4', true );
+	wp_register_script( 'web3modal', FARMFACTORY_URL . 'assets/js/web3modal.min.js', array(), '1.9.5', true );
 	wp_register_script( 'bignumber', FARMFACTORY_URL . 'assets/js/bignumber.min.js', array(), '8.0.2', true );
 	wp_register_script( 'web3-provider', FARMFACTORY_URL . 'assets/js/web3-provider.min.js', array(), '1.7.0', true );
 	wp_register_script( 'fortmatic', FARMFACTORY_URL . 'assets/js/fortmatic.js', array(), '2.0.6', true );
@@ -46,6 +46,7 @@ function farmfactory_load_scripts() {
       "bsc": 56,
       "bsc_test": 97,
       "matic": 137,
+	  "fantom": 250,
       "mumbai": 80001,
       "xdai": 100,
       "aurora": 1313161554
@@ -57,9 +58,7 @@ function farmfactory_load_scripts() {
 
 	if (chainId === 56 || chainId === 97 || chainId === "56" || chainId === "97") {
 	  walletConnectOptions = {
-		infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
 		rpc: {
-		  1: "https://bsc-dataseed.binance.org",
 		  56: "https://bsc-dataseed.binance.org",
 		  97: "https://data-seed-prebsc-1-s1.binance.org:8545",
 		},
@@ -67,15 +66,19 @@ function farmfactory_load_scripts() {
       };
 	} else if (chainId === 100 || chainId === "100") {
 		walletConnectOptions = {
-		  infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
 		  rpc: {
-			1: "https://rpc.xdaichain.com",
 			100: "https://rpc.xdaichain.com",
 		  },
 		  network: "xdai",
 		};
-	}
-	else {
+	} else if (chainId === 250 || chainId === "250") {
+		walletConnectOptions = {
+		  rpc: {
+			250: "https://rpc.ftm.tools/",
+		  },
+		  network: "fantom",
+		};
+	} else {
 	  walletConnectOptions = {
 	    infuraId: "' . get_option( 'farmfactory_infura_id', farmfactory_default_infura_id() ) . '",
 	  }

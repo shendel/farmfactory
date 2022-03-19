@@ -334,6 +334,10 @@ class Widget {
             explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === "fantom") {
+            explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
