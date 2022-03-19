@@ -54,7 +54,11 @@ const depositModal = new Modal({
 
             let explorerLinkWithHash = `https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}`
 
-            if (networkName.toLowerCase() === "xdai") {
+            if (networkName.toLowerCase() === 'fantom') {
+              explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
+            }
+
+            if (networkName.toLowerCase() === 'xdai') {
               explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
             }
 

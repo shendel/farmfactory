@@ -369,7 +369,8 @@ class Widget {
       bsc: 'https://bsc-dataseed1.binance.org:443',
       bsc_test: 'https://data-seed-prebsc-1-s1.binance.org:8545',
       xdai: 'https://rpc.xdaichain.com',
-      aurora: 'https://mainnet.aurora.dev'
+      aurora: 'https://mainnet.aurora.dev',
+      fantom: 'https://rpc.ftm.tools/',
     }
 
     const network = networks[networkName.toLowerCase()]

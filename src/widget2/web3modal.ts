@@ -19,10 +19,11 @@ const fetchAccountData = async () => {
     42: 'kovan',
     56: 'bsc',
     97: 'bsc_test',
+    100: 'xdai',
     137: 'matic',
+    250: 'fantom',
     80001: 'mumbai',
     1313161554: 'aurora',
-    100: 'xdai'
   })[chainId]
 
   if (!activeNetwork || activeNetwork.toLowerCase() !== opts.networkName.toLowerCase()) {
