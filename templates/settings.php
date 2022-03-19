@@ -63,7 +63,8 @@
 								'matic',
 								'mumbai',
 								'xdai',
-								'aurora'
+								'aurora',
+								'fantom',
 							);
 						?>
 						<select name="farmfactory_networkName">
