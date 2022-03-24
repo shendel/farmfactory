@@ -166,7 +166,7 @@
 			rewardsAddress: rewardsAddress.value,
 			stakingAddress: stakingAddress.value,
 			duration,
-			decimal: rewardTokenDecimal,
+			decimal: stakingTokenDecimal,
 			onTrx: (trxHash) => {
 				errMessage(`Transaction hash: ${trxHash}. Send this hash to the support via support@onout.org if you have a problem with deploy.`);
 			},
