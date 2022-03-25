@@ -84,7 +84,7 @@ const withdrawModal = new Modal({
 
             infoModal.open({
               title: 'Transaction successful',
-              message: 'The tokens were credited to your account.'
+              message: 'Tokens have been withdrawn to your address.'
             })
           })
       }

@@ -83,7 +83,7 @@ const depositModal = new Modal({
 
             infoModal.open({
               title: 'Transaction successful',
-              message: 'The tokens were credited to the contract.'
+              message: 'Tokens were credited to the contract.'
             })
           })
       }
