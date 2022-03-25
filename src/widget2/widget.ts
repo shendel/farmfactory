@@ -338,6 +338,10 @@ class Widget {
             explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'harmony') {
+            explorerLinkWithHash = `https://explorer.harmony.one/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -375,6 +379,7 @@ class Widget {
       xdai: 'https://rpc.xdaichain.com',
       aurora: 'https://mainnet.aurora.dev',
       fantom: 'https://rpc.ftm.tools/',
+      harmony: 'https://api.harmony.one	',
     }
 
     const network = networks[networkName.toLowerCase()]

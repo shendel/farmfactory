@@ -65,6 +65,7 @@
 								'xdai',
 								'aurora',
 								'fantom',
+								'harmony',
 							);
 						?>
 						<select name="farmfactory_networkName">

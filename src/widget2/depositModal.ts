@@ -58,6 +58,10 @@ const depositModal = new Modal({
               explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'harmony') {
+              explorerLinkWithHash = `https://explorer.harmony.one/tx/${hash}`
+            }
+
             if (networkName.toLowerCase() === 'xdai') {
               explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
             }

@@ -47,6 +47,7 @@ function farmfactory_load_scripts() {
       "bsc_test": 97,
       "matic": 137,
 	  "fantom": 250,
+	  "harmony": 1666600000,
       "mumbai": 80001,
       "xdai": 100,
       "aurora": 1313161554
