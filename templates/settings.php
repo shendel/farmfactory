@@ -66,6 +66,7 @@
 								'aurora',
 								'fantom',
 								'harmony',
+								'avax',
 							);
 						?>
 						<select name="farmfactory_networkName">

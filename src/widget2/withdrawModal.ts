@@ -56,15 +56,18 @@ const withdrawModal = new Modal({
 
             if (networkName.toLowerCase() === "xdai") {
               explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
+            }
 
-
-              if (networkName.toLowerCase() === 'fantom') {
+            if (networkName.toLowerCase() === 'fantom') {
               explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
             }
 
             if (networkName.toLowerCase() === 'harmony') {
               explorerLinkWithHash = `https://explorer.harmony.one/tx/${hash}`
             }
+
+            if (networkName.toLowerCase() === 'avax') {
+              explorerLinkWithHash = `https://snowtrace.io/tx/${hash}`
             }
 
             trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`

@@ -48,6 +48,7 @@ function farmfactory_load_scripts() {
       "matic": 137,
 	  "fantom": 250,
 	  "harmony": 1666600000,
+	  "avax": 43114,
       "mumbai": 80001,
       "xdai": 100,
       "aurora": 1313161554

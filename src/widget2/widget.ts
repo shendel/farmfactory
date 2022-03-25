@@ -342,6 +342,10 @@ class Widget {
             explorerLinkWithHash = `https://explorer.harmony.one/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'avax') {
+            explorerLinkWithHash = `https://snowtrace.io/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -379,7 +383,8 @@ class Widget {
       xdai: 'https://rpc.xdaichain.com',
       aurora: 'https://mainnet.aurora.dev',
       fantom: 'https://rpc.ftm.tools/',
-      harmony: 'https://api.harmony.one	',
+      harmony: 'https://api.harmony.one',
+      avax: 'https://api.avax.network/ext/bc/C/rpc',
     }
 
     const network = networks[networkName.toLowerCase()]

@@ -62,6 +62,10 @@ const depositModal = new Modal({
               explorerLinkWithHash = `https://explorer.harmony.one/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'avax') {
+              explorerLinkWithHash = `https://snowtrace.io/tx/${hash}`
+            }
+
             if (networkName.toLowerCase() === 'xdai') {
               explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
             }

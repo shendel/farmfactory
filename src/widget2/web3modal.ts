@@ -23,6 +23,7 @@ const fetchAccountData = async () => {
     137: 'matic',
     250: 'fantom',
     1666600000: 'harmony',
+    43114: 'avax',
     80001: 'mumbai',
     1313161554: 'aurora',
   })[chainId]
