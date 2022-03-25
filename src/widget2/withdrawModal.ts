@@ -58,6 +58,18 @@ const withdrawModal = new Modal({
               explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'fantom') {
+              explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
+            }
+
+            if (networkName.toLowerCase() === 'harmony') {
+              explorerLinkWithHash = `https://explorer.harmony.one/tx/${hash}`
+            }
+
+            if (networkName.toLowerCase() === 'avax') {
+              explorerLinkWithHash = `https://snowtrace.io/tx/${hash}`
+            }
+
             trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`
 
             this.elems.content.insertBefore(trxNode, buttonContainer)
@@ -75,7 +87,7 @@ const withdrawModal = new Modal({
 
             infoModal.open({
               title: 'Transaction successful',
-              message: 'The tokens were credited to your account.'
+              message: 'Tokens have been withdrawn to your address.'
             })
           })
       }
