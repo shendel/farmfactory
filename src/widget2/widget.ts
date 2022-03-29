@@ -346,6 +346,10 @@ class Widget {
             explorerLinkWithHash = `https://snowtrace.io/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'moonriver') {
+            explorerLinkWithHash = `https://moonriver.moonscan.io/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -385,6 +389,7 @@ class Widget {
       fantom: 'https://rpc.ftm.tools/',
       harmony: 'https://api.harmony.one',
       avax: 'https://api.avax.network/ext/bc/C/rpc',
+      moonriver: 'https://rpc.moonriver.moonbeam.network',
     }
 
     const network = networks[networkName.toLowerCase()]

@@ -70,6 +70,10 @@ const withdrawModal = new Modal({
               explorerLinkWithHash = `https://snowtrace.io/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'moonriver') {
+              explorerLinkWithHash = `https://moonriver.moonscan.io/tx/${hash}`
+            }
+
             trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`
 
             this.elems.content.insertBefore(trxNode, buttonContainer)

@@ -24,6 +24,7 @@ const fetchAccountData = async () => {
     250: 'fantom',
     1666600000: 'harmony',
     43114: 'avax',
+    1285: 'moonriver',
     80001: 'mumbai',
     1313161554: 'aurora',
   })[chainId]

@@ -66,6 +66,10 @@ const depositModal = new Modal({
               explorerLinkWithHash = `https://snowtrace.io/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'moonriver') {
+              explorerLinkWithHash = `https://moonriver.moonscan.io/tx/${hash}`
+            }
+
             if (networkName.toLowerCase() === 'xdai') {
               explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
             }
