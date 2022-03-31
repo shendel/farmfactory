@@ -4,34 +4,53 @@
 (function( $ ){
 	"use strict";
 
-	var loaderOverlay  = document.getElementById('farmfactory_loaderOverlay');
-	var loaderStatusText = document.getElementById('farmfactory_loaderStatus');
+	var loaderOverlay  		= document.getElementById('farmfactory_loaderOverlay');
+	var loaderStatusText 	= document.getElementById('farmfactory_loaderStatus');
 	var showLoader = () => {
 		loaderStatusText.innerText = '';
 		loaderOverlay.classList.add('visible');
 	}
 	var setLoaderStatus = (message) => loaderStatusText.innerText = message;
-	var hideLoader = () => loaderOverlay.classList.remove('visible');
+	var hideLoader = () 			=> loaderOverlay.classList.remove('visible');
 
-	var getValue = (id) => document.getElementById(id).value;
-	var setValue = (id, value) => document.getElementById(id).value = value;
-	var getHtmlText = (id) => document.getElementById(id).textContent;
-	var setHtml = (id, value) => document.getElementById(id).innerHTML = value;
-	var showBlock = (id) => document.getElementById(id).style.display = '';
-	var hideBlock = (id) => document.getElementById(id).style.display = 'none';
+	var getValue = (id) 		=> document.getElementById(id).value;
+	var setValue = (id, value) 	=> document.getElementById(id).value = value;
+	var getHtmlText = (id) 		=> document.getElementById(id).textContent;
+	var setHtml = (id, value) 	=> document.getElementById(id).innerHTML = value;
+	var showBlock = (id)		=> document.getElementById(id).style.display = '';
+	var hideBlock = (id) 		=> document.getElementById(id).style.display = 'none';
 
 	var errMessage = (message) => { alert(message) }
 
-	var rewardsAddress = document.getElementById('rewardsAddress');
-	var fetchRewardTokenButton = document.getElementById('farmfactory_fetch_reward_token_button');
+	var rewardsAddress 				= document.getElementById('rewardsAddress');
+	var fetchRewardTokenButton 		= document.getElementById('farmfactory_fetch_reward_token_button');
 
-	var stakingAddress = document.getElementById('stakingAddress');
-	var fetchStakingTokenButton = document.getElementById('farmfactory_fetch_staking_token_button');
+	var stakingAddress 				= document.getElementById('stakingAddress');
+	var fetchStakingTokenButton	 	= document.getElementById('farmfactory_fetch_staking_token_button');
 
-	var deployButton         = document.getElementById('farmfactory_deploy_button');
+	var deployButton         		= document.getElementById('farmfactory_deploy_button');
 
-	var amount             = document.getElementById('amount');
-	var startFarmingButton = document.getElementById('farmfactory_startFarmingButton');
+	var amount             			= document.getElementById('amount');
+	var startFarmingButton 			= document.getElementById('farmfactory_startFarmingButton');
+
+	let setupType = 'deployNewFarm' // also can be as 'fetchExistsFarm'.
+	const setSetupType = (event) => {
+		setupType = event.target.value;
+		if (setupType === 'deployNewFarm') {
+			showBlock('deployNewFarmContainer');
+			hideBlock('fetchExistsFarmContainer');
+		}
+
+		if (setupType === 'fetchExistsFarm') {
+			showBlock('fetchExistsFarmContainer');
+			hideBlock('deployNewFarmContainer');
+		}
+
+		console.log('setupType:', setupType)
+	};
+	document.querySelectorAll("input[name='setup_type']").forEach((input) => {
+        input.addEventListener('change', setSetupType);
+    });
 
 	farmDeployer.init({
 		onStartLoading: () => {
