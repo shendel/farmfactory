@@ -40,7 +40,7 @@ class FarmFactory_Meta_Box {
 		add_meta_box(
 			'farmfactory_meta',
 			esc_html__( 'Farm Factory Details', 'farmfactory' ),
-			array( $this, 'render_new_metabox' ),
+			array( $this, 'render_metabox' ),
 			'farmfactory',
 			'normal',
 			'high'
@@ -61,7 +61,7 @@ class FarmFactory_Meta_Box {
 	 *
 	 * @param object $post Post.
 	 */
-	public function render_new_metabox( $post ) {
+	public function render_metabox( $post ) {
 
 		/* Add nonce for security and authentication */
 		wp_nonce_field( 'farmfactory_meta_action', 'farmfactory_meta_nonce' );
@@ -82,6 +82,8 @@ class FarmFactory_Meta_Box {
 		$farm_address    = get_post_meta( $post->ID, 'farm_address', true );
 		$farm_status     = get_post_meta( $post->ID, 'farm_status', true );
 
+		$configured_network_name = get_option( 'farmfactory_networkName', 'ropsten' );
+
 		// Set default values.
 		if ( empty( $staking_address ) ) $staking_address 				= ''; // phpcs:ignore
 		if ( empty( $staking_token_name ) ) $staking_token_name   		= ''; // phpcs:ignore
@@ -94,11 +96,14 @@ class FarmFactory_Meta_Box {
 		if ( empty( $reward_duration ) ) $reward_duration 				= ''; // phpcs:ignore
 		if ( empty( $farm_apy ) ) $farm_apy               				= ''; // phpcs:ignore
 		if ( empty( $farm_apy_label ) ) $farm_apy_label   				= 'APY'; // phpcs:ignore
-		if ( empty( $network_name ) ) $network_name       				= get_option( 'farmfactory_networkName', 'ropsten' ); // phpcs:ignore
+		if ( empty( $network_name ) ) $network_name       				= $configured_network_name;
 		if ( empty( $farm_address ) ) $farm_address       				= ''; // phpcs:ignore
 		if ( empty( $farm_status ) ) $farm_status       				= 'setup'; // phpcs:ignore
 
-		$have_staking_decimals = (
+
+		$not_uses_configured_network = ($network_name !== $configured_network_name);
+
+		$has_staking_decimals = (
 			!empty( $staking_decimals )
 			or (
 				$staking_decimals === '0'
@@ -106,7 +111,7 @@ class FarmFactory_Meta_Box {
 			)
 		);
 
-		if ( !empty($reward_address) and !empty($farm_address) and $have_staking_decimals) $farm_status = 'deployed';
+		if ( !empty($reward_address) and !empty($farm_address) and $has_staking_decimals) $farm_status = 'deployed';
 
 		// Farm details.
 		?>
@@ -122,7 +127,8 @@ class FarmFactory_Meta_Box {
 						To start farming, you need to create it. At this stage you don't launch anything.
 					</p>
 					<p>
-						Current network: <strong><?php echo esc_html__( $staking_token_name ) ?></strong> (you can change it in "Staking settings")
+						Current network: <strong><?php echo esc_html__( $network_name ) ?></strong> (you can change it in "Staking settings")
+						<input type="hidden" name="network_name" id="network_name" value="<?php echo esc_attr( $network_name ) ?>" />
 					</p>
 					<p>
 						You need to have deployed Farm Contract to setup new Farming (this is the core contract, users will interact with it to stake tokens and claim rewards)
@@ -156,9 +162,9 @@ class FarmFactory_Meta_Box {
 									<strong id="staking_token_name_view"><?php if ($staking_token_name) echo esc_html__( $staking_token_name )?></strong>
 									<strong id="staking_token_symbol_view"><?php if ($staking_token_symbol) echo esc_html__( ' (' . $staking_token_symbol . '). ' )?></strong>
 									<strong id="staking_decimals_view"><?php echo 'Decimals: ' . esc_html__( $staking_decimals )?></strong>
-									<input type="hidden" name="staking_token_name" id="staking_token_name" class="large-text" value="<?php echo esc_attr( $staking_token_name ) ?>" />
-									<input type="hidden" name="staking_token_symbol" id="staking_token_symbol" class="large-text" value="<?php echo esc_attr( $staking_token_symbol ) ?>" />
-									<input type="hidden" name="staking_decimals" id="staking_decimals" class="large-text" value="<?php echo esc_attr( $staking_decimals ) ?>" />
+									<input type="hidden" name="staking_token_name" id="staking_token_name" value="<?php echo esc_attr( $staking_token_name ) ?>" />
+									<input type="hidden" name="staking_token_symbol" id="staking_token_symbol" value="<?php echo esc_attr( $staking_token_symbol ) ?>" />
+									<input type="hidden" name="staking_decimals" id="staking_decimals" value="<?php echo esc_attr( $staking_decimals ) ?>" />
 								</td>
 							</tr>
 
@@ -183,9 +189,9 @@ class FarmFactory_Meta_Box {
 									<strong id="reward_token_name_view"><?php if ($reward_token_name) echo esc_html__( $reward_token_name )?></strong>
 									<strong id="reward_token_symbol_view"><?php if ($reward_token_symbol) echo esc_html__( ' (' . $reward_token_symbol . '). ' )?></strong>
 									<strong id="reward_decimals_view"><?php echo 'Decimals: ' . esc_html__( $reward_decimals )?></strong>
-									<input type="hidden" name="reward_token_name" id="reward_token_name" class="large-text" value="<?php echo esc_attr( $reward_token_name ) ?>" />
-									<input type="hidden" name="reward_token_symbol" id="reward_token_symbol" class="large-text" value="<?php echo esc_attr( $reward_token_symbol ) ?>" />
-									<input type="hidden" name="reward_decimals" id="reward_decimals" class="large-text" value="<?php echo esc_attr( $reward_decimals ) ?>" />
+									<input type="hidden" name="reward_token_name" id="reward_token_name" value="<?php echo esc_attr( $reward_token_name ) ?>" />
+									<input type="hidden" name="reward_token_symbol" id="reward_token_symbol" value="<?php echo esc_attr( $reward_token_symbol ) ?>" />
+									<input type="hidden" name="reward_decimals" id="reward_decimals" value="<?php echo esc_attr( $reward_decimals ) ?>" />
 								</td>
 							</tr>
 
@@ -205,7 +211,9 @@ class FarmFactory_Meta_Box {
 								</th>
 								<td>
 									<div class="farmfactory-form-inline">
-										<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="Deployed farm contract address will be displayed here" disabled>
+										<strong id="farm_address_view"><?php if ( empty($farm_address) ) {echo esc_html__( 'Deployed farm contract address will be displayed here', 'farmfactory' ); } else { echo esc_attr( $farm_address );} ?></strong>
+										<input type="hidden" name="farm_address" id="farm_address" value="<?php echo esc_attr( $farm_address ) ?>" >
+										&nbsp;
 										<a class="button button-secondary" id="farmfactory_deploy_button"><?php echo esc_html__( 'Deploy', 'farmfactory' ); ?></a>
 									</div>
 									<p class="desctiption"><?php echo esc_html__( 'Use "Deploy" button next to the field to create new Farm contract. After deployment address will be automatically placed in the field above', 'farmfactory' ); ?></p>
@@ -224,12 +232,17 @@ class FarmFactory_Meta_Box {
 			case "deployed":
 				?>
 					<h1>Deployed<h1>
-
+					<?php if ($not_uses_configured_network) {
+						?>
+						<p>To use this farm you need to change "Network" in "Staking settings" to <strong><?php echo esc_html__( $network_name ) ?></strong></p>
+						<?php
+					}
+					?>
 				<?php
 			  	break;
 		}
 		?>
-			<h2><?php echo esc_html__( 'Start/Stop farming period', 'farmfactory' ); ?></h2>
+			<h3><?php echo esc_html__( 'Start/Stop farming period', 'farmfactory' ); ?></h3>
 
 			<?php
 			if ( get_post_meta( get_the_ID(), 'farm_address', true ) ) {
@@ -294,214 +307,6 @@ class FarmFactory_Meta_Box {
 				<div class="farmfactory-loader-status" id="farmfactory_loaderStatus">Loading...</div>
 			</div>
 
-		<?php
-
-	}
-
-	/**
-	 * Render Metabox
-	 *
-	 * @param object $post Post.
-	 */
-	public function render_metabox( $post ) {
-
-		/* Add nonce for security and authentication */
-		wp_nonce_field( 'farmfactory_meta_action', 'farmfactory_meta_nonce' );
-
-		// Retrieve an existing value from the database.
-		$staking_address = get_post_meta( $post->ID, 'staking_address', true );
-		$staking_token_name  = get_post_meta( $post->ID, 'staking_token_name', true );
-		$staking_token_symbol  = get_post_meta( $post->ID, 'staking_token_symbol', true );
-		$staking_decimals = get_post_meta( $post->ID, 'staking_decimals', true );
-		$reward_address  = get_post_meta( $post->ID, 'reward_address', true );
-		$reward_token_name  = get_post_meta( $post->ID, 'reward_token_name', true );
-		$reward_token_symbol  = get_post_meta( $post->ID, 'reward_token_symbol', true );
-		$reward_decimals = get_post_meta( $post->ID, 'reward_decimals', true );
-		$reward_duration = get_post_meta( $post->ID, 'reward_duration', true );
-		$farm_apy        = get_post_meta( $post->ID, 'farm_apy', true );
-		$farm_apy_label  = get_post_meta( $post->ID, 'farm_apy_label', true );
-		$network_name    = get_post_meta( $post->ID, 'network_name', true );
-		$farm_address    = get_post_meta( $post->ID, 'farm_address', true );
-
-		// Set default values.
-		if ( empty( $staking_address ) ) $staking_address 				= ''; // phpcs:ignore
-		if ( empty( $staking_token_name ) ) $staking_token_name   		= ''; // phpcs:ignore
-		if ( empty( $staking_token_symbol ) ) $staking_token_symbol   	= ''; // phpcs:ignore
-		if ( empty( $staking_decimals ) ) $staking_decimals 			= ''; // phpcs:ignore
-		if ( empty( $reward_address ) ) $reward_address   				= ''; // phpcs:ignore
-		if ( empty( $reward_token_name ) ) $reward_token_name   		= ''; // phpcs:ignore
-		if ( empty( $reward_token_symbol ) ) $reward_token_symbol   	= ''; // phpcs:ignore
-		if ( empty( $reward_decimals ) ) $reward_decimals 				= ''; // phpcs:ignore
-		if ( empty( $reward_duration ) ) $reward_duration 				= ''; // phpcs:ignore
-		if ( empty( $farm_apy ) ) $farm_apy               				= ''; // phpcs:ignore
-		if ( empty( $farm_apy_label ) ) $farm_apy_label   				= 'APY'; // phpcs:ignore
-		if ( empty( $network_name ) ) $network_name       				= get_option( 'farmfactory_networkName', 'ropsten' ); // phpcs:ignore
-		if ( empty( $farm_address ) ) $farm_address       				= ''; // phpcs:ignore
-
-		// Form fields.
-		?>
-		<table class="form-table">
-
-		  	<tr>
-				<th>
-			  		<label><?php echo esc_html__( 'Staking erc20 Address', 'farmfactory' ); ?></label>
-				</th>
-		    	<td>
-					<div class="farmfactory-form-inline">
-						<input type="text" name="staking_address" id="stakingAddress" class="large-text" value="<?php echo esc_attr( $staking_address ); ?>">
-					  	<a class="button button-secondary" id="farmfactory_fetch_staking_token_button"><?php echo esc_html__( 'Fetch', 'farmfactory' ) ?></a>
-					</div>
-		      		<p class="description"><?php echo sprintf( esc_html__( 'ERC20 address of token&#039;s contract which users will stake (deposit). Free test tokens %s.', 'farmfactory' ), '<a href="https://github.com/bokkypoobah/WeenusTokenFaucet" target="_blank">https://github.com/bokkypoobah/WeenusTokenFaucet</a>' ); ?></p>
-		    	</td>
-		  	</tr>
-
-			<tr id="staking_token_info" <?php if (!$staking_decimals) echo ' style="display: none" '; ?>>
-				<th>
-			  		<label><?php echo esc_html__( 'Staking token info', 'farmfactory' ); ?></label>
-				</th>
-		    	<td>
-					<strong id="staking_token_name_view"><?php if ($staking_token_name) echo esc_html__( $staking_token_name )?></strong>
-					<strong id="staking_token_symbol_view"><?php if ($staking_token_symbol) echo esc_html__( ' (' . $staking_token_symbol . '). ' )?></strong>
-					<strong id="staking_decimals_view"><?php echo 'Decimals: ' . esc_html__( $staking_decimals )?></strong>
-					<input type="hidden" name="staking_token_name" id="staking_token_name" class="large-text" value="<?php echo esc_attr( $staking_token_name ) ?>" />
-					<input type="hidden" name="staking_token_symbol" id="staking_token_symbol" class="large-text" value="<?php echo esc_attr( $staking_token_symbol ) ?>" />
-					<input type="hidden" name="staking_decimals" id="staking_decimals" class="large-text" value="<?php echo esc_attr( $staking_decimals ) ?>" />
-		    	</td>
-		  	</tr>
-
-		  	<tr>
-		    	<th>
-			  		<label><?php echo esc_html__( 'Reward erc20 address', 'farmfactory' ); ?></label>
-				</th>
-				<td>
-			  		<div class="farmfactory-form-inline">
-						<input type="text" name="reward_address" id="rewardsAddress" class="large-text" value="<?php echo esc_attr( $reward_address ); ?>">
-						<a class="button button-secondary" id="farmfactory_fetch_reward_token_button"><?php echo esc_html__( 'Fetch', 'farmfactory' ) ?></a>
-			  		</div>
-			  		<p class="description"><?php echo esc_html__( 'ERC20 address of reward token which users will earn. You can use the same as "Staking address".', 'farmfactory' ); ?></p>
-				</td>
-		  	</tr>
-
-			<tr id="reward_token_info" <?php if (!$reward_decimals) echo ' style="display: none" '; ?>>
-				<th>
-			  		<label><?php echo esc_html__( 'Reward token info', 'farmfactory' ); ?></label>
-				</th>
-		    	<td>
-					<strong id="reward_token_name_view"><?php if ($reward_token_name) echo esc_html__( $reward_token_name )?></strong>
-					<strong id="reward_token_symbol_view"><?php if ($reward_token_symbol) echo esc_html__( ' (' . $reward_token_symbol . '). ' )?></strong>
-					<strong id="reward_decimals_view"><?php echo 'Decimals: ' . esc_html__( $reward_decimals )?></strong>
-					<input type="hidden" name="reward_token_name" id="reward_token_name" class="large-text" value="<?php echo esc_attr( $reward_token_name ) ?>" />
-					<input type="hidden" name="reward_token_symbol" id="reward_token_symbol" class="large-text" value="<?php echo esc_attr( $reward_token_symbol ) ?>" />
-					<input type="hidden" name="reward_decimals" id="reward_decimals" class="large-text" value="<?php echo esc_attr( $reward_decimals ) ?>" />
-		    	</td>
-		  	</tr>
-
-		  	<tr>
-				<th>
-					<label><?php echo esc_html__( 'Reward Duration', 'farmfactory' ); ?></label>
-				</th>
-				<td>
-			  		<input type="text" name="reward_duration" id="farmfactory_duration" class="large-text" value="<?php echo esc_attr( $reward_duration ); ?>">
-			  		<p class="description"><?php echo sprintf( esc_html__( 'Enter _rewardsDuration - duration of staking round in seconds.%s 86400 - 1 day, 2592000 - 30 day, 31536000 - 1 year', 'farmfactory' ), '<br>' ); ?></p>
-				</td>
-		  	</tr>
-
-		  	<tr>
-				<th>
-					<label><?php echo esc_html__( 'Annual Percentage Yield (APY)', 'farmfactory' ); ?></label>
-				</th>
-				<td>
-					<input type="text" name="farm_apy" id="farmfactory_apy" class="large-text" value="<?php echo esc_attr( $farm_apy ); ?>">
-					<p class="description"><?php echo sprintf( esc_html__( 'APY you write in the admin doesn\'t affect the contract logic. It\'s just a value to display in the widget', 'farmfactory' ), '<br>' ); ?></p>
-				</td>
-			</tr>
-
-			<tr>
-				<th>
-					<label><?php echo esc_html__( 'APY label', 'farmfactory' ); ?></label>
-				</th>
-				<td>
-					<input type="text" name="farm_apy_label" id="farmfactory_apy_label" class="large-text" value="<?php echo esc_attr( $farm_apy_label ); ?>">
-				</td>
-			</tr>
-
-			<tr>
-				<th>
-					<label><?php echo esc_html__( 'Newtwork', 'farmfactory' ); ?></label>
-				</th>
-				<td>
-					<strong id="network_name"><?php echo $network_name ?></strong>
-					<p class="desctiption"><?php echo esc_html__( 'Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory' ); ?></p>
-				</td>
-			</tr>
-
-			<tr>
-				<th>
-					<label><?php echo esc_html__( 'Farming Address', 'farmfactory' ); ?></label>
-				</th>
-				<td>
-					<div class="farmfactory-form-inline">
-						<input name="farm_address" id="farmfactory_farmAddress" type="text" class="large-text" value="<?php echo esc_attr( $farm_address ); ?>">
-						<a class="button button-secondary" id="farmfactory_deploy_button"><?php echo esc_html__( 'Deploy', 'farmfactory' ); ?></a>
-					</div>
-					<p class="desctiption"><?php echo esc_html__( 'Use "Deploy" button next to the field to create new Farm contract. After deployment address will be automatically placed in the field above', 'farmfactory' ); ?></p>
-					<p class="desctiption" style="color: red;"><?php echo esc_html__( 'If you have Farm contract address then you can pass it to this field. NOTE: please be sure that you fill Farm contract address! If you are not sure PLEASE PRESS "Deploy" button!!! Otherwise, this may lead to incorrect operations of the program and you may lose your tokens!"', 'farmfactory' ); ?></p>
-				</td>
-			</tr>
-
-			<?php if ( get_post_meta( get_the_ID(), 'farm_address', true ) ) {
-				?>
-				<tr>
-					<th>
-						<label><?php echo esc_html__( 'Start/Stop farming period', 'farmfactory' ); ?></label>
-					</th>
-					<td>
-						<p class="desctiption">
-							<strong>1.</strong> <?php echo esc_html__("Transfer required amount of {$reward_token_symbol} reward tokens to the farm contract: (" . get_post_meta( get_the_ID(), 'farm_address', true ) . ')', 'farmfactory'); ?>
-						</p>
-						<p class="desctiption">
-							<strong>2.</strong> <?php echo esc_html__( 'Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract.', 'farmfactory'); ?>
-							<input value="" type="number" id="amount" class="medium-text js-farmfactory-load-icon">
-						</p>
-						<p class="desctiption">
-							<strong>3.</strong> Click <input type="button" id="farmfactory_startFarmingButton" class="button button-primary mcwallet-add-token" value="<?php echo esc_attr__('Start Farming Period', 'farmfactory'); ?>">
-							<span class="spinner"></span>
-						</p>
-					</td>
-				</tr>
-
-				<tr>
-					<th>
-						<label><?php echo esc_html__( 'Reward distributing', 'farmfactory' ); ?></label>
-					</th>
-					<td>
-						<p class="desctiption">
-							<?php echo esc_html__('All distrubutes are autamatically. Put "[farmfactory id="' . get_the_ID() . '"]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory'); ?>
-						</p>
-						<p class="desctiption">
-							<?php echo sprintf( esc_html__('Need help? Contact our team using %s.', 'farmfactory'), '<a href="https://t.me/onoutsupportbot/?start=farm_wp_ap" target="_blank">https://t.me/onoutsupportbot</a>' ); ?>
-						</p>
-					</td>
-				</tr>
-
-			<?php } else { ?>
-
-				<tr>
-					<th><label><?php echo esc_html__( 'Start/Stop farming period', 'farmfactory' ); ?></label></th>
-					<td>
-						<p class="desctiption">
-							<?php echo esc_html__('Please enter farm address contract and press publish before perform this instructions.', 'farmfactory'); ?>
-						</p>
-					</td>
-				</tr>
-			<?php } ?>
-
-		</table>
-
-		<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
-			<div class="farmfactory-loader"></div>
-			<div class="farmfactory-loader-status" id="farmfactory_loaderStatus">Loading...</div>
-		</div>
 		<?php
 
 	}

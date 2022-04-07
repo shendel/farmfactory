@@ -49,7 +49,7 @@
 
 				<tr>
 					<th scope="row">
-						<label><?php esc_html_e('Newtwork ', 'farmfactory'); ?></label>
+						<label><?php esc_html_e('Network ', 'farmfactory'); ?></label>
 					</th>
 					<td>
 						<?php

@@ -192,7 +192,8 @@
 			onSuccess: (address) => {
 				console.log('Contract address:', address);
 				unlockButton();
-				setValue('farmfactory_farmAddress', address);
+				setValue('farm_address', address);
+				setHtml('farm_address_view', address);
 			},
 			onError: (err) => {
 				console.error(err);
@@ -218,7 +219,7 @@
 
 		farmDeployer.startFarming({
 			rewardsAddress: getValue('rewardsAddress'),
-			farmAddress: getValue('farmfactory_farmAddress'),
+			farmAddress: getValue('farm_address'),
 			amount: amount.value,
 			onSuccess: () => {
 				console.log('Farming started');

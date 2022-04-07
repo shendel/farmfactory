@@ -75,7 +75,7 @@ msgid "APY label"
 msgstr ""
 
 #: inc/metabox.php:142
-msgid "Newtwork"
+msgid "Network"
 msgstr ""
 
 #: inc/metabox.php:146 templates/settings.php:71
@@ -221,7 +221,7 @@ msgid "Infura ID"
 msgstr ""
 
 #: templates/settings.php:52
-msgid "Newtwork "
+msgid "Network "
 msgstr ""
 
 #: templates/settings.php:79
