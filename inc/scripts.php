@@ -40,19 +40,20 @@ function farmfactory_load_scripts() {
 
 	var chainIds = {
 	  "mainnet": 1,
-      "ropsten": 3,
-      "rinkeby": 4,
-      "kovan": 42,
-      "bsc": 56,
-      "bsc_test": 97,
-      "matic": 137,
+    "ropsten": 3,
+    "rinkeby": 4,
+    "kovan": 42,
+    "bsc": 56,
+    "bsc_test": 97,
+    "matic": 137,
 	  "fantom": 250,
 	  "harmony": 1666600000,
 	  "avax": 43114,
 	  "moonriver": 1285,
-      "mumbai": 80001,
-      "xdai": 100,
-      "aurora": 1313161554
+    "mumbai": 80001,
+    "xdai": 100,
+    "aurora": 1313161554,
+		"cronos": 25,
 	};
 
 	var chainId = chainIds[networkName.toLowerCase()];

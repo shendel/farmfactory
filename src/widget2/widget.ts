@@ -350,6 +350,14 @@ class Widget {
             explorerLinkWithHash = `https://moonriver.moonscan.io/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'aurora') {
+            explorerLinkWithHash = `https://aurorascan.dev/tx/${hash}`
+          }
+
+          if (networkName.toLowerCase() === 'cronos') {
+            explorerLinkWithHash = `https://cronoscan.com/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
