@@ -398,6 +398,7 @@ class Widget {
       harmony: 'https://api.harmony.one',
       avax: 'https://api.avax.network/ext/bc/C/rpc',
       moonriver: 'https://rpc.moonriver.moonbeam.network',
+      cronos: 'https://evm.cronos.org',
     }
 
     const network = networks[networkName.toLowerCase()]
