@@ -350,6 +350,14 @@ class Widget {
             explorerLinkWithHash = `https://moonriver.moonscan.io/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'aurora') {
+            explorerLinkWithHash = `https://aurorascan.dev/tx/${hash}`
+          }
+
+          if (networkName.toLowerCase() === 'cronos') {
+            explorerLinkWithHash = `https://cronoscan.com/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -390,6 +398,7 @@ class Widget {
       harmony: 'https://api.harmony.one',
       avax: 'https://api.avax.network/ext/bc/C/rpc',
       moonriver: 'https://rpc.moonriver.moonbeam.network',
+      cronos: 'https://evm.cronos.org',
     }
 
     const network = networks[networkName.toLowerCase()]
