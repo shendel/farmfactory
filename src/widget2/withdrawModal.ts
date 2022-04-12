@@ -74,6 +74,14 @@ const withdrawModal = new Modal({
               explorerLinkWithHash = `https://moonriver.moonscan.io/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'aurora') {
+              explorerLinkWithHash = `https://aurorascan.dev/tx/${hash}`
+            }
+  
+            if (networkName.toLowerCase() === 'cronos') {
+              explorerLinkWithHash = `https://cronoscan.com/tx/${hash}`
+            }
+
             trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`
 
             this.elems.content.insertBefore(trxNode, buttonContainer)

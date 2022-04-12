@@ -68,6 +68,7 @@
 								'harmony',
 								'avax',
 								'moonriver',
+								'cronos',
 							);
 						?>
 						<select name="farmfactory_networkName">
