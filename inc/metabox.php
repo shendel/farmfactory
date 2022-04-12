@@ -170,7 +170,7 @@ class FarmFactory_Meta_Box {
 
 							<tr>
 								<th>
-									<label><?php echo esc_html__( 'Reward erc20 address', 'farmfactory' ); ?></label>
+									<label><?php echo esc_html__( 'Rewarding Token Address', 'farmfactory' ); ?></label>
 								</th>
 								<td>
 									<div class="farmfactory-form-inline">
@@ -183,7 +183,7 @@ class FarmFactory_Meta_Box {
 
 							<tr id="reward_token_info" <?php if (!$reward_decimals) echo ' style="display: none" '; ?>>
 								<th>
-									<label><?php echo esc_html__( 'Reward token info', 'farmfactory' ); ?></label>
+									<label><?php echo esc_html__( 'Rewarding token info', 'farmfactory' ); ?></label>
 								</th>
 								<td>
 									<strong id="reward_token_name_view"><?php if ($reward_token_name) echo esc_html__( $reward_token_name )?></strong>
@@ -231,13 +231,74 @@ class FarmFactory_Meta_Box {
 			  	break;
 			case "deployed":
 				?>
-					<h1>Deployed<h1>
+					<h1><?php if ( empty( $staking_token_symbol ) or empty( $reward_token_symbol ) ) { echo esc_html__( 'Deployed', 'farmfactory' ); } else { echo esc_html__( $staking_token_symbol . '-' . $reward_token_symbol );} ?> Farming</h1>
 					<?php if ($not_uses_configured_network) {
 						?>
-						<p>To use this farm you need to change "Network" in "Staking settings" to <strong><?php echo esc_html__( $network_name ) ?></strong></p>
+						<p class="desctiption">>To use this farm you need to change "Network" in "Staking settings" to <strong><?php echo esc_html__( $network_name ) ?></strong></p>
 						<?php
 					}
 					?>
+					<table class="form-table">
+
+						<tr>
+							<th>
+								<label><?php echo esc_html__( 'Farm Contract Address', 'farmfactory' ); ?></label>
+							</th>
+							<td>
+								<p class="farmfactory-fake-input"><?php echo esc_attr( $farm_address ); ?></p>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
+								<label><?php echo esc_html__( 'Staking Token Address', 'farmfactory' ); ?></label>
+							</th>
+							<td>
+								<p class="farmfactory-fake-input"><?php echo esc_attr( $staking_address ); ?></p>
+								<p class="description"><?php echo sprintf( esc_html__( 'ERC20 address of token&#039;s contract which users will stake (deposit).', 'farmfactory' ) ); ?></p>
+							</td>
+						</tr>
+
+						<tr <?php if (!$staking_decimals) echo ' style="display: none" '; ?>>
+							<th>
+								<label><?php echo esc_html__( 'Staking Token Info', 'farmfactory' ); ?></label>
+							</th>
+							<td>
+								<strong><?php if ($staking_token_name) echo esc_html__( $staking_token_name )?></strong>
+								<strong><?php if ($staking_token_symbol) echo esc_html__( ' (' . $staking_token_symbol . '). ' )?></strong>
+								<strong><?php if ($staking_decimals) echo esc_html__( 'Decimals: ' . $staking_decimals )?></strong>
+							</td>
+						</tr>
+
+						<tr>
+							<th>
+								<label><?php echo esc_html__( 'Rewarding Token Address', 'farmfactory' ); ?></label>
+							</th>
+							<td>
+								<p class="farmfactory-fake-input"><?php echo esc_attr( $reward_address ); ?></p>
+								<p class="description"><?php echo esc_html__( 'ERC20 address of reward token which users will earn.', 'farmfactory' ); ?></p>
+							</td>
+						</tr>
+
+						<tr <?php if (!$reward_decimals) echo ' style="display: none" '; ?>>
+							<th>
+								<label><?php echo esc_html__( 'Rewarding Token Info', 'farmfactory' ); ?></label>
+							</th>
+							<td>
+								<strong><?php if ($reward_token_name) echo esc_html__( $reward_token_name )?></strong>
+								<strong><?php if ($reward_token_symbol) echo esc_html__( ' (' . $reward_token_symbol . '). ' )?></strong>
+								<strong><?php if ($reward_decimals) echo esc_html__( 'Decimals: ' . $reward_decimals )?></strong>
+							</td>
+						</tr>
+					</table>
+					<p>Farm Contract Address</p>
+					<p><strong><?php echo esc_html__( $farm_address ) ?></strong></p>
+
+					<p>Staking Token Address</p>
+					<p><strong><?php echo esc_html__( $staking_address ) ?></strong></p>
+
+					<p>Rewarding Token Address</p>
+					<p><strong><?php echo esc_html__( $reward_address ) ?></strong></p>
 				<?php
 			  	break;
 		}

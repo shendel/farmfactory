@@ -168,6 +168,11 @@
 	background-color: #313131;
 	animation: rectangle 1.5s infinite ease-in-out;
 }
+.farmfactory-fake-input {
+  border: 1px solid #c3c4c7;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
 @keyframes rectangle {
 	0% {
 		transform:perspective(12rem) rotateX(0deg) rotateY(0deg)
