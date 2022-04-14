@@ -311,8 +311,8 @@ class FarmFactory_Meta_Box {
 								<label><?php echo esc_html__( 'Reward Duration', 'farmfactory' ); ?></label>
 							</th>
 							<td>
-								<strong><?php echo esc_html__( $reward_duration ); ?></strong>
-								<input type="hidden" name="reward_duration" value="<?php echo esc_attr( $reward_duration ); ?> seconds">
+								<strong><?php echo esc_html__( $reward_duration ); ?>  seconds</strong>
+								<input type="hidden" name="reward_duration" value="<?php echo esc_attr( $reward_duration ); ?>">
 							</td>
 						</tr>
 
@@ -321,30 +321,38 @@ class FarmFactory_Meta_Box {
 			  	break;
 		}
 		?>
-			<h3><?php echo esc_html__( 'Start/Stop farming period', 'farmfactory' ); ?></h3>
+			<h3><?php echo esc_html__( 'Start farming period', 'farmfactory' ); ?></h3>
 
 			<?php
 			if ( get_post_meta( get_the_ID(), 'farm_address', true ) ) {
 			?>
-				<p class="desctiption">
-					<strong>1.</strong> <?php echo esc_html__("Transfer required amount of {$reward_token_symbol} reward tokens to the farm contract: (" . get_post_meta( get_the_ID(), 'farm_address', true ) . ')', 'farmfactory'); ?>
-				</p>
-				<p class="desctiption">
-					<strong>2.</strong> <?php echo esc_html__( 'Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract.', 'farmfactory'); ?>
-					<input value="" type="number" id="amount" class="medium-text js-farmfactory-load-icon">
-				</p>
-				<p class="desctiption">
-					<strong>3.</strong> Click <input type="button" id="farmfactory_startFarmingButton" class="button button-primary mcwallet-add-token" value="<?php echo esc_attr__('Start Farming Period', 'farmfactory'); ?>">
-					<span class="spinner"></span>
-				</p>
+				<input type="button" id="farmfactory_checkFarmingStatusButton" class="button button-primary" value="<?php echo esc_attr__('Check Farming Status', 'farmfactory'); ?>">
 
-				<h3><?php echo esc_html__( 'Reward distributing', 'farmfactory' ); ?></h3>
-				<p class="desctiption">
-					<?php echo esc_html__('All distrubutes are autamatically. Put "[farmfactory id="' . get_the_ID() . '"]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory'); ?>
-				</p>
-				<p class="desctiption">
-					<?php echo sprintf( esc_html__('Need help? Contact our team using %s.', 'farmfactory'), '<a href="https://t.me/onoutsupportbot/?start=farm_wp_ap" target="_blank">https://t.me/onoutsupportbot</a>' ); ?>
-				</p>
+				<div id="startFarmPeriodContainer" style="display: none">
+					<p class="desctiption">
+						<strong>1.</strong> <?php echo esc_html__("Transfer required amount of {$reward_token_symbol} reward tokens to the farm contract: (" . get_post_meta( get_the_ID(), 'farm_address', true ) . ')', 'farmfactory'); ?>
+					</p>
+					<p class="desctiption">
+						<strong>2.</strong> <?php echo esc_html__( 'Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract.', 'farmfactory'); ?>
+						<input value="" type="number" id="amount" class="medium-text js-farmfactory-load-icon">
+					</p>
+					<p class="desctiption">
+						<strong>3.</strong> Click <input type="button" id="farmfactory_startFarmingButton" class="button button-primary" value="<?php echo esc_attr__('Start Farming Period', 'farmfactory'); ?>">
+						<span class="spinner"></span>
+					</p>
+
+					<h3><?php echo esc_html__( 'Reward distributing', 'farmfactory' ); ?></h3>
+					<p class="desctiption">
+						<?php echo esc_html__('All distrubutes are autamatically. Put "[farmfactory id="' . get_the_ID() . '"]" shortcode to any post or page in your site and try to deposit, withdraw and harvest some tokens in the frontend ', 'farmfactory'); ?>
+					</p>
+					<p class="desctiption">
+						<?php echo sprintf( esc_html__('Need help? Contact our team using %s.', 'farmfactory'), '<a href="https://t.me/onoutsupportbot/?start=farm_wp_ap" target="_blank">https://t.me/onoutsupportbot</a>' ); ?>
+					</p>
+				</div>
+
+				<div  id="startedFarmPeriodContainer" style="display: none">
+
+				</div>
 
 				<h3><?php echo esc_html__( 'Additional settings', 'farmfactory' ); ?></h3>
 

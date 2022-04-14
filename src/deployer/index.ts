@@ -117,6 +117,52 @@ const stopFarming = () => {
 
 }
 
+const fetchFarmingContractInfo = async ({ farmAddress, fetchTokenInfo, onSuccess, onError }) => {
+  const { abi } = json
+  const { web3 } = getState()
+
+  try {
+    const farmContract = new web3.eth.Contract(abi, farmAddress)
+
+    if (!farmContract?._address) throw new Error("Can't create farm contract");
+
+    const rewardsTokenAddress = await farmContract.methods.rewardsToken().call()
+    const stakingTokenAddress = await farmContract.methods.stakingToken().call()
+    const stakingTokenDecimals = Math.log10(await farmContract.methods.stakingTokensDecimalRate().call())
+    const stakingTotalSupply = await farmContract.methods.totalSupply().call()
+    const rewardsDuration = await farmContract.methods.rewardsDuration().call()
+    const periodFinish = await farmContract.methods.periodFinish().call()
+    const contractOwner = await farmContract.methods.owner().call()
+
+    const farmInfo = {
+      address: farmAddress,
+      rewardsTokenAddress,
+      rewardsTokenFullInfo: undefined,
+      stakingTokenAddress,
+      stakingTokenFullInfo: undefined,
+      stakingTokenDecimals,
+      stakingTotalSupply,
+      rewardsDuration,
+      periodFinish,
+      contractOwner,
+    }
+
+    if (fetchTokenInfo) {
+      farmInfo.rewardsTokenFullInfo = await getTokenInfo({tokenAddress: rewardsTokenAddress})
+      farmInfo.stakingTokenFullInfo = await getTokenInfo({tokenAddress: stakingTokenAddress})
+    }
+
+    if (typeof onSuccess === 'function') {
+      onSuccess(farmInfo)
+    }
+  }
+  catch (err) {
+    if (typeof onError === 'function') {
+      onError(err)
+    }
+  }
+}
+
 const getTokenInfo = async ({ tokenAddress }: { tokenAddress: string }) => {
   const { web3 } = getState()
 
@@ -197,7 +243,7 @@ const connectMetamask = async () => {
     return Promise.reject()
   }
 
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     const interval = setInterval(() => {
       if (window.ethereum.networkVersion) {
         clearInterval(interval)
@@ -236,6 +282,7 @@ export default {
   init,
   deploy,
   startFarming,
+  fetchFarmingContractInfo,
   stopFarming,
   getTokenInfo,
 }

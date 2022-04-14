@@ -15,6 +15,7 @@
 
 	var getValue = (id) 		=> document.getElementById(id).value;
 	var setValue = (id, value) 	=> document.getElementById(id).value = value;
+	var getValueByName = (name) => document.querySelector(`[name='${name}']`).value;
 	var getHtmlText = (id) 		=> document.getElementById(id).textContent;
 	var setHtml = (id, value) 	=> document.getElementById(id).innerHTML = value;
 	var showBlock = (id)		=> document.getElementById(id).style.display = '';
@@ -29,6 +30,8 @@
 	var fetchStakingTokenButton	 	= document.getElementById('farmfactory_fetch_staking_token_button');
 
 	var deployButton         		= document.getElementById('farmfactory_deploy_button');
+
+	var checkFarmingButton 			= document.getElementById('farmfactory_checkFarmingStatusButton');
 
 	var amount             			= document.getElementById('amount');
 	var startFarmingButton 			= document.getElementById('farmfactory_startFarmingButton');
@@ -54,21 +57,19 @@
 
 	farmDeployer.init({
 		onStartLoading: () => {
-			// show loader
-			deployButton.disabled = true;
+			if (deployButton) deployButton.disabled = true;
 		},
 		onFinishLoading: () => {
-			// hide loader
-			deployButton.disabled = false;
+			if (deployButton) deployButton.disabled = false;
 		},
 		onError: (err) => {
 			console.error(err);
-			deployButton.disabled = true;
+			if (deployButton) deployButton.disabled = true;
 			alert(err);
 		}
 	});
 
-	$( fetchStakingTokenButton ).on('click', function (e) {
+	$( fetchStakingTokenButton )?.on('click', function (e) {
 		e.preventDefault();
 
 		const unlockButton = () => {
@@ -110,7 +111,7 @@
 			})
 	})
 
-	$( fetchRewardTokenButton ).on('click', function (e) {
+	$( fetchRewardTokenButton )?.on('click', function (e) {
 		e.preventDefault();
 
 		const unlockButton = () => {
@@ -152,7 +153,7 @@
 			})
 	})
 
-	$( deployButton ).on( 'click', function(e) {
+	$( deployButton )?.on( 'click', function(e) {
 	  	e.preventDefault();
 
 		const duration = getValue('farmfactory_duration')
@@ -201,6 +202,22 @@
 				errMessage(err);
 			},
 		});
+
+	});
+
+	checkFarmingButton?.addEventListener('click', () => {
+		showBlock('startFarmPeriodContainer');
+		const farmAddress = getValueByName('farm_address');
+		farmDeployer.fetchFarmingContractInfo({
+			farmAddress,
+			fetchTokenInfo: false,
+			onSuccess: (farmInfo) => {
+				console.log('farmInfo', farmInfo);
+			},
+			onError: (err) => {
+				console.error(err);
+			},
+		})
 
 	});
 
