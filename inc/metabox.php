@@ -140,7 +140,6 @@ class FarmFactory_Meta_Box {
 					<input type="radio" id="fetchExistsFarm" name="setup_type" value="fetchExistsFarm">
 					<label for="fetchExistsFarm">I have deployed contract</label><br>
 					<div id="deployNewFarmContainer">
-						<p>Deploy new farm</p>
 						<table class="form-table">
 
 							<tr>
@@ -231,7 +230,7 @@ class FarmFactory_Meta_Box {
 
 							<tr>
 								<th>
-									<label><?php echo esc_html__( 'Farm Contract Address', 'farmfactory' ); ?></label>
+									<label><?php echo esc_html__( 'Exist Farm Address', 'farmfactory' ); ?></label>
 								</th>
 								<td>
 									<div class="farmfactory-form-inline">
@@ -250,8 +249,8 @@ class FarmFactory_Meta_Box {
 									<label><?php echo esc_html__( 'Farm Contract Address', 'farmfactory' ); ?></label>
 								</th>
 								<td>
-									<p class="farmfactory-fake-input"></p>
-									<input type="hidden" name="farm_address" value="" >
+									<p class="farmfactory-fake-input" id="farmAddressView"></p>
+									<input type="hidden" name="farm_address" id="farmAddress" value="" >
 									<p class="description"><?php echo sprintf( esc_html__( 'The main contract of farming.', 'farmfactory' ) ); ?></p>
 								</td>
 							</tr>
@@ -261,8 +260,8 @@ class FarmFactory_Meta_Box {
 									<label><?php echo esc_html__( 'Staking Token Address', 'farmfactory' ); ?></label>
 								</th>
 								<td>
-									<p class="farmfactory-fake-input"></p>
-									<input type="hidden" name="staking_address" value="">
+									<p class="farmfactory-fake-input" id="stakingAddressView"></p>
+									<input type="hidden" name="staking_address" id="stakingAddress" value="">
 									<p class="description"><?php echo sprintf( esc_html__( 'ERC20 address of token&#039;s contract which users will stake (deposit).', 'farmfactory' ) ); ?></p>
 								</td>
 							</tr>
@@ -272,9 +271,9 @@ class FarmFactory_Meta_Box {
 									<label><?php echo esc_html__( 'Staking Token Info', 'farmfactory' ); ?></label>
 								</th>
 								<td>
-									<strong></strong>
-									<strong></strong>
-									<strong></strong>
+									<strong id="staking_token_name_view"></strong>
+									<strong id="staking_token_symbol_view"></strong>
+									<strong id="staking_decimals_view"></strong>
 
 									<input type="hidden" name="staking_token_name" id="staking_token_name" value="" />
 									<input type="hidden" name="staking_token_symbol" id="staking_token_symbol" value="" />
@@ -287,8 +286,8 @@ class FarmFactory_Meta_Box {
 									<label><?php echo esc_html__( 'Rewarding Token Address', 'farmfactory' ); ?></label>
 								</th>
 								<td>
-									<p class="farmfactory-fake-input"></p>
-									<input type="hidden" name="reward_address" value="">
+									<p class="farmfactory-fake-input" id="rewardsAddressView"></p>
+									<input type="hidden" name="reward_address" id="rewardsAddress" value="">
 									<p class="description"><?php echo esc_html__( 'ERC20 address of reward token which users will earn.', 'farmfactory' ); ?></p>
 								</td>
 							</tr>
@@ -298,9 +297,9 @@ class FarmFactory_Meta_Box {
 									<label><?php echo esc_html__( 'Rewarding Token Info', 'farmfactory' ); ?></label>
 								</th>
 								<td>
-									<strong></strong>
-									<strong></strong>
-									<strong></strong>
+									<strong id="reward_token_name_view"></strong>
+									<strong id="reward_token_symbol_view"></strong>
+									<strong id="reward_decimals_view"></strong>
 
 									<input type="hidden" name="reward_token_name" id="reward_token_name" value="" />
 									<input type="hidden" name="reward_token_symbol" id="reward_token_symbol" value="" />
@@ -313,8 +312,8 @@ class FarmFactory_Meta_Box {
 									<label><?php echo esc_html__( 'Reward Duration', 'farmfactory' ); ?></label>
 								</th>
 								<td>
-									<strong></strong>
-									<input type="hidden" name="reward_duration" value="">
+									<strong id="reward_duration_view"></strong>
+									<input type="hidden" name="reward_duration" id="reward_duration" value="">
 								</td>
 							</tr>
 
