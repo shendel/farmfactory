@@ -17,209 +17,263 @@
 	var setValue = (id, value) 	=> document.getElementById(id).value = value;
 	var getValueByName = (name) => document.querySelector(`[name='${name}']`).value;
 	var getHtmlText = (id) 		=> document.getElementById(id).textContent;
+	var getHtml = (id) 			=> document.getElementById(id).innerHTML;
 	var setHtml = (id, value) 	=> document.getElementById(id).innerHTML = value;
 	var showBlock = (id)		=> document.getElementById(id).style.display = '';
 	var hideBlock = (id) 		=> document.getElementById(id).style.display = 'none';
 
-	var errMessage = (message) => { alert(message) }
-
-	var rewardsAddress 				= document.getElementById('rewardsAddress');
-	var fetchRewardTokenButton 		= document.getElementById('farmfactory_fetch_reward_token_button');
-
-	var stakingAddress 				= document.getElementById('stakingAddress');
-	var fetchStakingTokenButton	 	= document.getElementById('farmfactory_fetch_staking_token_button');
-
-	var deployButton         		= document.getElementById('farmfactory_deploy_button');
-
-	var checkFarmingButton 			= document.getElementById('farmfactory_checkFarmingStatusButton');
+	var errMessage = (message) => { alert(message) };
 
 	var amount             			= document.getElementById('amount');
 	var startFarmingButton 			= document.getElementById('farmfactory_startFarmingButton');
 
-	let setupType = 'deployNewFarm' // also can be as 'fetchExistsFarm'.
-	const setSetupType = (event) => {
-		setupType = event.target.value;
-		if (setupType === 'deployNewFarm') {
-			showBlock('deployNewFarmContainer');
-			hideBlock('fetchExistsFarmContainer');
-		}
+	const setDeployNewFarmContainer = () => {
 
-		if (setupType === 'fetchExistsFarm') {
-			showBlock('fetchExistsFarmContainer');
-			hideBlock('deployNewFarmContainer');
-		}
+		const deployButton         		= document.getElementById('farmfactory_deploy_button');
+		const fetchStakingTokenButton	= document.getElementById('farmfactory_fetch_staking_token_button');
+		const fetchRewardTokenButton 	= document.getElementById('farmfactory_fetch_reward_token_button');
 
-		console.log('setupType:', setupType)
-	};
-	document.querySelectorAll("input[name='setup_type']").forEach((input) => {
-        input.addEventListener('change', setSetupType);
-    });
-
-	farmDeployer.init({
-		onStartLoading: () => {
-			if (deployButton) deployButton.disabled = true;
-		},
-		onFinishLoading: () => {
-			if (deployButton) deployButton.disabled = false;
-		},
-		onError: (err) => {
-			console.error(err);
-			if (deployButton) deployButton.disabled = true;
-			alert(err);
-		}
-	});
-
-	$( fetchStakingTokenButton )?.on('click', function (e) {
-		e.preventDefault();
-
-		const unlockButton = () => {
-			fetchStakingTokenButton.disabled = false;
-			hideLoader();
-		}
-
-		const tokenAddress = getValue('stakingAddress');
-
-		if (!window.Web3.utils.isAddress(tokenAddress)) {
-		  return errMessage( 'Staking token address is not correct' );
-		}
-
-		showLoader();
-
-		setLoaderStatus( 'Fetching staking token info' );
-		fetchStakingTokenButton.disabled = true;
-		hideBlock('staking_token_info');
-
-		farmDeployer.getTokenInfo({ tokenAddress })
-			.then((tokenInfo) => {
-				console.log('staking tokenInfo', tokenInfo);
-
-				setHtml('staking_token_name_view', tokenInfo.name);
-				setValue('staking_token_name', tokenInfo.name);
-				setHtml('staking_token_symbol_view', ` (${tokenInfo.symbol}). `);
-				setValue('staking_token_symbol', tokenInfo.symbol);
-				setHtml('staking_decimals_view', `Decimals: ${tokenInfo.decimals}`);
-				setValue('staking_decimals', tokenInfo.decimals);
-
-				showBlock('staking_token_info');
-			})
-			.catch((error) => {
-				console.error(error);
-				errMessage( `Staking token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
-			})
-			.finally(() => {
-				unlockButton();
-			})
-	})
-
-	$( fetchRewardTokenButton )?.on('click', function (e) {
-		e.preventDefault();
-
-		const unlockButton = () => {
-			fetchRewardTokenButton.disabled = false;
-			hideLoader();
-		}
-
-		const tokenAddress = getValue('rewardsAddress');
-
-		if (!window.Web3.utils.isAddress(tokenAddress)) {
-		  return errMessage( 'Reward token address is not correct' );
-		}
-
-		showLoader();
-
-		setLoaderStatus( 'Fetching reward token info' );
-		fetchRewardTokenButton.disabled = true;
-		hideBlock('reward_token_info');
-
-		farmDeployer.getTokenInfo({ tokenAddress })
-			.then((tokenInfo) => {
-				console.log('reward tokenInfo', tokenInfo);
-
-				setHtml('reward_token_name_view', tokenInfo.name);
-				setValue('reward_token_name', tokenInfo.name);
-				setHtml('reward_token_symbol_view', ` (${tokenInfo.symbol}). `);
-				setValue('reward_token_symbol', tokenInfo.symbol);
-				setHtml('reward_decimals_view', `Decimals: ${tokenInfo.decimals}`);
-				setValue('reward_decimals', tokenInfo.decimals);
-
-				showBlock('reward_token_info');
-			})
-			.catch((error) => {
-				console.error(error);
-				errMessage( `Reward token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
-			})
-			.finally(() => {
-				unlockButton();
-			})
-	})
-
-	$( deployButton )?.on( 'click', function(e) {
-	  	e.preventDefault();
-
-		const duration = getValue('farmfactory_duration')
-		const stakingTokenDecimal = getValue('staking_decimals')
-		const rewardTokenDecimal = getValue('reward_decimals')
-
-	  	if (!rewardsAddress || !stakingAddress || !duration ) {
-	    	errMessage('All fields should be filled: rewardsAddress, stakingAddress, duration.');
-			return;
-		}
-
-		if (!stakingTokenDecimal || !rewardTokenDecimal) {
-			errMessage('Firstly you should to fetch reward and staking tokens data.');
-			return;
-		}
-
-		if (deployButton.disabled) {
-			return;
-		}
-
-		const unlockButton = () => {
-			deployButton.disabled = false;
-			hideLoader();
-		}
-
-		deployButton.disabled = true;
-		showLoader();
-
-		farmDeployer.deploy({
-			rewardsAddress: rewardsAddress.value,
-			stakingAddress: stakingAddress.value,
-			duration,
-			decimal: stakingTokenDecimal,
-			onTrx: (trxHash) => {
-				errMessage(`Transaction hash: ${trxHash}. Send this hash to the support via support@onout.org if you have a problem with deploy.`);
+		farmDeployer.init({
+			onStartLoading: () => {
+				if (deployButton) deployButton.disabled = true;
 			},
-			onSuccess: (address) => {
-				console.log('Contract address:', address);
-				unlockButton();
-				setValue('farm_address', address);
-				setHtml('farm_address_view', address);
+			onFinishLoading: () => {
+				if (deployButton) deployButton.disabled = false;
 			},
 			onError: (err) => {
 				console.error(err);
-				unlockButton();
-				errMessage(err);
-			},
+				if (deployButton) deployButton.disabled = true;
+				alert(err);
+			}
 		});
 
-	});
+		$( fetchStakingTokenButton )?.on('click', function (e) {
+			e.preventDefault();
 
-	checkFarmingButton?.addEventListener('click', () => {
-		showBlock('startFarmPeriodContainer');
-		const farmAddress = getValueByName('farm_address');
-		farmDeployer.fetchFarmingContractInfo({
-			farmAddress,
-			fetchTokenInfo: false,
-			onSuccess: (farmInfo) => {
-				console.log('farmInfo', farmInfo);
-			},
-			onError: (err) => {
-				console.error(err);
-			},
+			const unlockButton = () => {
+				fetchStakingTokenButton.disabled = false;
+				hideLoader();
+			}
+
+			const tokenAddress = getValue('stakingAddress');
+
+			if (!window.Web3.utils.isAddress(tokenAddress)) {
+			  return errMessage( 'Staking token address is not correct' );
+			}
+
+			showLoader();
+
+			setLoaderStatus( 'Fetching staking token info' );
+			fetchStakingTokenButton.disabled = true;
+			hideBlock('staking_token_info');
+
+			farmDeployer.getTokenInfo({ tokenAddress })
+				.then((tokenInfo) => {
+					console.log('staking tokenInfo', tokenInfo);
+
+					setValue('stakingAddress', tokenInfo.tokenAddress);
+					setHtml('staking_token_name_view', tokenInfo.name);
+					setValue('staking_token_name', tokenInfo.name);
+					setHtml('staking_token_symbol_view', ` (${tokenInfo.symbol}). `);
+					setValue('staking_token_symbol', tokenInfo.symbol);
+					setHtml('staking_decimals_view', `Decimals: ${tokenInfo.decimals}`);
+					setValue('staking_decimals', tokenInfo.decimals);
+
+					showBlock('staking_token_info');
+				})
+				.catch((error) => {
+					console.error(error);
+					errMessage( `Staking token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
+				})
+				.finally(() => {
+					unlockButton();
+				})
 		})
 
-	});
+		$( fetchRewardTokenButton )?.on('click', function (e) {
+			e.preventDefault();
+
+			const unlockButton = () => {
+				fetchRewardTokenButton.disabled = false;
+				hideLoader();
+			}
+
+			const tokenAddress = getValue('rewardsAddress');
+
+			if (!window.Web3.utils.isAddress(tokenAddress)) {
+			  return errMessage( 'Reward token address is not correct' );
+			}
+
+			showLoader();
+
+			setLoaderStatus( 'Fetching reward token info' );
+			fetchRewardTokenButton.disabled = true;
+			hideBlock('reward_token_info');
+
+			farmDeployer.getTokenInfo({ tokenAddress })
+				.then((tokenInfo) => {
+					console.log('reward tokenInfo', tokenInfo);
+
+
+					setValue('rewardsAddress', tokenInfo.tokenAddress);
+					setHtml('reward_token_name_view', tokenInfo.name);
+					setValue('reward_token_name', tokenInfo.name);
+					setHtml('reward_token_symbol_view', ` (${tokenInfo.symbol}). `);
+					setValue('reward_token_symbol', tokenInfo.symbol);
+					setHtml('reward_decimals_view', `Decimals: ${tokenInfo.decimals}`);
+					setValue('reward_decimals', tokenInfo.decimals);
+
+					showBlock('reward_token_info');
+				})
+				.catch((error) => {
+					console.error(error);
+					errMessage( `Reward token address is not correct or token address from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
+				})
+				.finally(() => {
+					unlockButton();
+				})
+		})
+
+		$( deployButton )?.on( 'click', function(e) {
+			  e.preventDefault();
+
+			const duration = getValue('farmfactory_duration')
+			const stakingTokenDecimal = getValue('staking_decimals')
+			const rewardTokenDecimal = getValue('reward_decimals')
+			const stakingAddress = getValue('stakingAddress');
+			const rewardsAddress = getValue('rewardsAddress');
+
+			  if (!rewardsAddress || !stakingAddress || !duration ) {
+				errMessage('All fields should be filled: rewardsAddress, stakingAddress, duration.');
+				return;
+			}
+
+			if (!stakingTokenDecimal || !rewardTokenDecimal) {
+				errMessage('Firstly you should to fetch reward and staking tokens data.');
+				return;
+			}
+
+			if (deployButton.disabled) {
+				return;
+			}
+
+			const unlockButton = () => {
+				deployButton.disabled = false;
+				hideLoader();
+			}
+
+			deployButton.disabled = true;
+			showLoader();
+
+			farmDeployer.deploy({
+				rewardsAddress,
+				stakingAddress,
+				duration,
+				decimal: stakingTokenDecimal,
+				onTrx: (trxHash) => {
+					errMessage(`Transaction hash: ${trxHash}. Send this hash to the support via support@onout.org if you have a problem with deploy.`);
+				},
+				onSuccess: (address) => {
+					console.log('Contract address:', address);
+					unlockButton();
+					setValue('farm_address', address);
+					setHtml('farm_address_view', address);
+				},
+				onError: (err) => {
+					console.error(err);
+					unlockButton();
+					errMessage(err);
+				},
+			});
+
+		});
+	};
+
+	const setFetchExistsFarmContainer = () => {
+		const checkFarmingButton = document.getElementById('fetchFarmContractButton');
+
+		checkFarmingButton?.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			const unlockButton = () => {
+				checkFarmingButton.disabled = false;
+				hideLoader();
+			}
+
+			const farmAddress = getValue('fetchingFarmAddress');
+
+			if (!window.Web3.utils.isAddress(farmAddress)) {
+			  return errMessage( 'Farm address is not correct' );
+			}
+
+			showLoader();
+			setLoaderStatus( 'Fetching farm info' );
+
+			checkFarmingButton.disabled = true;
+
+			farmDeployer.fetchFarmingContractInfo({
+				farmAddress,
+				fetchTokenInfo: true,
+				onSuccess: (farmInfo) => {
+					console.log('farmInfo', farmInfo);
+					unlockButton();
+					showBlock('fetchedFarmContainer');
+				},
+				onError: (err) => {
+					console.error(err);
+					errMessage( `Farm contract address is not correct or farm from another network, please check selected metamask network, it should be ${getHtmlText('network_name')}.` );
+					unlockButton();
+				},
+			})
+
+		});
+
+	};
+
+	const setupTypeRadios = document.querySelectorAll("input[name='setup_type']");
+
+	if (setupTypeRadios?.length) {
+		let setupType = 'deployNewFarm' // also can be as 'fetchExistsFarm'.
+		const deployNewFarmContainerId 		= 'deployNewFarmContainer';
+		const fetchExistsFarmContainerId 	= 'fetchExistsFarmContainer';
+
+		// save default container html and delete fetch exists farm container content
+		const defaultFetchExistsFarmContainer 	= getHtml(fetchExistsFarmContainerId);
+		const defaultDeployNewFarmContainer 	= getHtml(deployNewFarmContainerId);
+		setHtml(fetchExistsFarmContainerId, '');
+
+		setDeployNewFarmContainer();
+
+		const swithchSetupType = (event) => {
+			if (setupType === event.target.value) return;
+
+			setupType = event.target.value;
+			if (setupType === 'deployNewFarm') {
+				hideBlock(fetchExistsFarmContainerId);
+
+				setHtml(deployNewFarmContainerId, defaultDeployNewFarmContainer);
+				setHtml(fetchExistsFarmContainerId, '');
+
+				showBlock(deployNewFarmContainerId);
+				setDeployNewFarmContainer();
+			}
+
+			if (setupType === 'fetchExistsFarm') {
+				hideBlock(deployNewFarmContainerId);
+
+				setHtml(fetchExistsFarmContainerId, defaultFetchExistsFarmContainer);
+				setHtml(deployNewFarmContainerId, '');
+
+				showBlock(fetchExistsFarmContainerId);
+				setFetchExistsFarmContainer();
+			}
+		};
+
+		setupTypeRadios.forEach((input) => {
+			input.addEventListener('change', swithchSetupType);
+		});
+
+	}
 
 	startFarmingButton?.addEventListener('click', () => {
 		if (farmDeployer.disabled) {
@@ -249,11 +303,6 @@
 			}
 		});
 	});
-
-
-
-
-
 
 
 
