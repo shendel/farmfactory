@@ -22,9 +22,6 @@
 
 	var errMessage = (message) => { alert(message) };
 
-	var amount             			= document.getElementById('amount');
-	var startFarmingButton 			= document.getElementById('farmfactory_startFarmingButton');
-
 	const setDeployNewFarmContainer = () => {
 
 		const deployButton         		= document.getElementById('farmfactory_deploy_button');
@@ -277,7 +274,7 @@
 
 	const setupTypeRadios = document.querySelectorAll("input[name='setup_type']");
 
-	if (setupTypeRadios?.length) {
+	if (setupTypeRadios?.length) { // setup farm way
 		let setupType = 'deployNewFarm' // also can be as 'fetchExistsFarm'.
 		const deployNewFarmContainerId 		= 'deployNewFarmContainer';
 		const fetchExistsFarmContainerId 	= 'fetchExistsFarmContainer';
@@ -318,36 +315,89 @@
 			input.addEventListener('change', swithchSetupType);
 		});
 
-	}
-
-	startFarmingButton?.addEventListener('click', () => {
-		if (farmDeployer.disabled) {
-			return;
-		}
-
-		const unlockButton = () => {
-			startFarmingButton.disabled = false;
-			hideLoader();
-		}
-
-		farmDeployer.disabled = true;
-		showLoader();
-
-		farmDeployer.startFarming({
-			rewardsAddress: getValue('rewardsAddress'),
-			farmAddress: getValue('farm_address'),
-			amount: amount.value,
-			onSuccess: () => {
-				console.log('Farming started');
-				unlockButton();
-			},
+	} else { // deployed and publish farm
+		farmDeployer.init({
 			onError: (err) => {
 				console.error(err);
-				unlockButton();
-				errMessage(err);
+				alert(err);
 			}
 		});
-	});
+
+		const checkFarmingStatusButton = document.getElementById('checkFarmingStatusButton');
+		let lastFetchedFarmInfo;
+
+		checkFarmingStatusButton?.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			const unlockButton = () => {
+				checkFarmingStatusButton.disabled = false;
+				hideLoader();
+			}
+
+			showLoader();
+			setLoaderStatus( 'Fetching farm status' );
+
+			checkFarmingStatusButton.disabled = true;
+
+			farmDeployer.fetchFarmingContractInfo({
+				farmAddress: getValue('farmAddress'),
+				fetchRewardsTotalSupply: true,
+				onSuccess: (farmInfo) => {
+					lastFetchedFarmInfo = farmInfo
+					console.log('farmInfo', farmInfo);
+					unlockButton();
+					const {
+						address: farmAddress,
+						rewardsDuration,
+						rewardsTokenFullInfo,
+						stakingTokenFullInfo,
+						stakingTokenDecimals,
+					} = farmInfo;
+
+					showBlock('startFarmPeriodContainer');
+				},
+				onError: (err) => {
+					console.error(err);
+					errMessage( `Can't fetch farm status 'cause contract address is not correct or farm from another network, please check selected metamask network, it should be ${getValue('network_name')}.` );
+					unlockButton();
+				},
+			})
+
+		});
+
+		const amount             			= document.getElementById('amount');
+		const startFarmingButton 			= document.getElementById('farmfactory_startFarmingButton');
+
+		startFarmingButton?.addEventListener('click', () => {
+			if (farmDeployer.disabled) {
+				return;
+			}
+
+			const unlockButton = () => {
+				startFarmingButton.disabled = false;
+				hideLoader();
+			}
+
+			farmDeployer.disabled = true;
+			showLoader();
+
+			farmDeployer.startFarming({
+				rewardsAddress: getValue('rewardsAddress'),
+				farmAddress: getValue('farm_address'),
+				amount: amount.value,
+				onSuccess: () => {
+					console.log('Farming started');
+					unlockButton();
+				},
+				onError: (err) => {
+					console.error(err);
+					unlockButton();
+					errMessage(err);
+				}
+			});
+		});
+
+	}
 
 
 

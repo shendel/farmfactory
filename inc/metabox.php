@@ -324,10 +324,10 @@ class FarmFactory_Meta_Box {
 			case "deployed":
 				?>
 					<h1><?php if ( empty( $staking_token_symbol ) or empty( $reward_token_symbol ) ) { echo esc_html__( 'Deployed', 'farmfactory' ); } else { echo esc_html__( $staking_token_symbol . '-' . $reward_token_symbol );} ?> Farming</h1>
+					<input type="hidden" name="network_name" id="network_name" value="<?php echo esc_attr( $network_name ) ?>" />
 					<?php if ($not_uses_configured_network) {
 						?>
 						<p class="desctiption">To use this farm you need to change "Network" in "Staking settings" to <strong><?php echo esc_html__( $network_name ) ?></strong></p>
-						<input type="hidden" name="network_name" id="network_name" value="<?php echo esc_attr( $network_name ) ?>" />
 						<?php
 					}
 					?>
@@ -339,7 +339,7 @@ class FarmFactory_Meta_Box {
 							</th>
 							<td>
 								<p class="farmfactory-fake-input"><?php echo esc_attr( $farm_address ); ?></p>
-								<input type="hidden" name="farm_address" value="<?php echo esc_attr( $farm_address ) ?>" >
+								<input type="hidden" name="farm_address" id="farmAddress" value="<?php echo esc_attr( $farm_address ) ?>" >
 								<p class="description"><?php echo sprintf( esc_html__( 'The main contract of farming.', 'farmfactory' ) ); ?></p>
 							</td>
 						</tr>
@@ -414,9 +414,9 @@ class FarmFactory_Meta_Box {
 			<h3><?php echo esc_html__( 'Start farming period', 'farmfactory' ); ?></h3>
 
 			<?php
-			if ( get_post_meta( get_the_ID(), 'farm_address', true ) ) {
+			if ( $farm_address ) {
 			?>
-				<input type="button" id="farmfactory_checkFarmingStatusButton" class="button button-primary" value="<?php echo esc_attr__('Check Farming Status', 'farmfactory'); ?>">
+				<input type="button" id="checkFarmingStatusButton" class="button button-primary" value="<?php echo esc_attr__('Check Farming Status', 'farmfactory'); ?>">
 
 				<div id="startFarmPeriodContainer" style="display: none">
 					<p class="desctiption">
