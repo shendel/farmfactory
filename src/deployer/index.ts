@@ -9,6 +9,11 @@ import setupWeb3 from './setupWeb3'
 
 const baseTokenAbi = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"string"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"from","type":"address"}],"name":"getAvailableBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tokensMinted","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"value","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"account","type":"address"}],"name":"isMinter","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"freezeFor","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"freezeOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"},{"name":"_unfreezeTimestamp","type":"uint256"},{"name":"_subsequentUnlock","type":"bool"}],"name":"mintWithFreeze","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"maxSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"}]
 
+const fromWei : any = (amount: any, decimals: any) => {
+  return new window.BigNumber(amount).div(new window.BigNumber(10).pow(decimals)).toString(10)
+}
+
+
 const loadScript = (src) => new Promise((resolve, reject) => {
   const script = document.createElement('script')
 
@@ -117,6 +122,73 @@ const stopFarming = () => {
 
 }
 
+const fetchFarmingContractInfo = async ({
+  farmAddress,
+  fetchTokenInfo = false,
+  fetchRewardsTotalSupply = false,
+  onSuccess,
+  onError,
+}) => {
+  const { abi } = json
+  const { web3 } = getState()
+
+  try {
+    const farmContract = new web3.eth.Contract(abi, farmAddress)
+
+    if (!farmContract?._address) throw new Error("Can't create farm contract");
+
+    const rewardsTokenAddress = await farmContract.methods.rewardsToken().call()
+    const stakingTokenAddress = await farmContract.methods.stakingToken().call()
+    const stakingTokenDecimals = Math.log10(await farmContract.methods.stakingTokensDecimalRate().call())
+    const stakingTotalSupply = await farmContract.methods.totalSupply().call()
+    const rewardsDuration = await farmContract.methods.rewardsDuration().call()
+    const periodFinish = await farmContract.methods.periodFinish().call()
+    const contractOwner = await farmContract.methods.owner().call()
+
+    const farmInfo = {
+      address: farmAddress,
+      rewardsTokenAddress,
+      rewardsTotalSupply: undefined,
+      amountRewardsTotalSupply: undefined,
+      rewardsTokenFullInfo: undefined,
+      stakingTokenAddress,
+      stakingTokenFullInfo: undefined,
+      stakingTokenDecimals,
+      stakingTotalSupply,
+      amountStakingTotalSupply: fromWei(stakingTotalSupply, stakingTokenDecimals),
+      rewardsDuration,
+      periodFinish,
+      contractOwner,
+    }
+
+    if (fetchTokenInfo || fetchRewardsTotalSupply) {
+      farmInfo.rewardsTokenFullInfo = await getTokenInfo({tokenAddress: rewardsTokenAddress})
+      farmInfo.stakingTokenFullInfo = await getTokenInfo({tokenAddress: stakingTokenAddress})
+    }
+
+    if (fetchRewardsTotalSupply) {
+      let farmRewardsTokenBalance = await getTokenBalance({ tokenAddress: rewardsTokenAddress, checkingAddress: farmAddress })
+
+      if (rewardsTokenAddress.toLowerCase() === stakingTokenAddress.toLowerCase()) {
+        farmRewardsTokenBalance -= stakingTotalSupply
+      }
+
+      farmInfo.rewardsTotalSupply = farmRewardsTokenBalance
+      farmInfo.amountRewardsTotalSupply = fromWei(farmRewardsTokenBalance, farmInfo.rewardsTokenFullInfo.decimals)
+
+    }
+
+    if (typeof onSuccess === 'function') {
+      onSuccess(farmInfo)
+    }
+  }
+  catch (err) {
+    if (typeof onError === 'function') {
+      onError(err)
+    }
+  }
+}
+
 const getTokenInfo = async ({ tokenAddress }: { tokenAddress: string }) => {
   const { web3 } = getState()
 
@@ -135,6 +207,22 @@ const getTokenInfo = async ({ tokenAddress }: { tokenAddress: string }) => {
       decimals,
       symbol,
     }
+  }
+  catch (err) {
+    throw err;
+  }
+}
+
+const getTokenBalance = async ({ tokenAddress, checkingAddress }: { tokenAddress: string, checkingAddress: string }) => {
+  const { web3 } = getState()
+
+  try {
+    const contract = new web3.eth.Contract(
+      baseTokenAbi,
+      tokenAddress
+    )
+
+    return await contract.methods.balanceOf(checkingAddress).call()
   }
   catch (err) {
     throw err;
@@ -197,7 +285,7 @@ const connectMetamask = async () => {
     return Promise.reject()
   }
 
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     const interval = setInterval(() => {
       if (window.ethereum.networkVersion) {
         clearInterval(interval)
@@ -236,6 +324,7 @@ export default {
   init,
   deploy,
   startFarming,
+  fetchFarmingContractInfo,
   stopFarming,
   getTokenInfo,
 }
