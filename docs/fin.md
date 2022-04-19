@@ -53,5 +53,7 @@
 | 15.12.21 |  -$60 (vit walletconnect fix)   |
 | 15.01.22 |  -$120 (vit support & fixes)   |
 | 15.02.22 |  -$180 (vit support & fixes)   |
+| 15.03.22 |  -$680 (vit support & fixes)   |
+| 19.04.22 |  -$780 (vit support & fixes)   |
 
 
