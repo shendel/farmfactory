@@ -337,22 +337,36 @@
 			showLoader();
 			setLoaderStatus( 'Fetching farm status' );
 
+			hideBlock('notStartedFarmPeriodContainer');
+			hideBlock('startedFarmPeriodContainer');
+			hideBlock('successfullyStartedFarm');
+
 			checkFarmingStatusButton.disabled = true;
 
 			farmDeployer.fetchFarmingContractInfo({
 				farmAddress: getValue('farmAddress'),
 				fetchRewardsTotalSupply: true,
 				onSuccess: (farmInfo) => {
-					lastFetchedFarmInfo = farmInfo
+					lastFetchedFarmInfo = farmInfo;
 					console.log('farmInfo', farmInfo);
 					unlockButton();
 					const {
-						address: farmAddress,
-						rewardsDuration,
 						rewardsTokenFullInfo,
-						stakingTokenFullInfo,
-						stakingTokenDecimals,
+						amountRewardsTotalSupply,
+						periodFinish,
+						rewardsDuration,
 					} = farmInfo;
+
+					const oldRewardDuration = getValue('reward_duration');
+
+					if (oldRewardDuration !== rewardsDuration) {
+						setHtml('reward_duration_view', `${rewardsDuration} seconds`);
+						setValue('reward_duration', rewardsDuration);
+					}
+
+					setHtml("rewardBalance", `${amountRewardsTotalSupply} ${rewardsTokenFullInfo.symbol}`)
+
+					if (Date.now() > (periodFinish * 1000)) showBlock('notStartedFarmPeriodContainer'); else showBlock('startedFarmPeriodContainer');
 
 					showBlock('startFarmPeriodContainer');
 				},
@@ -365,12 +379,36 @@
 
 		});
 
-		const amount             			= document.getElementById('amount');
-		const startFarmingButton 			= document.getElementById('farmfactory_startFarmingButton');
+		const rewardAmount      	= document.getElementById('rewardAmount');
+		const startFarmingButton 	= document.getElementById('farmfactory_startFarmingButton');
 
 		startFarmingButton?.addEventListener('click', () => {
 			if (farmDeployer.disabled) {
 				return;
+			}
+
+			if (!lastFetchedFarmInfo) {
+				return errMessage('Please, firstly click on Check Farming Status!');
+			}
+
+			const {
+				contractOwner,
+				amountRewardsTotalSupply,
+				rewardsTokenFullInfo,
+			} = lastFetchedFarmInfo
+
+			if (contractOwner?.toLowerCase() !== window?.ethereum?.selectedAddress?.toLowerCase()) {
+				return errMessage(`Please, use ${contractOwner} account address to interact with Farm Contract!`);
+			}
+
+			const rewardAmoutValue = rewardAmount.value
+
+			if (parseFloat(rewardAmoutValue) > parseFloat(amountRewardsTotalSupply)) {
+				return errMessage(`
+					The balance of tokens on the farm contract is insufficient.
+					There are ${amountRewardsTotalSupply} ${rewardsTokenFullInfo.symbol} on the contract,
+					the reward amount you specified is ${rewardAmoutValue} ${rewardsTokenFullInfo.symbol}.
+				`);
 			}
 
 			const unlockButton = () => {
@@ -382,17 +420,20 @@
 			showLoader();
 
 			farmDeployer.startFarming({
-				rewardsAddress: getValue('rewardsAddress'),
-				farmAddress: getValue('farm_address'),
-				amount: amount.value,
+				rewardsAddress: rewardsTokenFullInfo.tokenAddress,
+				farmAddress: lastFetchedFarmInfo.address,
+				amount: rewardAmoutValue,
 				onSuccess: () => {
 					console.log('Farming started');
+					hideBlock('notStartedFarmPeriodContainer');
+					showBlock('startedFarmPeriodContainer');
+					showBlock('successfullyStartedFarm');
 					unlockButton();
 				},
 				onError: (err) => {
 					console.error(err);
 					unlockButton();
-					errMessage(err);
+					errMessage(err.message || err);
 				}
 			});
 		});

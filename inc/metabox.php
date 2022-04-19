@@ -401,8 +401,8 @@ class FarmFactory_Meta_Box {
 								<label><?php echo esc_html__( 'Reward Duration', 'farmfactory' ); ?></label>
 							</th>
 							<td>
-								<strong><?php echo esc_html__( $reward_duration ); ?>  seconds</strong>
-								<input type="hidden" name="reward_duration" value="<?php echo esc_attr( $reward_duration ); ?>">
+								<strong id="reward_duration_view"><?php echo esc_html__( $reward_duration ); ?>  seconds</strong>
+								<input type="hidden" name="reward_duration" id="reward_duration" value="<?php echo esc_attr( $reward_duration ); ?>">
 							</td>
 						</tr>
 
@@ -419,17 +419,59 @@ class FarmFactory_Meta_Box {
 				<input type="button" id="checkFarmingStatusButton" class="button button-primary" value="<?php echo esc_attr__('Check Farming Status', 'farmfactory'); ?>">
 
 				<div id="startFarmPeriodContainer" style="display: none">
-					<p class="desctiption">
-						<strong>1.</strong> <?php echo esc_html__("Transfer required amount of {$reward_token_symbol} reward tokens to the farm contract: (" . get_post_meta( get_the_ID(), 'farm_address', true ) . ')', 'farmfactory'); ?>
-					</p>
-					<p class="desctiption">
-						<strong>2.</strong> <?php echo esc_html__( 'Enter the amount of tokens which you want to distribute across all users who will deposit tokens to the cotract.', 'farmfactory'); ?>
-						<input value="" type="number" id="amount" class="medium-text js-farmfactory-load-icon">
-					</p>
-					<p class="desctiption">
-						<strong>3.</strong> Click <input type="button" id="farmfactory_startFarmingButton" class="button button-primary" value="<?php echo esc_attr__('Start Farming Period', 'farmfactory'); ?>">
-						<span class="spinner"></span>
-					</p>
+
+					<div id="notStartedFarmPeriodContainer" style="display: none">
+
+						<table class="form-table">
+
+							<tr>
+								<th>
+									<label><?php echo esc_html__( 'Reward Balance', 'farmfactory' ); ?></label>
+								</th>
+								<td>
+									<p id="rewardBalance">0 <?php if ($reward_token_symbol) echo esc_attr( $reward_token_symbol ); ?></p>
+									<p class="description"><?php echo esc_html__( 'The balance on the contract that you can use to reward your users. (Click to the "Check Farming Status" button again to update it)', 'farmfactory' ); ?></p>
+								</td>
+							</tr>
+
+							<tr>
+								<th>
+									<label><?php echo esc_html__( 'Reward Amount', 'farmfactory' ); ?></label>
+								</th>
+								<td>
+									<input value="" type="number" id="rewardAmount" class="medium-text js-farmfactory-load-icon">
+									<p class="description"><?php echo esc_html__( 'Tokens amount that will be distributed for the specified period', 'farmfactory' ); ?></p>
+								</td>
+							</tr>
+						</table>
+
+						<p class="desctiption">
+							<strong>1. </strong>
+							<?php echo esc_html__("Note that before start farming you need to transfer the specified amount of {$reward_token_symbol} reward tokens to the farm contract:  {$farm_address}.", 'farmfactory'); ?>
+						</p>
+						<p class="desctiption">
+							<strong>2. </strong>
+							<span style="color: red;">
+								<?php echo esc_html__("Attention! After start farming you won't be able to stop or change it, or withdraw reward tokens. All tokens will be distributed between stakers.", 'farmfactory'); ?>
+							</span>
+						</p>
+						<p class="desctiption">
+							<strong>3. </strong>
+							<?php echo esc_html__("When farming ends you will be able to start new farming", 'farmfactory'); ?>
+						</p>
+						<p>
+							<input type="button" id="farmfactory_startFarmingButton" class="button button-primary" value="<?php echo esc_attr__('Start Farming Period', 'farmfactory'); ?>">
+						</p>
+
+					</div>
+
+					<div id="startedFarmPeriodContainer" style="display: none">
+						<p>Wait for Farming Period is end and check Farm Status again to start new period.</p>
+					</div>
+
+					<div id="successfullyStartedFarm" style="display: none; color: green;">
+						<p>Congratulations! You have started Farming Period.</p>
+					</div>
 
 					<h3><?php echo esc_html__( 'Reward distributing', 'farmfactory' ); ?></h3>
 					<p class="desctiption">
