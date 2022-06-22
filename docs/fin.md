@@ -55,6 +55,6 @@
 | 15.02.22 |  -$180 (vit support & fixes)   |
 | 15.03.22 |  -$1020 (vit support & fixes)   |
 | 19.04.22 |  -$1170 (vit support & fixes)   |
-| 22.06.22 |  -$400 (vit support & fixes)   |
+| 22.06.22 |  -$600 (vit support & fixes)   |
 
 
