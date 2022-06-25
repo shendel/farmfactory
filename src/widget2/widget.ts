@@ -358,6 +358,10 @@ class Widget {
             explorerLinkWithHash = `https://cronoscan.com/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'ame') {
+            explorerLinkWithHash = `https://amescan.io/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -399,6 +403,7 @@ class Widget {
       avax: 'https://api.avax.network/ext/bc/C/rpc',
       moonriver: 'https://rpc.moonriver.moonbeam.network',
       cronos: 'https://evm.cronos.org',
+      ame: 'https://node1.amechain.io/',
     }
 
     const network = networks[networkName.toLowerCase()]

@@ -54,6 +54,7 @@ function farmfactory_load_scripts() {
     "xdai": 100,
     "aurora": 1313161554,
 		"cronos": 25,
+		"ame": 180,
 	};
 
 	var chainId = chainIds[networkName.toLowerCase()];
@@ -81,6 +82,13 @@ function farmfactory_load_scripts() {
 			250: "https://rpc.ftm.tools/",
 		  },
 		  network: "fantom",
+		};
+	} else if (chainId === 180 || chainId === "180") {
+		walletConnectOptions = {
+		  rpc: {
+			180: "https://node1.amechain.io/",
+		  },
+		  network: "ame",
 		};
 	} else {
 	  walletConnectOptions = {

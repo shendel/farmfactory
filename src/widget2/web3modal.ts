@@ -28,6 +28,7 @@ const fetchAccountData = async () => {
     80001: 'mumbai',
     1313161554: 'aurora',
     25: 'cronos',
+    180: 'ame',
   })[chainId]
 
   if (!activeNetwork || activeNetwork.toLowerCase() !== opts.networkName.toLowerCase()) {
