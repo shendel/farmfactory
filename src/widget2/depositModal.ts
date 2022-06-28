@@ -82,6 +82,10 @@ const depositModal = new Modal({
               explorerLinkWithHash = `https://cronoscan.com/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'ame') {
+              explorerLinkWithHash = `https://amescan.io/tx/${hash}`
+            }
+
             trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`
 
             this.elems.content.insertBefore(trxNode, buttonContainer)
