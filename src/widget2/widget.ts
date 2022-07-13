@@ -86,7 +86,7 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
     </div>
   </div>
   <div class="ff-widget-footer">
-    <button class="ff-button ff-widget-unlock-button" type="button">Unlock wallet</button>
+    <button id="connect-wallet" class="ff-button ff-widget-unlock-button" type="button">Connect wallet</button>
     <button class="ff-button ff-widget-approve-button ff-hidden" type="button">Approve contract</button>
   </div>
 `
