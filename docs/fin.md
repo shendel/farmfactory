@@ -61,4 +61,5 @@
 | 19.04.22 |  - $1170 (vit support & fixes)   |
 | 22.06.22 |  - $600 (vit support & fixes)   |
 | 10.08.22 |  - $2176 (koln etc..)   |
+| 23.08.22 |  - $450 (vit support & fixes)   |
 
