@@ -39,7 +39,6 @@ const deploy = async (params: Params) => {
   const { abi, bytecode } = json
   const { rewardsAddress, stakingAddress, duration, decimal } = params
   const { web3 } = getState()
-
   const onTrx = params.onTrx || (() => {})
   const onSuccess = params.onSuccess || (() => {})
   const onError = params.onError || (() => {})
@@ -170,7 +169,7 @@ const fetchFarmingContractInfo = async ({
       let farmRewardsTokenBalance = await getTokenBalance({ tokenAddress: rewardsTokenAddress, checkingAddress: farmAddress })
 
       if (rewardsTokenAddress.toLowerCase() === stakingTokenAddress.toLowerCase()) {
-        farmRewardsTokenBalance -= stakingTotalSupply
+        //farmRewardsTokenBalance -= stakingTotalSupply
       }
 
       farmInfo.rewardsTotalSupply = farmRewardsTokenBalance
