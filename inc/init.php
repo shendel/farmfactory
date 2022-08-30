@@ -18,8 +18,7 @@ require FARMFACTORY_PATH . 'inc/functions.php';
 /**
  * Load pro functions if exists
  */
-$farmfactory_pro_path = FARMFACTORY_PATH . 'pro/init-pro.php';
-if ( file_exists( $farmfactory_pro_path ) ) {
+if ( farmfactory_does_pro_exist() ) {
 	require FARMFACTORY_PATH . 'pro/init-pro.php';
 }
 
