@@ -159,7 +159,7 @@ function farmfactory_license_admin_notice() {
 	}
 
 	$screen = get_current_screen();
-	if ( isset( $screen->base ) && 'farmfactory_page_farmfactory-license' === $screen->base ) {
+	if ( isset( $screen->id ) && ('admin_page_farmfactory-license' === $screen->id || 'farmfactory'  === $screen->id)  ) {
 		return;
 	}
 

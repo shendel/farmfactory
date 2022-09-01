@@ -115,7 +115,9 @@ class FarmFactory_Meta_Box {
 
 		$farm_status = $is_deployed_farm ? 'deployed' : 'setup';
 
-		if ( farmfactory_does_pro_exist() && !farmfactory_is_active_license() ) {
+		$should_activate_license = farmfactory_does_pro_exist() && !farmfactory_is_active_license();
+
+		if ( $should_activate_license ) {
 			$farm_status = 'activate_license';
 		}
 
@@ -443,7 +445,10 @@ class FarmFactory_Meta_Box {
 				<?php
 			  	break;
 		}
-		?>
+
+		if( !$should_activate_license ) {
+
+			?>
 			<h3><?php echo esc_html__( 'Start farming period', 'farmfactory' ); ?></h3>
 
 			<?php
@@ -552,8 +557,8 @@ class FarmFactory_Meta_Box {
 				</p>
 			<?php
 			}
-			?>
-
+		}
+		?>
 			</div>
 
 			<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
