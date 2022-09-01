@@ -115,6 +115,12 @@ class FarmFactory_Meta_Box {
 
 		$farm_status = $is_deployed_farm ? 'deployed' : 'setup';
 
+		$should_activate_license = farmfactory_does_pro_exist() && !farmfactory_is_active_license();
+
+		if ( $should_activate_license ) {
+			$farm_status = 'activate_license';
+		}
+
 		// Farm details.
 		?>
 
@@ -122,6 +128,35 @@ class FarmFactory_Meta_Box {
 
 		<?php
 		switch ($farm_status) {
+			case "activate_license":
+				?>
+					<h1>You have not license or your license have expired</h1>
+					<p>
+						To create, manage, and edit farms you must have an active license key.
+					</p>
+					<a
+						class="button button-primary"
+						href="<?php echo esc_url( admin_url( 'admin.php?page=farmfactory-license' ) ); ?>"
+					>
+						<?php echo esc_attr__('Go to the license page', 'farmfactory'); ?>
+					</a>
+
+					<input type="hidden" name="network_name" id="network_name" value="<?php echo esc_attr( $network_name ) ?>" />
+					<input type="hidden" name="farm_address" id="farm_address" value="<?php echo esc_attr( $farm_address ) ?>" >
+					<input type="hidden" name="reward_duration" id="reward_duration" value="<?php echo esc_attr( $reward_duration ); ?>">
+
+					<input type="hidden" name="staking_address" value="<?php echo esc_attr( $staking_address ); ?>">
+					<input type="hidden" name="staking_token_name" id="staking_token_name" value="<?php echo esc_attr( $staking_token_name ) ?>" />
+					<input type="hidden" name="staking_token_symbol" id="staking_token_symbol" value="<?php echo esc_attr( $staking_token_symbol ) ?>" />
+					<input type="hidden" name="staking_decimals" id="staking_decimals" value="<?php echo esc_attr( $staking_decimals ) ?>" />
+
+					<input type="hidden" name="reward_address" value="<?php echo esc_attr( $reward_address ); ?>">
+					<input type="hidden" name="reward_token_name" id="reward_token_name" value="<?php echo esc_attr( $reward_token_name ) ?>" />
+					<input type="hidden" name="reward_token_symbol" id="reward_token_symbol" value="<?php echo esc_attr( $reward_token_symbol ) ?>" />
+					<input type="hidden" name="reward_decimals" id="reward_decimals" value="<?php echo esc_attr( $reward_decimals ) ?>" />
+
+				<?php
+			  	break;
 			case "setup":
 				?>
 					<h1>Setup farming</h1>
@@ -410,7 +445,10 @@ class FarmFactory_Meta_Box {
 				<?php
 			  	break;
 		}
-		?>
+
+		if( !$should_activate_license ) {
+
+			?>
 			<h3><?php echo esc_html__( 'Start farming period', 'farmfactory' ); ?></h3>
 
 			<?php
@@ -519,8 +557,8 @@ class FarmFactory_Meta_Box {
 				</p>
 			<?php
 			}
-			?>
-
+		}
+		?>
 			</div>
 
 			<div id="farmfactory_loaderOverlay" class="farmfactory-overlay">
@@ -608,10 +646,10 @@ class FarmFactory_Meta_Box {
 		$reward_token_symbol  	= isset( $_POST['reward_token_symbol'] ) ? sanitize_text_field( $_POST['reward_token_symbol'] ) : '';
 		$reward_decimals 		= isset( $_POST['reward_decimals'] ) ? sanitize_text_field( $_POST['reward_decimals'] ) : '';
 		$reward_duration 		= isset( $_POST['reward_duration'] ) ? sanitize_text_field( $_POST['reward_duration'] ) : '';
-		$farm_apy        		= isset( $_POST['farm_apy'] ) ? sanitize_text_field( $_POST['farm_apy'] ) : '';
-		$farm_apy_label  		= isset( $_POST['farm_apy_label'] ) ? sanitize_text_field( $_POST['farm_apy_label'] ) : '';
 		$network_name    		= isset( $_POST['network_name'] ) ? sanitize_text_field( $_POST['network_name'] ) : '';
 		$farm_address    		= isset( $_POST['farm_address'] ) ? sanitize_text_field( $_POST['farm_address'] ) : '';
+		$farm_apy        		= isset( $_POST['farm_apy'] ) ? sanitize_text_field( $_POST['farm_apy'] ) : '';
+		$farm_apy_label  		= isset( $_POST['farm_apy_label'] ) ? sanitize_text_field( $_POST['farm_apy_label'] ) : '';
 		$farm_thumbnail  		= isset( $_POST['_farm_thumbnail_id'] ) ? sanitize_text_field( $_POST['_farm_thumbnail_id'] ) : '-1';
 
 		/* Update the meta field in the database */
