@@ -130,7 +130,7 @@ class FarmFactory_Meta_Box {
 		switch ($farm_status) {
 			case "activate_license":
 				?>
-					<h1>You have not a activated license key</h1>
+					<h1>You have not an activated license key</h1>
 					<p>
 						To create, manage, and edit farms you must have an active license key.
 					</p>
