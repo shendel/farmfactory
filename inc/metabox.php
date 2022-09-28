@@ -115,7 +115,7 @@ class FarmFactory_Meta_Box {
 
 		$farm_status = $is_deployed_farm ? 'deployed' : 'setup';
 
-		$should_activate_license = farmfactory_does_pro_exist() && !farmfactory_is_active_license();
+		$should_activate_license = farmfactory_does_pro_exist() && ! get_option( 'farmfactory_purchase_code' );
 
 		if ( $should_activate_license ) {
 			$farm_status = 'activate_license';
@@ -130,7 +130,7 @@ class FarmFactory_Meta_Box {
 		switch ($farm_status) {
 			case "activate_license":
 				?>
-					<h1>You have not license or your license have expired</h1>
+					<h1>You have not a activated license key</h1>
 					<p>
 						To create, manage, and edit farms you must have an active license key.
 					</p>

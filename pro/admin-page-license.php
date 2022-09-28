@@ -39,7 +39,7 @@ function farmfactory_license_page() {
 		<div class="farmfactory-welcome-panel-content">
 
 			<h3><?php esc_html_e( 'License Activation', 'farmfactory' ); ?></h3>
-			<p><?php esc_html_e( 'To create, manage, and edit farms you must to have an activated and not expired license.', 'farmfactory' ); ?></p>
+			<p><?php esc_html_e( 'To create, manage, and edit farms you must to have an activated license.', 'farmfactory' ); ?></p>
 			<?php if ( get_option( 'farmfactory_purchase_code' ) ) { ?>
 				<?php if ( farmfactory_is_supported() ) {
 					$d = new DateTime( get_option( 'farmfactory_license_supported_until' ) );
