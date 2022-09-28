@@ -159,14 +159,14 @@ function farmfactory_license_admin_notice() {
 	}
 
 	$screen = get_current_screen();
-	if ( isset( $screen->id ) && ('admin_page_farmfactory-license' === $screen->id || 'farmfactory'  === $screen->id)  ) {
+	if ( isset( $screen->id ) && ('admin_page_farmfactory-license' === $screen->id)  ) {
 		return;
 	}
 
 	if ( get_option( 'farmfactory_purchase_code' ) && ! farmfactory_is_supported() ) {
 		?>
 		<div class="notice notice-warning">
-			<p><?php echo sprintf ( esc_html__( 'Your license is expired. Expired license does not affect the Farmfactory functionality.', 'farmfactory' ), '<a href="' . esc_url( admin_url( 'admin.php?page=farmfactory-license' ) ) . '">', '</a>' ); ?></p>
+			<p><?php echo sprintf ( esc_html__( 'Your license is expired. Expired license does not affect the Farmfactory functionality. %sLicense page%s.', 'farmfactory' ), '<a href="' . esc_url( admin_url( 'admin.php?page=farmfactory-license' ) ) . '">', '</a>' ); ?></p>
 		</div>
 		<?php
 	} else {
