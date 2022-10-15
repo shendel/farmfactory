@@ -70,6 +70,7 @@
 								'moonriver',
 								'cronos',
 								'ame',
+								'btcix',
 							);
 						?>
 						<select name="farmfactory_networkName">

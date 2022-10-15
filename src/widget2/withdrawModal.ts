@@ -86,6 +86,10 @@ const withdrawModal = new Modal({
               explorerLinkWithHash = `https://amescan.io/tx/${hash}`
             }
 
+            if (networkName.toLowerCase() === 'btcix') {
+              explorerLinkWithHash = `https://btcixscan.com/tx/${hash}`
+            }
+
             trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`
 
             this.elems.content.insertBefore(trxNode, buttonContainer)

@@ -29,6 +29,7 @@ const fetchAccountData = async () => {
     1313161554: 'aurora',
     25: 'cronos',
     180: 'ame',
+    19845: 'btcix',
   })[chainId]
 
   if (!activeNetwork || activeNetwork.toLowerCase() !== opts.networkName.toLowerCase()) {
