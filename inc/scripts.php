@@ -55,6 +55,7 @@ function farmfactory_load_scripts() {
     "aurora": 1313161554,
 		"cronos": 25,
 		"ame": 180,
+		"btcix": 19845
 	};
 
 	var chainId = chainIds[networkName.toLowerCase()];
@@ -89,6 +90,13 @@ function farmfactory_load_scripts() {
 			180: "https://node1.amechain.io/",
 		  },
 		  network: "ame",
+		};
+	} else if (chainId === 19845 || chainId === "19845") {
+		walletConnectOptions = {
+		  rpc: {
+			19845: "https://seed.btcix.org/rpc",
+		  },
+		  network: "btcix",
 		};
 	} else {
 	  walletConnectOptions = {

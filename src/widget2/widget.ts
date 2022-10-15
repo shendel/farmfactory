@@ -362,6 +362,10 @@ class Widget {
             explorerLinkWithHash = `https://amescan.io/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'btcix') {
+            explorerLinkWithHash = `https://btcixscan.com/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -404,6 +408,7 @@ class Widget {
       moonriver: 'https://rpc.moonriver.moonbeam.network',
       cronos: 'https://evm.cronos.org',
       ame: 'https://node1.amechain.io/',
+      btcix: 'https://seed.btcix.org/rpc',
     }
 
     const network = networks[networkName.toLowerCase()]
