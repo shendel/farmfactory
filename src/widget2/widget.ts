@@ -330,11 +330,15 @@ class Widget {
         .on('transactionHash', (hash) => {
           let explorerLinkWithHash = `https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}`
 
+          if (networkName.toLowerCase() === 'bsc') {
+            explorerLinkWithHash = `https://bscscan.com/tx/${hash}`
+          }
+
           if (networkName.toLowerCase() === "xdai") {
             explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
           }
 
-          if (networkName.toLowerCase() === "fantom") {
+          if (networkName.toLowerCase() === 'fantom') {
             explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
           }
 
