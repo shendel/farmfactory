@@ -21,6 +21,9 @@ const depositModal = new Modal({
 
     let isLoading = false
 
+    let roundedMaxBalance
+    let maxBalance
+
     const balanceNode = this.elems.root.querySelector('.ff-text-field-label')
     const textField = this.elems.root.querySelector('.ff-text-field')
     const buttonContainer = this.elems.root.querySelector('.ff-modal-buttons')
@@ -29,8 +32,24 @@ const depositModal = new Modal({
     contracts.staking.methods.balanceOf(account).call()
       .then((balance) => {
         const value = toFixed(Number(balance) / Math.pow(10, stakingDecimals))
+        maxBalance = balance
+        roundedMaxBalance = value
 
-        balanceNode.innerHTML = `Available to deposit: <b>${value} ${stakingTokenSymbol}</b>`
+        balanceNode.innerHTML = `Available to deposit: <b>${value} ${stakingTokenSymbol}</b> `
+
+        if (value > 0) {
+          const useMaxButton = document.createElement('a');
+          useMaxButton.className = "ff-max-balance-button"
+          useMaxButton.innerHTML = "<b>use max</b>"
+
+          balanceNode.appendChild(useMaxButton);
+
+          useMaxButton.addEventListener('click', () => {
+            textField.value = value
+          })
+
+        }
+
       })
 
     submitButton.addEventListener('click', async () => {
@@ -45,7 +64,7 @@ const depositModal = new Modal({
         submitButton.disabled = true
         submitButton.innerHTML = '<div class="ff-loader"></div>'
 
-        const value = formatAmount(amount, stakingDecimals)
+        const value = textField.value === roundedMaxBalance ? maxBalance : formatAmount(amount, stakingDecimals)
 
         contracts.farm.methods.stake(value).send({ from: account })
           .on('transactionHash', (hash) => {
@@ -53,6 +72,10 @@ const depositModal = new Modal({
             trxNode.classList.add('ff-transaction-link')
 
             let explorerLinkWithHash = `https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}`
+
+            if (networkName.toLowerCase() === 'bsc') {
+              explorerLinkWithHash = `https://bscscan.com/tx/${hash}`
+            }
 
             if (networkName.toLowerCase() === 'fantom') {
               explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
