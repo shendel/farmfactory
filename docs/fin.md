@@ -38,6 +38,8 @@
 | 15 07 22 | 2000 $ (2000 $ env jun) |
 | 15 08 22 | 2700 $ (2700 $ env jul) |
 | 15 09 22 | 750 $ (1570 $ env aug) |
+| 15 10 22 | 0 $ (0 $ env sep) |
+| 15 11 22 | 0 $ (0 $ env oct) |
 
 ### other income (only sales, not custom job etc)..
 | date   | amount | 
