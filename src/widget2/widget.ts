@@ -52,7 +52,18 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
       <div class="ff-widget-value ff-widget-earn-token-name">
         <span class="ff-skeleton"></span>
       </div>
-    </div>  
+    </div>
+    <div class="ff-widget-row2">
+      <div class="ff-widget-label">
+        TVL:
+        <span>
+          <span class="ff-skeleton"></span>
+        </span>
+      </div>
+      <div class="ff-widget-value ff-widget-tvl-token-name">
+        <span class="ff-skeleton"></span>
+      </div>
+    </div>
   </div>
   <div class="ff-widget-section ff-widget-earn-section ff-hidden">
     <div class="ff-widget-section-title">
@@ -157,6 +168,7 @@ class Widget {
     apyValue: HTMLDivElement
     aprValue: HTMLDivElement
     depositTokenName: HTMLDivElement
+    tvlTokenName: HTMLDivElement
     earnTokenName: HTMLDivElement
     earnedAmount: HTMLDivElement
     stakedAmount: HTMLDivElement
@@ -228,6 +240,7 @@ class Widget {
     const apyValue            = root.querySelector('.ff-widget-apy') as HTMLDivElement
     const aprValue            = root.querySelector('.ff-widget-apr') as HTMLDivElement
     const depositTokenName    = root.querySelector('.ff-widget-deposit-token-name') as HTMLDivElement
+    const tvlTokenName        = root.querySelector('.ff-widget-tvl-token-name') as HTMLDivElement
     const earnTokenName       = root.querySelector('.ff-widget-earn-token-name') as HTMLDivElement
     const earnSection         = root.querySelector('.ff-widget-earn-section') as HTMLDivElement
     const stakeSection        = root.querySelector('.ff-widget-stake-section') as HTMLDivElement
@@ -246,6 +259,7 @@ class Widget {
       timer,
       rewardsTokenSymbol,
       stakingTokenSymbol,
+      tvlTokenName,
       apyValue,
       aprValue,
       depositTokenName,
@@ -362,6 +376,9 @@ class Widget {
             explorerLinkWithHash = `https://amescan.io/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'arbeth_mainnet') {
+            explorerLinkWithHash = `https://explorer.arbitrum.io/tx/${hash}`
+          }
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -404,6 +421,7 @@ class Widget {
       moonriver: 'https://rpc.moonriver.moonbeam.network',
       cronos: 'https://evm.cronos.org',
       ame: 'https://node1.amechain.io/',
+      arbeth_mainnet: 'https://arb1.arbitrum.io/rpc'
     }
 
     const network = networks[networkName.toLowerCase()]
@@ -421,12 +439,16 @@ class Widget {
       stakingDecimals,
       rewardsTokenSymbol,
       rewardsDecimals,
+      tvlBalance,
     ] = await Promise.all([
       this.readContracts.staking.methods.symbol().call(),
       this.readContracts.staking.methods.decimals().call(),
       this.readContracts.rewards.methods.symbol().call(),
       this.readContracts.rewards.methods.decimals().call(),
+      this.readContracts.staking.methods.balanceOf(farmAddress).call(),
     ])
+
+    this.elems.tvlTokenName.innerText = toFixed(tvlBalance / Math.pow(10, stakingDecimals)) + ' ' + stakingTokenSymbol
 
     this.state.stakingTokenSymbol = stakingTokenSymbol
     this.state.rewardsTokenSymbol = rewardsTokenSymbol
@@ -593,16 +615,19 @@ class Widget {
   }
 
   updateValues = async () => {
+    const { farmAddress } = this.opts
     const { account } = getState()
 
     const [
       farmingBalance,
       earnedTokens,
       allowance,
+      tvlBalance
     ] = await Promise.all([
       this.readContracts.farm.methods.balanceOf(account).call(),
       this.readContracts.farm.methods.earned(account).call(),
       this.readContracts.staking.methods.allowance(account, this.opts.farmAddress).call(),
+      this.readContracts.staking.methods.balanceOf(farmAddress).call()
     ])
 
     if (Number(allowance) === 0) {
@@ -612,10 +637,11 @@ class Widget {
       this.handleApproved()
     }
 
-    const { stakingDecimals, rewardsDecimals } = this.state
+    const { stakingDecimals, rewardsDecimals, stakingTokenSymbol } = this.state
 
     this.elems.earnedAmount.innerText = toFixed(earnedTokens / Math.pow(10, rewardsDecimals))
     this.elems.stakedAmount.innerText = toFixed(farmingBalance / Math.pow(10, stakingDecimals))
+    this.elems.tvlTokenName.innerText = toFixed(tvlBalance / Math.pow(10, stakingDecimals)) + ' ' + stakingTokenSymbol
 
     if (earnedTokens > 0) {
       this.elems.harvestButton.disabled = false

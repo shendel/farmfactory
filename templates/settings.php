@@ -70,6 +70,7 @@
 								'moonriver',
 								'cronos',
 								'ame',
+                'arbeth_mainnet',
 							);
 						?>
 						<select name="farmfactory_networkName">

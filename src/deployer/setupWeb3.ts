@@ -5,6 +5,7 @@ const networks = {
   mainnet: 'https://mainnet.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
   ropsten: 'https://ropsten.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
   kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+  arbeth_mainnet: 'https://arb1.arbitrum.io/rpc'
 }
 
 const setupWeb3 = () => new Promise((resolve, reject) => {
@@ -12,6 +13,7 @@ const setupWeb3 = () => new Promise((resolve, reject) => {
     1: 'mainnet',
     3: 'ropsten',
     42: 'kovan',
+    42161: 'arbeth_mainnet'
   })[window.ethereum && window.ethereum.networkVersion]
 
   const network = networks[activeNetworkName]
