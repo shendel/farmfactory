@@ -70,6 +70,8 @@
 								'moonriver',
 								'cronos',
 								'ame',
+                'zksync_testnet',
+                'zksync_mainnet'
 							);
 						?>
 						<select name="farmfactory_networkName">

@@ -7,12 +7,19 @@ import { accountUnlockedStorageKey } from './constants'
 import { getState, setState } from './state'
 import setupWeb3 from './setupWeb3'
 
+//import * as zk from 'zksync-web3'
+
+import { ContractFactory, Web3Provider, Provider } from 'zksync-web3'
+
 const baseTokenAbi = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"string"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"from","type":"address"}],"name":"getAvailableBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tokensMinted","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"value","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"account","type":"address"}],"name":"isMinter","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"freezeFor","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"freezeOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"},{"name":"_unfreezeTimestamp","type":"uint256"},{"name":"_subsequentUnlock","type":"bool"}],"name":"mintWithFreeze","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"maxSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"}]
 
 const fromWei : any = (amount: any, decimals: any) => {
   return new window.BigNumber(amount).div(new window.BigNumber(10).pow(decimals)).toString(10)
 }
 
+const isZkSync = (chainId) => {
+  return [280, 324].includes(chainId)
+}
 
 const loadScript = (src) => new Promise((resolve, reject) => {
   const script = document.createElement('script')
@@ -53,6 +60,9 @@ const deploy = async (params: Params) => {
   let contract
   let accounts
 
+  
+  const chainId = await web3.eth.getChainId()
+
   try {
     contract = new web3.eth.Contract(abi)
     accounts = await window.ethereum.request({ method: 'eth_accounts' })
@@ -67,29 +77,59 @@ const deploy = async (params: Params) => {
     return
   }
 
-  contract.deploy({
-    data: '0x' + bytecode,
-    arguments: [ rewardsAddress, stakingAddress, duration, decimal ],
-  })
-    .send({
-      from: accounts[0],
-      gas: 3000000,
+  if (isZkSync(chainId)) {
+    console.log('>>> is zkSync')
+    console.log('>>> web3', web3)
+    
+    // @ts-ignore
+    const provider = new Web3Provider(window.ethereum);
+    console.log('provider', provider)
+    onError('---')
+    return
+    //@ts-ignore
+    /*
+        accounts = await window.ethereum.request({ method: 'eth_accounts' })
+
+        const signer = library.getSigner(accounts[0])
+        // @ts-ignore
+        const deployFactory = new zk.ContractFactory(abi, byteCode, signer)
+
+        deployFactory.deploy(...deployArguments).then(async (contract) => {
+          // @ts-ignore
+          contract.options = {
+            address: contract.address
+          }
+          const dTx = await contract.deployTransaction.wait()
+          onHash(dTx.transactionHash)
+          resolve(contract)
+        })
+        */
+  } else {
+
+    contract.deploy({
+      data: '0x' + bytecode,
+      arguments: [ rewardsAddress, stakingAddress, duration, decimal ],
     })
-    .on('transactionHash', (hash) => {
-      console.log('transaction hash:', hash)
-      onTrx(hash)
-    })
-    .on('error', (error) => {
-      console.log('transaction error:', error)
-      onError(error)
-    })
-    .on('receipt', (receipt) => {
-      console.log('transaction receipt:', receipt)
-      onSuccess(receipt.contractAddress)
-    })
-    .then(() => {
-      onFinally()
-    })
+      .send({
+        from: accounts[0],
+        gas: 3000000,
+      })
+      .on('transactionHash', (hash) => {
+        console.log('transaction hash:', hash)
+        onTrx(hash)
+      })
+      .on('error', (error) => {
+        console.log('transaction error:', error)
+        onError(error)
+      })
+      .on('receipt', (receipt) => {
+        console.log('transaction receipt:', receipt)
+        onSuccess(receipt.contractAddress)
+      })
+      .then(() => {
+        onFinally()
+      })
+  }
 }
 
 const startFarming = async ({ farmAddress, rewardsAddress, amount, onSuccess, onError }) => {

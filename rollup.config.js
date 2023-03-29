@@ -2,6 +2,7 @@ import typescript from 'rollup-plugin-typescript2'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
+import nodePolyfills from 'rollup-plugin-polyfill-node'
 import { uglify } from 'rollup-plugin-uglify'
 import babel from 'rollup-plugin-babel'
 
@@ -36,6 +37,10 @@ export default [
       format: 'iife',
       name: 'farmDeployer',
     },
+    onwarn(warning, warn) {
+        if (warning.code === 'THIS_IS_UNDEFINED') return
+        warn(warning)
+    },
     plugins: [
       json(),
       commonjs(),
@@ -47,6 +52,9 @@ export default [
       }),
       babel({
         runtimeHelpers: true,
+        exclude: 'node_modules/**'
+      }),
+      nodePolyfills({
       }),
       uglify(),
     ],
