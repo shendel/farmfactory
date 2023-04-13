@@ -12,6 +12,8 @@ const fetchAccountData = async () => {
 
   const chainId = await web3.eth.getChainId()
 
+  console.log('web3 chain ID:', chainId)
+
   const activeNetwork = ({
     1: 'mainnet',
     5: 'goerli',
