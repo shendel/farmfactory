@@ -6,7 +6,7 @@ https://t.me/onoutsupportbot/?start=github_ff - Contact our team using if you ha
 The simplest way to allow your users to deposit ERC20 tokens (from example USDT) using simple "Deposit/Withdraw" interface and earn (farm) rewards. 
 
 How to create farm contract:
-1. Go to this interface (or https://kovan.etherscan.io/address/0x867f4a2a230de019370931ef3f21a09504fd87f2#writeContract for kovan tesntet (networkid=42)
+1. Go to this interface (or https://sepolia.etherscan.io/address/7213b5d53a4943b7af08a9cfce1cf2e2#writeContract for sepolia tesntet (networkid=11155111)
 2. Connect metamask (click "Connect to web3")
 3. Open "Create farm" dialog (https://screenshots.wpmix.net/chrome_v0wRXGUaKS0rwhHfoQKN1eonZqQLxIXv.png see screenshot) and enter this variables:
 4. Enter _rewardsToken (address) the same as you entered above

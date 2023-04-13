@@ -36,13 +36,11 @@ function farmfactory_load_scripts() {
 	if ( wp_count_posts( 'farmfactory' ) ) {
 
 	$inline_scripts = '
-	var networkName = "' . get_option( 'farmfactory_networkName', 'ropsten' ) . '";
+	var networkName = "' . get_option( 'farmfactory_networkName', 'sepolia' ) . '";
 
 	var chainIds = {
 	  "mainnet": 1,
-    "ropsten": 3,
     "rinkeby": 4,
-    "kovan": 42,
     "bsc": 56,
     "bsc_test": 97,
     "matic": 137,
@@ -55,7 +53,9 @@ function farmfactory_load_scripts() {
     "aurora": 1313161554,
 		"cronos": 25,
 		"ame": 180,
-		"btcix": 19845
+		"btcix": 19845,
+		"sepolia": 19845,
+		"goerli": 19845
 	};
 
 	var chainId = chainIds[networkName.toLowerCase()];

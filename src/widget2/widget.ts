@@ -396,9 +396,9 @@ class Widget {
     const { opts: { networkName } } = getState()
 
     const networks = {
-      mainnet: 'https://mainnet.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
-      ropsten: 'https://ropsten.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
-      kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+      mainnet: 'https://mainnet.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2',
+      sepolia: 'https://sepolia.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2',
+      goerli: 'https://goerli.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2',
       matic: 'https://polygon-rpc.com/',
       mumbai: 'https://rpc-mumbai.maticvigil.com',
       // https://docs.binance.org/smart-chain/developer/create-wallet.html

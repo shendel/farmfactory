@@ -14,9 +14,7 @@ const fetchAccountData = async () => {
 
   const activeNetwork = ({
     1: 'mainnet',
-    3: 'ropsten',
-    4: 'rinkeby',
-    42: 'kovan',
+    5: 'goerli',
     56: 'bsc',
     97: 'bsc_test',
     100: 'xdai',
@@ -30,6 +28,7 @@ const fetchAccountData = async () => {
     25: 'cronos',
     180: 'ame',
     19845: 'btcix',
+    11155111: 'sepolia',
   })[chainId]
 
   if (!activeNetwork || activeNetwork.toLowerCase() !== opts.networkName.toLowerCase()) {

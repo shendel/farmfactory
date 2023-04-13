@@ -79,7 +79,7 @@ msgid "Network"
 msgstr ""
 
 #: inc/metabox.php:146 templates/settings.php:71
-msgid "Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch"
+msgid "Sepolia or Mainnet. We recommend to test on testnet with testnet tokens before launch"
 msgstr ""
 
 #: inc/metabox.php:151

@@ -53,11 +53,9 @@
 					</th>
 					<td>
 						<?php
-							$farm_factory_network = get_option( 'farmfactory_networkName','ropsten' );
+							$farm_factory_network = get_option( 'farmfactory_networkName','sepolia' );
 							$networks = array(
-								'ropsten',
 								'mainnet',
-								'rinkeby',
 								'bsc',
 								'bsc_test',
 								'matic',
@@ -71,6 +69,8 @@
 								'cronos',
 								'ame',
 								'btcix',
+								'sepolia',
+								'goerli'
 							);
 						?>
 						<select name="farmfactory_networkName">
@@ -79,7 +79,7 @@
 							<?php } ?>
 						</select>
 						<p class="description">
-							<?php esc_html_e('Ropsten or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
+							<?php esc_html_e('Sepolia or Mainnet. We recommend to test on testnet with testnet tokens before launch', 'farmfactory'); ?>
 						</p>
 					</td>
 				</tr>
