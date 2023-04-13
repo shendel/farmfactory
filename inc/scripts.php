@@ -54,8 +54,8 @@ function farmfactory_load_scripts() {
 		"cronos": 25,
 		"ame": 180,
 		"btcix": 19845,
-		"sepolia": 19845,
-		"goerli": 19845
+		"sepolia": 11155111,
+		"goerli": 5
 	};
 
 	var chainId = chainIds[networkName.toLowerCase()];
