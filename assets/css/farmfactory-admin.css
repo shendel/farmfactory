@@ -185,6 +185,21 @@
 	}
 }
 
+.farmfactory-welcome-panel .farmfactory-welcome-panel-content {
+	margin-right: 13px;
+	justify-content: flex-start;
+}
+.wrap .farmfactory-welcome-panel h2.nav-tab-wrapper {
+	padding-top: 0;
+}
+.farmfactory-welcome-panel h3 {
+	font-size: 1.3em;
+}
+.farmfactory-welcome-panel h3:first-child,
+.farmfactory-strings-header > h3 {
+	margin-top: 0;
+}
+
 /* Metabox */
 .misc-pub-post-status,
 .misc-pub-visibility,

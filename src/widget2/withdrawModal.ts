@@ -21,6 +21,9 @@ const withdrawModal = new Modal({
 
     let isLoading = false
 
+    let roundedMaxBalance
+    let maxBalance
+
     const balanceNode = this.elems.root.querySelector('.ff-text-field-label')
     const textField = this.elems.root.querySelector('.ff-text-field')
     const buttonContainer = this.elems.root.querySelector('.ff-modal-buttons')
@@ -31,6 +34,25 @@ const withdrawModal = new Modal({
         const value = toFixed(Number(balance) / Math.pow(10, stakingDecimals))
 
         balanceNode.innerHTML = `Available to withdraw: <b>${value} ${stakingTokenSymbol}</b>`
+
+        maxBalance = balance
+        roundedMaxBalance = value
+
+        balanceNode.innerHTML = `Available to deposit: <b>${value} ${stakingTokenSymbol}</b> `
+
+        if (value > 0) {
+          const useMaxButton = document.createElement('a');
+          useMaxButton.className = "ff-max-balance-button"
+          useMaxButton.innerHTML = "<b>use max</b>"
+
+          balanceNode.appendChild(useMaxButton);
+
+          useMaxButton.addEventListener('click', () => {
+            textField.value = value
+          })
+
+        }
+
       })
 
     submitButton.addEventListener('click', async () => {
@@ -45,7 +67,7 @@ const withdrawModal = new Modal({
         submitButton.disabled = true
         submitButton.innerHTML = '<div class="ff-loader"></div>'
 
-        const value = formatAmount(amount, stakingDecimals)
+        const value = textField.value === roundedMaxBalance ? maxBalance : formatAmount(amount, stakingDecimals)
 
         contracts.farm.methods.withdraw(value).send({ from: account })
           .on('transactionHash', (hash) => {
@@ -53,6 +75,10 @@ const withdrawModal = new Modal({
             trxNode.classList.add('ff-transaction-link')
 
             let explorerLinkWithHash = `https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}`
+
+            if (networkName.toLowerCase() === 'bsc') {
+              explorerLinkWithHash = `https://bscscan.com/tx/${hash}`
+            }
 
             if (networkName.toLowerCase() === "xdai") {
               explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
@@ -84,6 +110,10 @@ const withdrawModal = new Modal({
 
             if (networkName.toLowerCase() === 'ame') {
               explorerLinkWithHash = `https://amescan.io/tx/${hash}`
+            }
+
+            if (networkName.toLowerCase() === 'btcix') {
+              explorerLinkWithHash = `https://btcixscan.com/tx/${hash}`
             }
 
             trxNode.innerHTML = `Pending transaction: <a href="${explorerLinkWithHash}" target="_blank">${hash}</a>`

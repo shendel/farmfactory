@@ -16,6 +16,13 @@ require FARMFACTORY_PATH . 'App/autoload.php';
 require FARMFACTORY_PATH . 'inc/functions.php';
 
 /**
+ * Load pro functions if exists
+ */
+if ( farmfactory_does_pro_exist() ) {
+	require FARMFACTORY_PATH . 'pro/init-pro.php';
+}
+
+/**
  * Enqueue Scripts
  */
 require FARMFACTORY_PATH . 'inc/scripts.php';

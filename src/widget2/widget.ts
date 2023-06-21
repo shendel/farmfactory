@@ -344,11 +344,15 @@ class Widget {
         .on('transactionHash', (hash) => {
           let explorerLinkWithHash = `https://${networkName.toLowerCase()}.etherscan.io/tx/${hash}`
 
+          if (networkName.toLowerCase() === 'bsc') {
+            explorerLinkWithHash = `https://bscscan.com/tx/${hash}`
+          }
+
           if (networkName.toLowerCase() === "xdai") {
             explorerLinkWithHash = `https://blockscout.com/xdai/mainnet/tx/${hash}`
           }
 
-          if (networkName.toLowerCase() === "fantom") {
+          if (networkName.toLowerCase() === 'fantom') {
             explorerLinkWithHash = `https://ftmscan.com/tx/${hash}`
           }
 
@@ -379,6 +383,11 @@ class Widget {
           if (networkName.toLowerCase() === 'arbeth_mainnet') {
             explorerLinkWithHash = `https://explorer.arbitrum.io/tx/${hash}`
           }
+
+          if (networkName.toLowerCase() === 'btcix') {
+            explorerLinkWithHash = `https://btcixscan.com/tx/${hash}`
+          }
+
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -405,9 +414,9 @@ class Widget {
     const { opts: { networkName } } = getState()
 
     const networks = {
-      mainnet: 'https://mainnet.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
-      ropsten: 'https://ropsten.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
-      kovan: 'https://kovan.infura.io/v3/5ffc47f65c4042ce847ef66a3fa70d4c',
+      mainnet: 'https://mainnet.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2',
+      sepolia: 'https://sepolia.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2',
+      goerli: 'https://goerli.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2',
       matic: 'https://polygon-rpc.com/',
       mumbai: 'https://rpc-mumbai.maticvigil.com',
       // https://docs.binance.org/smart-chain/developer/create-wallet.html
@@ -421,7 +430,8 @@ class Widget {
       moonriver: 'https://rpc.moonriver.moonbeam.network',
       cronos: 'https://evm.cronos.org',
       ame: 'https://node1.amechain.io/',
-      arbeth_mainnet: 'https://arb1.arbitrum.io/rpc'
+      arbeth_mainnet: 'https://arb1.arbitrum.io/rpc',
+      btcix: 'https://seed.btcix.org/rpc',
     }
 
     const network = networks[networkName.toLowerCase()]

@@ -12,11 +12,11 @@ const fetchAccountData = async () => {
 
   const chainId = await web3.eth.getChainId()
 
+  console.log('web3 chain ID:', chainId)
+
   const activeNetwork = ({
     1: 'mainnet',
-    3: 'ropsten',
-    4: 'rinkeby',
-    42: 'kovan',
+    5: 'goerli',
     56: 'bsc',
     97: 'bsc_test',
     100: 'xdai',
@@ -29,7 +29,9 @@ const fetchAccountData = async () => {
     1313161554: 'aurora',
     25: 'cronos',
     180: 'ame',
-    42161: 'arbeth_mainnet'
+    42161: 'arbeth_mainnet',
+    19845: 'btcix',
+    11155111: 'sepolia',
   })[chainId]
 
   if (!activeNetwork || activeNetwork.toLowerCase() !== opts.networkName.toLowerCase()) {
