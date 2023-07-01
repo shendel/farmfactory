@@ -54,6 +54,18 @@ const getHtml = ({ withAPY, withAPR, apyLabel = 'APY', aprLabel = 'APR' }) => `
       </div>
     </div>
     <div class="ff-widget-row2">
+      <div class="ff-widget-label">APY per token in day:</div>
+      <div class="ff-widget-value ff-widget-reward-rate">
+        <span class="ff-skeleton"></span>
+      </div>
+    </div>
+    <div class="ff-widget-row2 ff-widget-user-apy-holder ff-hidden">
+      <div class="ff-widget-label">Your Reward per token in day:</div>
+      <div class="ff-widget-value ff-widget-user-apy">
+        <span class="ff-skeleton"></span>
+      </div>
+    </div>
+    <div class="ff-widget-row2">
       <div class="ff-widget-label">
         TVL:
         <span>
@@ -179,6 +191,9 @@ class Widget {
     depositButton: HTMLButtonElement
     withdrawButton: HTMLButtonElement
     harvestButton: HTMLButtonElement
+    rewardRate: HTMLDivElement
+    userRate: HTMLDivElement
+    userRateHolder: HTMLDivElement
   }
 
   readContracts: {
@@ -198,6 +213,7 @@ class Widget {
     stakingDecimals: any
     rewardsTokenSymbol: any
     rewardsDecimals: any
+    rewardRate: any
   }
 
   constructor(opts: Opts) {
@@ -251,6 +267,9 @@ class Widget {
     const depositButton       = root.querySelector('.ff-widget-deposit-button') as HTMLButtonElement
     const withdrawButton      = root.querySelector('.ff-widget-withdraw-button') as HTMLButtonElement
     const harvestButton       = root.querySelector('.ff-widget-harvest-button') as HTMLButtonElement
+    const rewardRate          = root.querySelector('.ff-widget-reward-rate') as HTMLDivElement
+    const userRate            = root.querySelector('.ff-widget-user-apy') as HTMLDivElement
+    const userRateHolder      = root.querySelector('.ff-widget-user-apy-holder') as HTMLDivElement
 
     this.elems = {
       root,
@@ -272,7 +291,10 @@ class Widget {
       approveButton,
       depositButton,
       withdrawButton,
-      harvestButton
+      harvestButton,
+      rewardRate,
+      userRate,
+      userRateHolder
     }
 
     unlockButton.addEventListener('click', () => {
@@ -450,15 +472,21 @@ class Widget {
       rewardsTokenSymbol,
       rewardsDecimals,
       tvlBalance,
+      rewardRate,
+      totalSupply
     ] = await Promise.all([
       this.readContracts.staking.methods.symbol().call(),
       this.readContracts.staking.methods.decimals().call(),
       this.readContracts.rewards.methods.symbol().call(),
       this.readContracts.rewards.methods.decimals().call(),
       this.readContracts.staking.methods.balanceOf(farmAddress).call(),
+      this.readContracts.farm.methods.rewardRate().call(),
+      this.readContracts.farm.methods.totalSupply().call()
     ])
 
-    this.elems.tvlTokenName.innerText = toFixed(tvlBalance / Math.pow(10, stakingDecimals)) + ' ' + stakingTokenSymbol
+    this.elems.tvlTokenName.innerText = toFixed(totalSupply / Math.pow(10, stakingDecimals)) + ' ' + stakingTokenSymbol
+    
+    this.elems.rewardRate.innerText = toFixed(rewardRate / Math.pow(10, rewardsDecimals) * 86400) + ' ' + rewardsTokenSymbol
 
     this.state.stakingTokenSymbol = stakingTokenSymbol
     this.state.rewardsTokenSymbol = rewardsTokenSymbol
@@ -632,12 +660,16 @@ class Widget {
       farmingBalance,
       earnedTokens,
       allowance,
-      tvlBalance
+      tvlBalance,
+      rewardRate,
+      totalSupply
     ] = await Promise.all([
       this.readContracts.farm.methods.balanceOf(account).call(),
       this.readContracts.farm.methods.earned(account).call(),
       this.readContracts.staking.methods.allowance(account, this.opts.farmAddress).call(),
-      this.readContracts.staking.methods.balanceOf(farmAddress).call()
+      this.readContracts.staking.methods.balanceOf(farmAddress).call(),
+      this.readContracts.farm.methods.rewardRate().call(),
+      this.readContracts.farm.methods.totalSupply().call()
     ])
 
     if (Number(allowance) === 0) {
@@ -647,11 +679,23 @@ class Widget {
       this.handleApproved()
     }
 
-    const { stakingDecimals, rewardsDecimals, stakingTokenSymbol } = this.state
+    const { stakingDecimals, rewardsDecimals, stakingTokenSymbol, rewardsTokenSymbol } = this.state
+    
+    try {
+      const otherUserSupply = totalSupply - farmingBalance
+      const myPercents = 1 - otherUserSupply / totalSupply
+      this.elems.userRate.innerText = toFixed(rewardRate / Math.pow(10, rewardsDecimals) * 86400 * myPercents) + ' ' + rewardsTokenSymbol
+      
+      this.elems.userRateHolder.classList.remove('ff-hidden')
+    } catch (e) {}
+    
+
+
+    this.elems.rewardRate.innerText = toFixed(rewardRate / Math.pow(10, rewardsDecimals) * 86400) + ' ' + rewardsTokenSymbol
 
     this.elems.earnedAmount.innerText = toFixed(earnedTokens / Math.pow(10, rewardsDecimals))
     this.elems.stakedAmount.innerText = toFixed(farmingBalance / Math.pow(10, stakingDecimals))
-    this.elems.tvlTokenName.innerText = toFixed(tvlBalance / Math.pow(10, stakingDecimals)) + ' ' + stakingTokenSymbol
+    this.elems.tvlTokenName.innerText = toFixed(totalSupply / Math.pow(10, stakingDecimals)) + ' ' + stakingTokenSymbol
 
     if (earnedTokens > 0) {
       this.elems.harvestButton.disabled = false

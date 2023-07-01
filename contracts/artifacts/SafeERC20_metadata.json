@@ -1,0 +1,41 @@
+{
+	"compiler": {
+		"version": "0.6.8+commit.0bbfe453"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Farm.sol": "SafeERC20"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Farm.sol": {
+			"keccak256": "0x9217042f097200fc0a68f25ee51b8af9386647dcbbb395d59eb647b87b68999c",
+			"license": "Unlicense",
+			"urls": [
+				"bzz-raw://04944d9da86c4e6fcb7c875efdaf1b5de1809acbdac32571f8266646e688a335",
+				"dweb:/ipfs/QmbJWZDVoVysV9fz21QpQBGbJAnJUdv3fAFATQGngt662P"
+			]
+		}
+	},
+	"version": 1
+}
