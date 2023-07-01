@@ -6,7 +6,7 @@ Author: Denis Ivanov
 Requires PHP: 7.1
 Text Domain: farmfactory
 Domain Path: /lang
-Version: 2.1.42
+Version: 2.1.43
  */
 
 /* Define Plugin Constants */
