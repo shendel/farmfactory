@@ -120,7 +120,7 @@ class FarmFactory_Meta_Box {
 		if ( $should_activate_license ) {
 			$farm_status = 'activate_license';
 		}
-    $farm_status = $is_deployed_farm ? 'deployed' : 'setup';
+    //$farm_status = $is_deployed_farm ? 'deployed' : 'setup';
 
 		// Farm details.
 		?>
