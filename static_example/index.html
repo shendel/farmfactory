@@ -40,7 +40,8 @@
           "ame": 180,
           "btcix": 19845,
           "sepolia": 11155111,
-          "goerli": 5
+          "goerli": 5,
+          "arbeth_mainnet": 42161
         };
 
         var chainId = chainIds[networkName.toLowerCase()];
@@ -82,6 +83,13 @@
             19845: "https://seed.btcix.org/rpc",
             },
             network: "btcix",
+          };
+        } else if (chainId === 42161 || chainId === "42161") {
+          walletConnectOptions = {
+            rpc: {
+            42161: "https://arb1.arbitrum.io/rpc",
+            },
+            network: "arbeth_mainnet",
           };
         } else {
           walletConnectOptions = {
