@@ -68,6 +68,7 @@
 								'moonriver',
 								'cronos',
 								'ame',
+                'arbeth_mainnet',
 								'btcix',
 								'sepolia',
 								'goerli'

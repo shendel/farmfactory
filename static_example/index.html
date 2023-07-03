@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru-RU">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+		<link rel="profile" href="https://gmpg.org/xfn/11">
+
+		<title>Farm static</title>
+    <meta name='robots' content='noindex, nofollow' />
+    <link rel='stylesheet' id='farmfactory-css-css' href='./assets/css/farmfactory.css?ver=230621-70551' media='all' />
+	</head>
+	<body>
+    <div class="ff-widgets-container">
+      <div id="ff-widget-holder"></div>
+    </div>
+    <script src='./assets/js/web3.min.js?ver=1.5.1' id='web3-js'></script>
+    <script src='./assets/js/web3modal.min.js?ver=1.9.5' id='web3modal-js'></script>
+    <script src='./assets/js/bignumber.min.js?ver=8.0.2' id='bignumber-js'></script>
+    <script src='./assets/js/web3-provider.min.js?ver=1.7.0' id='web3-provider-js'></script>
+    <script src='./assets/js/fortmatic.js?ver=2.0.6' id='fortmatic-js'></script>
+    <script src='./lib/farmfactory.js?ver=230622-64149' id='farmfactory-js-js'></script>
+    <script id='farmfactory-js-js-after'>
+      (() => {
+        var networkName = "bsc_test";
+
+        var chainIds = {
+          "mainnet": 1,
+          "rinkeby": 4,
+          "bsc": 56,
+          "bsc_test": 97,
+          "matic": 137,
+          "fantom": 250,
+          "harmony": 1666600000,
+          "avax": 43114,
+          "moonriver": 1285,
+          "mumbai": 80001,
+          "xdai": 100,
+          "aurora": 1313161554,
+          "cronos": 25,
+          "ame": 180,
+          "btcix": 19845,
+          "sepolia": 11155111,
+          "goerli": 5,
+          "arbeth_mainnet": 42161
+        };
+
+        var chainId = chainIds[networkName.toLowerCase()];
+
+        var walletConnectOptions;
+
+        if (chainId === 56 || chainId === 97 || chainId === "56" || chainId === "97") {
+          walletConnectOptions = {
+          rpc: {
+            56: "https://bsc-dataseed.binance.org",
+            97: "https://data-seed-prebsc-1-s1.binance.org:8545",
+          },
+          network: "binance",
+            };
+        } else if (chainId === 100 || chainId === "100") {
+          walletConnectOptions = {
+            rpc: {
+            100: "https://rpc.xdaichain.com",
+            },
+            network: "xdai",
+          };
+        } else if (chainId === 250 || chainId === "250") {
+          walletConnectOptions = {
+            rpc: {
+            250: "https://rpc.ftm.tools/",
+            },
+            network: "fantom",
+          };
+        } else if (chainId === 180 || chainId === "180") {
+          walletConnectOptions = {
+            rpc: {
+            180: "https://node1.amechain.io/",
+            },
+            network: "ame",
+          };
+        } else if (chainId === 19845 || chainId === "19845") {
+          walletConnectOptions = {
+            rpc: {
+            19845: "https://seed.btcix.org/rpc",
+            },
+            network: "btcix",
+          };
+        } else if (chainId === 42161 || chainId === "42161") {
+          walletConnectOptions = {
+            rpc: {
+            42161: "https://arb1.arbitrum.io/rpc",
+            },
+            network: "arbeth_mainnet",
+          };
+        } else {
+          walletConnectOptions = {
+            infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
+          }
+        }
+
+        farmFactory.init({
+          networkName: networkName,
+          wallet: {
+            providerOptions: {
+              walletconnect: {
+                package: window.WalletConnectProvider.default,
+                options: walletConnectOptions,
+              },
+              fortmatic: {
+                package: window.Fortmatic,
+                options: {
+                  key: "",
+                },
+              },
+            },
+          },
+        });
+        
+
+        // Init Widget
+        const widget = new farmFactory.Widget({
+          selector: "ff-widget-holder",
+          farmAddress: "0xbE7d5C36359bB35E1dFbe4935178a9CF2107Fb44",
+          rewardsAddress: "0x348236484ce96A293E210260b90bBFb228D6d1Fc",
+          stakingAddress: "0x703f112Bda4Cc6cb9c5FB4B2e6140f6D8374F10b",
+          apy: "",
+          apyLabel: "",
+          rewardsTokenIcon: "",
+          stakingTokenIcon: "",
+        });
+      })()
+    </script>
+	</body>
+</html>
