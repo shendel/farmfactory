@@ -95,7 +95,7 @@ function farmfactory_load_scripts() {
   } else if (chainId === 4000) {
     walletConnectOptions = {
 		  rpc: {
-			19845: "https://node1.ozonechain.io",
+			4000: "https://node1.ozonechain.io",
 		  },
 		  network: "ozone",
 		};
