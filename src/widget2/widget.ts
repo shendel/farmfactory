@@ -370,6 +370,9 @@ class Widget {
             explorerLinkWithHash = `https://btcixscan.com/tx/${hash}`
           }
 
+          if (networkName.toLowerCase() === 'ozone') {
+            explorerLinkWithHash = `https://ozonescan.io/tx/${hash}`
+          }
           console.log('Harvest trx:', explorerLinkWithHash)
         })
         .on('error', (err) => {
@@ -413,6 +416,7 @@ class Widget {
       cronos: 'https://evm.cronos.org',
       ame: 'https://node1.amechain.io/',
       btcix: 'https://seed.btcix.org/rpc',
+      ozone: 'https://node1.ozonechain.io',
     }
 
     const network = networks[networkName.toLowerCase()]
