@@ -55,7 +55,8 @@ function farmfactory_load_scripts() {
 		"ame": 180,
 		"btcix": 19845,
 		"sepolia": 11155111,
-		"goerli": 5
+		"goerli": 5,
+    "ozone": 4000
 	};
 
 	var chainId = chainIds[networkName.toLowerCase()];
@@ -90,6 +91,13 @@ function farmfactory_load_scripts() {
 			180: "https://node1.amechain.io/",
 		  },
 		  network: "ame",
+		};
+  } else if (chainId === 4000) {
+    walletConnectOptions = {
+		  rpc: {
+			4000: "https://node1.ozonechain.io",
+		  },
+		  network: "ozone",
 		};
 	} else if (chainId === 19845 || chainId === "19845") {
 		walletConnectOptions = {
