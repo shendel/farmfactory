@@ -220,10 +220,10 @@ export const GET_RPC = (chainName) => {
 }
 
 export const GET_TX_LINK = (hash) => {
-  return NETWORKS[window.SO_FARM_FACTORY_NETWORK].explorer + '/tx/' + hash
+  return NETWORKS[FARM_CHAIN].explorer + '/tx/' + hash
 }
 
-const netInfo = GET_CHAIN(window.SO_FARM_FACTORY_NETWORK)
+const netInfo = GET_CHAIN(FARM_CHAIN)
 
 const getChainRPC = (chainId) => {
   const chainData = Object.keys(NETWORKS).filter((chainName) => {

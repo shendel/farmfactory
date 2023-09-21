@@ -67,19 +67,6 @@ const fetchCommon = (opts) => {
       allowance: new BigNumber(allowance).toFixed(),
       userBalance: new BigNumber(userBalance).toFixed()
     })
-    console.log('>>> FARM STATUS')
-    console.log('stakingTokenSymbol', stakingTokenSymbol)
-    console.log('stakingDecimals', stakingDecimals)
-    console.log('rewardsTokenSymbol', rewardsTokenSymbol)
-    console.log('rewardsDecimals', rewardsDecimals)
-    console.log('tvlBalance', tvlBalance)
-    console.log('rewardRate', rewardRate)
-    console.log('totalSupply', totalSupply)
-    console.log('farmingFinishDate', farmingFinishDate)
-    console.log('farmingBalance', farmingBalance)
-    console.log('earnedTokens', earnedTokens)
-    console.log('allowance', allowance)
-    console.log('userBalance', userBalance)
   })
 }
 

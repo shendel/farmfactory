@@ -15,8 +15,9 @@ import BigNumber from 'bignumber.js'
 import callFarmContract from './utils/callFarmContract'
 import callApproveContract from './utils/callApproveContract'
 import Modal from './components/Modal'
+import { GET_TX_LINK } from './utils/chains'
 
-// @to-do - token icons
+
 function Widget({ widgetOptions }) {
   const {
     networkName,
@@ -66,7 +67,6 @@ function Widget({ widgetOptions }) {
       networkName,
       account: address
     }).then((answer) => {
-      console.log('Common info', answer)
       setRewardsTokenSymbol(answer.rewardsTokenSymbol)
       setStakingTokenSymbol(answer.stakingTokenSymbol)
       setStakingDecimals(answer.stakingDecimals)
@@ -119,7 +119,7 @@ function Widget({ widgetOptions }) {
   /* ========================== TIMER =========================== */
   const [ timeLeft, setTimeLeft ] = useState(false)
   useEffect(() => {
-    if (farmingFinishDate && false) {
+    if (farmingFinishDate) {
       const finishDate = Number(farmingFinishDate)
       if (finishDate - Date.now() / 1000 > 0) {
         const timer = window.setInterval(() => {
@@ -202,6 +202,7 @@ function Widget({ widgetOptions }) {
   
   const [ needApprove, setNeedApprove ] = useState(false)
   const [ isApproving, setIsApproving ] = useState(false)
+  const [ approveHash, setApproveHash ] = useState(false)
   
   useEffect(() => {
     let amount = 0
@@ -241,6 +242,7 @@ function Widget({ widgetOptions }) {
           weiAmount: false,
           onTrx: (hash) => {
             console.log('>>> hash', hash)
+            setApproveHash(hash)
           },
           onError: (error) => {
             console.log('>>> error', error)
@@ -248,6 +250,7 @@ function Widget({ widgetOptions }) {
           },
           onFinally: () => {
             setIsApproving(false)
+            setApproveHash(false)
             setNeedRefresh(true)
           }
         }).then((answer) => {
@@ -552,8 +555,8 @@ function Widget({ widgetOptions }) {
                   <>
                     {harvestHash ? (
                       <div className="ff-transaction-link">
-                        {`Pending transaction: `}
-                        <a href="#" target="_blank">{harvestHash}</a>
+                        <div>{`Pending transaction: `}</div>
+                        <a href={GET_TX_LINK(harvestHash)} target="_blank">{harvestHash}</a>
                       </div>
                     ) : (
                       <>{`Confirm transaction...`}</>
@@ -581,7 +584,7 @@ function Widget({ widgetOptions }) {
                         {stakedAmount > 0 && (
                           <>
                             {` `}
-                            <a href="#" className="ff-max-balance-button" onClick={() => { setWithdrawAmount(stakedAmount) }}>
+                            <a className="ff-max-balance-button" onClick={() => { if (!isWithdrawing) setWithdrawAmount(stakedAmount) }}>
                               <b>{`use max`}</b>
                             </a>
                           </>
@@ -592,13 +595,14 @@ function Widget({ widgetOptions }) {
                         type="text"
                         placeholder="0.0"
                         value={withdrawAmount}
+                        disabled={isWithdrawing}
                         onChange={(e) => { setWithdrawAmount(e.target.value) }}
                       />
                     </div>
                     {withdrawHash && (
                       <div className="ff-transaction-link">
-                        {`Pending transaction: `}
-                        <a href="#" target="_blank">{withdrawHash}</a>
+                        <div>{`Pending transaction: `}</div>
+                        <a href={GET_TX_LINK(withdrawHash)} target="_blank">{withdrawHash}</a>
                       </div>
                     )}
                     <div className="ff-modal-buttons">
@@ -638,7 +642,7 @@ function Widget({ widgetOptions }) {
                         {userBalance > 0 && (
                           <>
                             {` `}
-                            <a href="#" className="ff-max-balance-button" onClick={() => { setDepositAmount(userBalance) }}>
+                            <a className="ff-max-balance-button" onClick={() => { if (!isApproving && !isDepositing) setDepositAmount(userBalance) }}>
                               <b>{`use max`}</b>
                             </a>
                           </>
@@ -649,13 +653,20 @@ function Widget({ widgetOptions }) {
                         type="text"
                         placeholder="0.0"
                         value={depositAmount}
+                        disabled={isApproving || isDepositing}
                         onChange={(e) => { setDepositAmount(e.target.value) }}
                       />
                     </div>
                     {depositHash && (
                       <div className="ff-transaction-link">
-                        {`Pending transaction: `}
-                        <a href="#" target="_blank">{depositHash}</a>
+                        <div>{`Pending transaction: `}</div>
+                        <a href={GET_TX_LINK(depositHash)} target="_blank">{depositHash}</a>
+                      </div>
+                    )}
+                    {approveHash && (
+                      <div className="ff-transaction-link">
+                        <div>{`Pending approve tx: `}</div>
+                        <a href={GET_TX_LINK(approveHash)} target="_blank">{approveHash}</a>
                       </div>
                     )}
                     <div className="ff-modal-buttons">
