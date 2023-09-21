@@ -1,3 +1,3 @@
 ### yarn install
 ### yarn start
-### yarn buildwidget
+### yarn build:widget

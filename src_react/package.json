@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
-  "homepage_": "/wallet/wp-content/plugins/farmfactory/reactwidget/",
   "dependencies": {
     "@rainbow-me/rainbowkit": "^1.0.5",
     "@testing-library/jest-dom": "^5.17.0",
@@ -14,6 +13,8 @@
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
     "bignumber.js": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "glob": "8.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -28,7 +29,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build_clean": "node ./scripts/build-non-split.js",
+    "build:widget": "yarn build_clean && yarn prepare_widget",
+    "build_clean": "cross-env PUBLIC_URL=FARM_ROOT_URL node ./scripts/build-non-split.js",
+    "prepare_widget": "node ./scripts/make-widget",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
