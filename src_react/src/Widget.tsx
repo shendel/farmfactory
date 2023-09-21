@@ -27,19 +27,10 @@ function Widget({ widgetOptions }) {
     stakingTokenIcon,
   } = widgetOptions
   
-
   const { isConnecting, isConnected, address, connector } = useAccount()
 
 
   const [ farmFetched, setFarmFetched ] = useState(false)
-  
-  // from props
-  /*
-  const networkName = 'goerli'
-  const farmAddress = "0x9E8DeDacB595dDe7c8532c40aAbfbA16D4f0967e"
-  const rewardsAddress = "0xaFF4481D10270F50f203E0763e2597776068CBc5"
-  const stakingAddress = "0xaFF4481D10270F50f203E0763e2597776068CBc5"
-    */
   
   const [ rewardsTokenSymbol, setRewardsTokenSymbol ] = useState(false)
   const [ rewardsDecimals, setRewardsDecimals ] = useState(false)

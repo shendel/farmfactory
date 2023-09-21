@@ -1,32 +1,26 @@
-/* eslint-disable import/prefer-default-export */
+// @ts-ignore
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
-  argentWallet,
-  braveWallet,
-  coinbaseWallet,
   injectedWallet,
-  ledgerWallet,
   metaMaskWallet,
-  rainbowWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { createConfig } from 'wagmi';
 
 import { chains, publicClient } from './chains';
 
-console.log('>>> wagmiConfig', chains)
 const connectors = connectorsForWallets([
   {
     groupName: 'Popular',
     wallets: [
       injectedWallet({ chains }),
       metaMaskWallet({
-        projectId: "a23677c4af3139b4eccb52981f76ad94" || process.env.NEXT_PUBLIC_PROJECT_ID || '',
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "a23677c4af3139b4eccb52981f76ad94",
         chains,
         shimDisconnect: false,
       }),
       walletConnectWallet({
-        projectId: "a23677c4af3139b4eccb52981f76ad94" || process.env.NEXT_PUBLIC_PROJECT_ID || '',
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "a23677c4af3139b4eccb52981f76ad94",
         chains,
       }),
     ],

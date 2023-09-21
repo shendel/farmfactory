@@ -15,6 +15,7 @@ function farmfactory_reactwidget( $id ) {
   $out = "\n";
   $out.= "<script>\n";
   $out.= "    window.SO_FARM_FACTORY_ROOT = \"" . FARMFACTORY_URL . "\";\n";
+  $out.= "    window.SO_FARM_FACTORY_NETWORK = \"" . get_option( 'farmfactory_networkName', 'sepolia' ) . "\";\n";
   $out.= "</script>\n";
   $out.= "<div \n";
   $out.= "    class=\"ff-farmfactory-widget\" \n";

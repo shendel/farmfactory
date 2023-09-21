@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { farmAbi } from './createContracts'
 import Web3 from 'web3'
-import { calcSendArgWithFee, calcSendArgWithFee2 } from "./calcSendArgWithFee"
+import { calcSendArgWithFee } from "./calcSendArgWithFee"
 import { BigNumber } from 'bignumber.js'
 
 const callFarmContract = (options) => {

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import createContracts from './createContracts'
-import networks from './networks'
+import { GET_RPC } from './chains'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 
@@ -15,9 +15,7 @@ const fetchCommon = (opts) => {
   } = opts
 
   return new Promise(async (resolve, reject) => {
-    const network = networks[networkName.toLowerCase()]
-
-    const web3 = new Web3(network)
+    const web3 = new Web3(GET_RPC(networkName.toLowerCase()))
 
     const readContracts = await createContracts(web3, {
       farmAddress,
