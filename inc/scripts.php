@@ -17,6 +17,7 @@ function farmfactory_load_scripts() {
   wp_enqueue_script( 'token-price', FARMFACTORY_URL . 'assets/js/token-price.js', array(), '1.0.0', true);
 
 	wp_enqueue_style( 'farmfactory-css', FARMFACTORY_URL . 'assets/css/farmfactory.css', false, $my_css_ver );
+  wp_enqueue_style( 'rainbow-css', FARMFACTORY_URL . 'reactwidget/static/css/rainbow.css', false, $my_css_ver );
 
 }
 add_action('wp_enqueue_scripts', 'farmfactory_load_scripts');
