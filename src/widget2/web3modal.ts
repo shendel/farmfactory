@@ -32,6 +32,7 @@ const fetchAccountData = async () => {
     42161: 'arbeth_mainnet',
     19845: 'btcix',
     11155111: 'sepolia',
+    4000: 'ozone',
   })[chainId]
 
   if (!activeNetwork || activeNetwork.toLowerCase() !== opts.networkName.toLowerCase()) {
