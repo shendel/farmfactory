@@ -189,8 +189,19 @@ const NETWORKS = {
       symbol: "ETH",
       decimals: 18
     },
-    rpc: "https://sepolia.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2",
+    rpc: "https://eth-sepolia.g.alchemy.com/v2/eV40AoRwFdzusyW_9htirAoRXSMssQ0E",
     explorer: "https://sepolia.etherscan.io/",
+  },
+  vector_testnet: {
+    chainId: 420044,
+    name: "Vector Testnet",
+    nativeCurrency: {
+      name: "VSG",
+      symbol: "VSG",
+      decimals: 18
+    },
+    rpc: "https://testnet-rpc.vsgofficial.com",
+    explorer: "https://testnet-scan.vsgofficial.com/",
   },
 }
 

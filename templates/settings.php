@@ -56,6 +56,7 @@
 							$farm_factory_network = get_option( 'farmfactory_networkName','sepolia' );
 							$networks = array(
 								'mainnet',
+                'vector_testnet',
 								'bsc',
 								'bsc_test',
 								'matic',
