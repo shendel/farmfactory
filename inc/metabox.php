@@ -118,9 +118,8 @@ class FarmFactory_Meta_Box {
 		$should_activate_license = farmfactory_does_pro_exist() && ! get_option( 'farmfactory_purchase_code' );
 
 		if ( $should_activate_license ) {
-			$farm_status = 'activate_license';
+			//$farm_status = 'activate_license';
 		}
-
 		// Farm details.
 		?>
 

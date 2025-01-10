@@ -10,6 +10,7 @@ const networks = {
   goerli: 'https://goerli.infura.io/v3/7213b5d53a4943b7af08a9cfce1cf2e2',
   ozone: 'https://node1.ozonechain.io',
   vector_testnet: 'https://testnet-rpc.vsgofficial.com',
+  vector_mainnet: 'https://rpc.vscblockchain.org',
 }
 
 const setupWeb3 = () => new Promise((resolve, reject) => {
@@ -22,6 +23,7 @@ const setupWeb3 = () => new Promise((resolve, reject) => {
     11155111: 'sepolia',
     4000: 'ozone',
     420044: 'vector_testnet',
+    420042: 'vector_mainnet',
   })[window.ethereum && window.ethereum.networkVersion]
 
   const network = networks[activeNetworkName]

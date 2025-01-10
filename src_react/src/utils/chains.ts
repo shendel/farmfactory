@@ -203,6 +203,17 @@ const NETWORKS = {
     rpc: "https://testnet-rpc.vsgofficial.com",
     explorer: "https://testnet-scan.vsgofficial.com/",
   },
+  vector_mainnet: {
+    chainId: 420042,
+    name: "Vector Mainnet",
+    nativeCurrency: {
+      name: "VSG",
+      symbol: "VSG",
+      decimals: 18
+    },
+    rpc: "https://rpc.vscblockchain.org",
+    explorer: "https://explorer.vscblockchain.org",
+  },
 }
 
 const GET_CHAIN = (chainName) => {
